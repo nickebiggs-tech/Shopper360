@@ -1,21 +1,21 @@
 Category,Revenue,Transactions,AvgItemsPerBasket,CrossSellRate,TopPairedCategory,GrowthRate,NationalAvgRevenue
-Prescription,285000000,8200000,2.8,24.4,OTC Medicines,2.1,342000000
-Vitamins & Supplements,142000000,4100000,1.4,58.2,Weight Management,8.4,128000000
-OTC Medicines,98000000,6800000,1.9,42.1,First Aid,3.7,88000000
-Beauty & Skincare,87000000,3200000,2.6,51.3,Personal Care,12.1,78000000
-Fragrance,76000000,1800000,1.2,18.6,Beauty & Skincare,5.3,82000000
-Baby & Infant,54000000,2100000,2.9,44.7,Personal Care,6.8,48000000
-Personal Care,48000000,3900000,2.2,38.5,Beauty & Skincare,1.9,44000000
-Weight Management,42000000,980000,1.6,32.8,Sports Nutrition,15.2,38000000
-Hair Care,38000000,2400000,2.1,45.3,Beauty & Skincare,4.1,35000000
-Oral Care,31000000,2800000,2.4,52.6,Personal Care,2.8,28000000
-First Aid,24000000,1600000,1.7,36.9,OTC Medicines,3.2,21000000
-Eye Care,19000000,890000,1.3,28.4,Prescription,7.6,17000000
-Sun & Tanning,16000000,1200000,1.8,41.2,Beauty & Skincare,9.3,14000000
-Sports Nutrition,14000000,520000,1.5,27.6,Weight Management,18.5,12000000
-Natural Health,12000000,680000,1.4,48.9,Vitamins & Supplements,11.3,10000000
-Medical Devices,11000000,340000,1.1,19.2,Prescription,4.7,13000000
-Pet Care,8000000,480000,2,22.3,Personal Care,22.1,6000000
-Sexual Health,6000000,390000,1.2,15.8,Personal Care,1.4,5500000
-Quit Smoking,5000000,210000,1,12.4,OTC Medicines,-3.2,6200000
-Incontinence,4000000,280000,1.3,18.7,Personal Care,2.9,3800000
+Prescription,237000000,6800000,2.8,24.4,OTC Medicines,2.1,285000000
+Vitamins & Supplements,119000000,3400000,1.4,58.2,Weight Management,8.4,107000000
+OTC Medicines,107000000,5600000,1.9,42.1,First Aid,3.7,96000000
+Beauty & Skincare,71000000,2600000,2.6,51.3,Personal Care,12.1,64000000
+Fragrance,63000000,1500000,1.2,18.6,Beauty & Skincare,5.3,68000000
+Baby & Infant,40000000,1500000,2.9,44.7,Personal Care,6.8,36000000
+Personal Care,36000000,2800000,2.2,38.5,Beauty & Skincare,1.9,32000000
+Weight Management,32000000,740000,1.6,32.8,Sports Nutrition,15.2,29000000
+Hair Care,24000000,1500000,2.1,45.3,Beauty & Skincare,4.1,21000000
+Oral Care,20000000,1800000,2.4,52.6,Personal Care,2.8,18000000
+First Aid,16000000,1100000,1.7,36.9,OTC Medicines,3.2,14000000
+Eye Care,12000000,560000,1.3,28.4,Prescription,7.6,11000000
+Sun & Tanning,8000000,600000,1.8,41.2,Beauty & Skincare,9.3,7000000
+Sports Nutrition,7200000,270000,1.5,27.6,Weight Management,18.5,6400000
+Natural Health,7200000,410000,1.4,48.9,Vitamins & Supplements,11.3,6400000
+Medical Devices,5900000,180000,1.1,19.2,Prescription,4.7,7100000
+Pet Care,4000000,240000,2,22.3,Personal Care,22.1,3000000
+Sexual Health,3200000,210000,1.2,15.8,Personal Care,1.4,2900000
+Quit Smoking,2700000,110000,1,12.4,OTC Medicines,-3.2,3300000
+Incontinence,2400000,170000,1.3,18.7,Personal Care,2.9,2200000
