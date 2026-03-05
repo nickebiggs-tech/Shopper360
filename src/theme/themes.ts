@@ -1,3 +1,8 @@
+export interface HeroStat {
+  label: string
+  value: string
+}
+
 export interface Livery {
   id: string
   name: string
@@ -7,6 +12,10 @@ export interface Livery {
   logoWhite: string
   logoColor: string
   fontFamily: string
+  heroLine1: string
+  heroLine2: string
+  heroSubtext: string
+  heroStats: HeroStat[]
   colors: Record<string, string>
 }
 
@@ -20,6 +29,15 @@ export const LIVERIES: Record<string, Livery> = {
     logoWhite: '/logos/nostradata-white.svg',
     logoColor: '/logos/nostradata-color.svg',
     fontFamily: '"Inter", ui-sans-serif, system-ui, sans-serif',
+    heroLine1: 'Know your shoppers.',
+    heroLine2: 'Grow your pharmacy.',
+    heroSubtext: 'AI-powered insights into customer behaviour, basket composition, and retention opportunities.',
+    heroStats: [
+      { label: 'Active Shoppers', value: '450K+' },
+      { label: 'Avg Basket', value: '$43.80' },
+      { label: 'Retention Rate', value: '72.4%' },
+      { label: 'Categories', value: '200+' },
+    ],
     colors: {
       'theme-primary': '#0A8BA8',
       'theme-primary-light': '#0FB5D4',
@@ -53,6 +71,15 @@ export const LIVERIES: Record<string, Livery> = {
     logoWhite: '/logos/iqvia-white.svg',
     logoColor: '/logos/iqvia-color.svg',
     fontFamily: '"Arial", "Helvetica Neue", Helvetica, sans-serif',
+    heroLine1: 'Consumer health intelligence.',
+    heroLine2: 'Powered by data.',
+    heroSubtext: 'Comprehensive shopper analytics across categories, brands, and market segments.',
+    heroStats: [
+      { label: 'Consumer Journeys', value: '12M+' },
+      { label: 'Avg Basket', value: '$48.20' },
+      { label: 'Categories', value: '350+' },
+      { label: 'Market Coverage', value: '95%' },
+    ],
     colors: {
       'theme-primary': '#00A3E0',
       'theme-primary-light': '#33B8E8',
@@ -86,6 +113,15 @@ export const LIVERIES: Record<string, Livery> = {
     logoWhite: '/logos/cw-white.svg',
     logoColor: '/logos/cw-color.svg',
     fontFamily: '"Arial", "Helvetica Neue", Helvetica, sans-serif',
+    heroLine1: '3 million shopper journeys.',
+    heroLine2: 'One powerful platform.',
+    heroSubtext: 'Deep insights into customer loyalty, basket composition, and competitive positioning across 500+ stores.',
+    heroStats: [
+      { label: 'Shopper Journeys', value: '3M+' },
+      { label: 'Avg Basket', value: '$52.40' },
+      { label: 'Categories', value: '200+' },
+      { label: 'Stores Tracked', value: '500+' },
+    ],
     colors: {
       'theme-primary': '#E30019',
       'theme-primary-light': '#FF1A33',

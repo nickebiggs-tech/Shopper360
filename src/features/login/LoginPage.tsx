@@ -4,6 +4,8 @@ import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
 import { TrendingUp, Users, ShoppingCart, BarChart3, Eye, EyeOff } from 'lucide-react'
 
+const STAT_ICONS = [Users, ShoppingCart, TrendingUp, BarChart3]
+
 export function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -23,7 +25,7 @@ export function LoginPage() {
     if (success) {
       navigate('/dashboard', { replace: true })
     } else {
-      setError('Invalid credentials. Try Jim / 1234')
+      setError('Invalid username or password.')
     }
   }
 
@@ -42,27 +44,25 @@ export function LoginPage() {
           </div>
 
           <h2 className="text-4xl font-bold leading-tight mb-4">
-            Know your shoppers.<br />
-            <span className="text-white/70">Grow your pharmacy.</span>
+            {livery.heroLine1}<br />
+            <span className="text-white/70">{livery.heroLine2}</span>
           </h2>
           <p className="text-white/50 text-lg max-w-md mb-12">
-            AI-powered insights into customer behaviour, basket composition, and retention opportunities.
+            {livery.heroSubtext}
           </p>
 
           {/* Stat cards */}
           <div className="grid grid-cols-2 gap-4 max-w-md">
-            {[
-              { icon: Users, label: 'Active Shoppers', value: '5,200+' },
-              { icon: ShoppingCart, label: 'Avg Basket', value: '$43.80' },
-              { icon: TrendingUp, label: 'Retention Rate', value: '72.4%' },
-              { icon: BarChart3, label: 'Categories Tracked', value: '15' },
-            ].map((stat) => (
-              <div key={stat.label} className="bg-white/10 backdrop-blur rounded-lg p-4">
-                <stat.icon className="w-5 h-5 text-white/50 mb-2" />
-                <p className="text-xl font-bold">{stat.value}</p>
-                <p className="text-xs text-white/50">{stat.label}</p>
-              </div>
-            ))}
+            {livery.heroStats.map((stat, idx) => {
+              const Icon = STAT_ICONS[idx] ?? BarChart3
+              return (
+                <div key={stat.label} className="bg-white/10 backdrop-blur rounded-lg p-4">
+                  <Icon className="w-5 h-5 text-white/50 mb-2" />
+                  <p className="text-xl font-bold">{stat.value}</p>
+                  <p className="text-xs text-white/50">{stat.label}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -91,13 +91,13 @@ export function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">PIN / Password</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter PIN"
+                  placeholder="Enter password"
                   className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors pr-10"
                 />
                 <button
