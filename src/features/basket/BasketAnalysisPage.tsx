@@ -86,7 +86,7 @@ export function BasketAnalysisPage() {
                 width={95}
               />
               <Tooltip formatter={(value: number) => formatCurrency(value)} />
-              <Bar dataKey="revenue" radius={[0, 4, 4, 0]}>
+              <Bar dataKey="revenue" radius={[0, 4, 4, 0]} animationDuration={800} animationEasing="ease-out">
                 {sortedByRevenue.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
@@ -118,7 +118,7 @@ export function BasketAnalysisPage() {
                   )
                 }}
               />
-              <Scatter data={crossSellData} fill="var(--color-chart-1)">
+              <Scatter data={crossSellData} fill="var(--color-chart-1)" animationDuration={1000}>
                 {crossSellData.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
@@ -136,7 +136,7 @@ export function BasketAnalysisPage() {
               <XAxis dataKey="category" tick={{ fontSize: 9 }} height={60} stroke="#94a3b8" />
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
-              <Bar dataKey="items" fill="var(--color-chart-2)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="items" fill="var(--color-chart-2)" radius={[4, 4, 0, 0]} animationDuration={800} animationEasing="ease-out" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -150,7 +150,7 @@ export function BasketAnalysisPage() {
               <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <YAxis dataKey="category" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={95} />
               <Tooltip />
-              <Bar dataKey="growth" radius={[0, 4, 4, 0]}>
+              <Bar dataKey="growth" radius={[0, 4, 4, 0]} animationDuration={800} animationEasing="ease-out">
                 {growthData.map((d, i) => (
                   <Cell key={i} fill={d.growth >= 0 ? '#10B981' : '#EF4444'} />
                 ))}

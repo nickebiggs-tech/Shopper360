@@ -123,7 +123,7 @@ export function VisitPatternsPage() {
               <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
-              <Area type="monotone" dataKey="visits" stroke="var(--color-chart-1)" fill="var(--color-chart-1)" fillOpacity={0.15} strokeWidth={2} />
+              <Area type="monotone" dataKey="visits" stroke="var(--color-chart-1)" fill="var(--color-chart-1)" fillOpacity={0.15} strokeWidth={2} animationDuration={1200} animationEasing="ease-out" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -138,8 +138,8 @@ export function VisitPatternsPage() {
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="retention" stroke="#10B981" strokeWidth={2} name="Retention %" />
-              <Line type="monotone" dataKey="churn" stroke="#EF4444" strokeWidth={2} name="Churn %" />
+              <Line type="monotone" dataKey="retention" stroke="#10B981" strokeWidth={2} name="Retention %" animationDuration={1200} animationEasing="ease-out" />
+              <Line type="monotone" dataKey="churn" stroke="#EF4444" strokeWidth={2} name="Churn %" animationDuration={1200} animationEasing="ease-out" animationBegin={200} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -153,7 +153,7 @@ export function VisitPatternsPage() {
               <XAxis dataKey="range" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
-              <Bar dataKey="count" fill="var(--color-chart-1)" radius={[4, 4, 0, 0]} name="Customers" />
+              <Bar dataKey="count" fill="var(--color-chart-1)" radius={[4, 4, 0, 0]} name="Customers" animationDuration={800} animationEasing="ease-out" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -167,7 +167,7 @@ export function VisitPatternsPage() {
               <XAxis dataKey="range" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
-              <Bar dataKey="count" fill="var(--color-chart-2)" radius={[4, 4, 0, 0]} name="Customers" />
+              <Bar dataKey="count" fill="var(--color-chart-2)" radius={[4, 4, 0, 0]} name="Customers" animationDuration={800} animationEasing="ease-out" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -182,7 +182,7 @@ export function VisitPatternsPage() {
             <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="#94a3b8" />
             <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
             <Tooltip />
-            <Bar dataKey="new" fill="var(--color-chart-5)" radius={[4, 4, 0, 0]} name="New Customers" />
+            <Bar dataKey="new" fill="var(--color-chart-5)" radius={[4, 4, 0, 0]} name="New Customers" animationDuration={800} animationEasing="ease-out" />
           </BarChart>
         </ResponsiveContainer>
       </div>

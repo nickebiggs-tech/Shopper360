@@ -2,77 +2,175 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
-import { Users, Store, Layers, Handshake, TrendingUp, ShoppingCart, BarChart3, Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 
-const STAT_ICONS = [Users, ShoppingCart, TrendingUp, BarChart3, Store, Layers, Handshake]
-
-/** Shopper journey hub-and-spoke SVG — brand at centre, journey stages radiating out */
-function JourneyVisualization() {
+/* ─── animated data-particle columns ─── */
+function DataParticles() {
+  // 12 particle columns flowing upward at different speeds/positions
+  const cols = [
+    { left: '8%', delay: '0s', dur: '7s', size: 3, anim: 'flow-up-1' },
+    { left: '15%', delay: '1.2s', dur: '9s', size: 2, anim: 'flow-up-2' },
+    { left: '22%', delay: '0.5s', dur: '8s', size: 4, anim: 'flow-up-3' },
+    { left: '30%', delay: '2.1s', dur: '7.5s', size: 2, anim: 'flow-up-1' },
+    { left: '38%', delay: '0.8s', dur: '9.5s', size: 3, anim: 'flow-up-2' },
+    { left: '46%', delay: '1.6s', dur: '8.5s', size: 2, anim: 'flow-up-3' },
+    { left: '54%', delay: '0.3s', dur: '7s', size: 3, anim: 'flow-up-1' },
+    { left: '62%', delay: '2.4s', dur: '8s', size: 2, anim: 'flow-up-2' },
+    { left: '70%', delay: '1.0s', dur: '9s', size: 4, anim: 'flow-up-3' },
+    { left: '78%', delay: '1.8s', dur: '7.5s', size: 2, anim: 'flow-up-1' },
+    { left: '86%', delay: '0.6s', dur: '8.5s', size: 3, anim: 'flow-up-2' },
+    { left: '93%', delay: '2.0s', dur: '9.5s', size: 2, anim: 'flow-up-3' },
+  ]
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Ambient glow blobs */}
-      <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-white/20 blur-3xl opacity-[0.06]" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-white/10 blur-3xl opacity-[0.06]" />
+    <>
+      {cols.map((c, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full bg-white"
+          style={{
+            left: c.left,
+            bottom: '-20px',
+            width: c.size,
+            height: c.size,
+            animation: `${c.anim} ${c.dur} ${c.delay} linear infinite`,
+          }}
+        />
+      ))}
+    </>
+  )
+}
 
-      {/* Journey network SVG */}
-      <svg
-        viewBox="0 0 500 500"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="absolute -right-16 top-1/2 -translate-y-1/2 w-[520px] h-[520px] opacity-[0.06]"
-        style={{ animation: 'spin 120s linear infinite' }}
-      >
-        {/* Outer orbital ring */}
-        <circle cx="250" cy="250" r="220" stroke="white" strokeWidth="0.8" strokeDasharray="6 10" />
-        <circle cx="250" cy="250" r="160" stroke="white" strokeWidth="0.6" strokeDasharray="4 8" />
-
-        {/* Central hub — the store */}
-        <circle cx="250" cy="250" r="50" stroke="white" strokeWidth="2" />
-        <circle cx="250" cy="250" r="52" stroke="white" strokeWidth="0.5" opacity="0.4" />
-        <circle cx="250" cy="250" r="12" fill="white" />
-
-        {/* Journey stage nodes + connecting lines */}
-        <line x1="250" y1="200" x2="250" y2="60" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
-        <circle cx="250" cy="45" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
-        <circle cx="250" cy="45" r="5" fill="white" opacity="0.6" />
-
-        <line x1="285" y1="215" x2="395" y2="105" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
-        <circle cx="405" cy="95" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
-        <circle cx="405" cy="95" r="4" fill="white" opacity="0.5" />
-
-        <line x1="300" y1="250" x2="440" y2="250" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
-        <circle cx="455" cy="250" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
-        <circle cx="455" cy="250" r="5" fill="white" opacity="0.6" />
-
-        <line x1="285" y1="285" x2="395" y2="395" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
-        <circle cx="405" cy="405" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
-        <circle cx="405" cy="405" r="4" fill="white" opacity="0.5" />
-
-        <line x1="250" y1="300" x2="250" y2="440" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
-        <circle cx="250" cy="455" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
-        <circle cx="250" cy="455" r="5" fill="white" opacity="0.6" />
-
-        <line x1="215" y1="285" x2="105" y2="395" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
-        <circle cx="95" cy="405" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
-        <circle cx="95" cy="405" r="4" fill="white" opacity="0.5" />
-
-        <line x1="200" y1="250" x2="60" y2="250" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
-        <circle cx="45" cy="250" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
-        <circle cx="45" cy="250" r="5" fill="white" opacity="0.6" />
-
-        <line x1="215" y1="215" x2="105" y2="105" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
-        <circle cx="95" cy="95" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
-        <circle cx="95" cy="95" r="4" fill="white" opacity="0.5" />
-
-        <circle cx="250" cy="30" r="3" fill="white" opacity="0.3" />
-        <circle cx="470" cy="250" r="3" fill="white" opacity="0.3" />
-        <circle cx="250" cy="470" r="3" fill="white" opacity="0.3" />
-        <circle cx="30" cy="250" r="3" fill="white" opacity="0.3" />
-      </svg>
+/* ─── pulsing concentric rings ─── */
+function PulseRings() {
+  return (
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+      <div
+        className="absolute -left-[100px] -top-[100px] w-[200px] h-[200px] rounded-full border border-white/15"
+        style={{ animation: 'pulse-ring 4s ease-in-out infinite' }}
+      />
+      <div
+        className="absolute -left-[160px] -top-[160px] w-[320px] h-[320px] rounded-full border border-white/10"
+        style={{ animation: 'pulse-ring-slow 5s ease-in-out 0.5s infinite' }}
+      />
+      <div
+        className="absolute -left-[230px] -top-[230px] w-[460px] h-[460px] rounded-full border border-white/[0.06]"
+        style={{ animation: 'pulse-ring-slow 6s ease-in-out 1s infinite' }}
+      />
     </div>
   )
 }
 
+/* ─── orbiting category icons ─── */
+function OrbitingIcons() {
+  const icons = [
+    { emoji: '💊', delay: '0s', ring: 'orbit' },
+    { emoji: '🧴', delay: '-15s', ring: 'orbit' },
+    { emoji: '🩹', delay: '-30s', ring: 'orbit' },
+    { emoji: '👶', delay: '-45s', ring: 'orbit' },
+    { emoji: '💄', delay: '-10s', ring: 'orbit-outer' },
+    { emoji: '🧪', delay: '-30s', ring: 'orbit-outer' },
+    { emoji: '☀️', delay: '-50s', ring: 'orbit-outer' },
+  ]
+  return (
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+      {icons.map((ic, i) => (
+        <span
+          key={i}
+          className="absolute left-0 top-0 text-lg opacity-[0.35]"
+          style={{
+            animation: `${ic.ring} 60s ${ic.delay} linear infinite`,
+            filter: 'grayscale(0.3)',
+          }}
+        >
+          {ic.emoji}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/* ─── journey funnel SVG ─── */
+function JourneyFunnel() {
+  const stages = [
+    { y: 60, label: 'Discovery', w: 220 },
+    { y: 130, label: 'Visit', w: 180 },
+    { y: 200, label: 'Purchase', w: 140 },
+    { y: 270, label: 'Repeat', w: 105 },
+    { y: 340, label: 'Loyal', w: 75 },
+  ]
+
+  return (
+    <svg viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[260px] h-[360px]">
+      {/* Connecting flow lines */}
+      {stages.map((s, i) => {
+        if (i === stages.length - 1) return null
+        const next = stages[i + 1]!
+        return (
+          <g key={`line-${i}`}>
+            <line
+              x1={150 - s.w / 2 + 10}
+              y1={s.y + 36}
+              x2={150 - next.w / 2 + 10}
+              y2={next.y + 4}
+              stroke="white"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              opacity="0.2"
+              style={{ animation: 'dash-flow 1.5s linear infinite' }}
+            />
+            <line
+              x1={150 + s.w / 2 - 10}
+              y1={s.y + 36}
+              x2={150 + next.w / 2 - 10}
+              y2={next.y + 4}
+              stroke="white"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              opacity="0.2"
+              style={{ animation: 'dash-flow 1.5s linear infinite' }}
+            />
+          </g>
+        )
+      })}
+      {/* Funnel stages */}
+      {stages.map((s, i) => {
+        const opacity = 0.08 + i * 0.04
+        return (
+          <g key={s.label}>
+            <rect
+              x={150 - s.w / 2}
+              y={s.y}
+              width={s.w}
+              height={36}
+              rx={8}
+              fill="white"
+              fillOpacity={opacity}
+              stroke="white"
+              strokeWidth="0.8"
+              strokeOpacity={0.2 + i * 0.05}
+            />
+            <text
+              x={150}
+              y={s.y + 22}
+              textAnchor="middle"
+              fill="white"
+              fillOpacity={0.5 + i * 0.1}
+              fontSize="12"
+              fontWeight="500"
+              fontFamily="inherit"
+            >
+              {s.label}
+            </text>
+          </g>
+        )
+      })}
+      {/* Arrow at bottom */}
+      <polygon points="140,390 150,405 160,390" fill="white" fillOpacity="0.3" />
+    </svg>
+  )
+}
+
+/* ─── main login page ─── */
 export function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -98,52 +196,88 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen flex-col lg:flex-row">
-      {/* Left hero — solid blue for CW, gradient for others */}
+      {/* Left hero */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-b from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
-        <JourneyVisualization />
+        {/* Background layers */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Ambient glow */}
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-white/[0.04] blur-3xl" />
+          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full bg-white/[0.03] blur-3xl" />
 
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          {/* Brand logo */}
-          <div className="mb-10">
-            <img src={livery.logoWhite} alt={livery.name} className="h-14 object-contain object-left" />
+          {/* Flowing data particles */}
+          <DataParticles />
+
+          {/* Pulse rings centred on the journey funnel area */}
+          <div className="absolute right-[15%] top-[45%]">
+            <PulseRings />
+            <OrbitingIcons />
+          </div>
+        </div>
+
+        {/* Foreground content */}
+        <div className="relative z-10 flex flex-col justify-between h-full px-12 xl:px-16 py-10">
+          {/* Top: Logo */}
+          <div style={{ animation: 'hero-fade-in 0.8s ease-out both' }}>
+            <img src={livery.logoWhite} alt={livery.name} className="h-12 object-contain object-left" />
           </div>
 
-          {/* Feature stat callout (if available) */}
-          {livery.heroFeatureStat && (
-            <div className="mb-6">
-              <p className="text-6xl font-extrabold tracking-tight leading-none mb-3">
-                {livery.heroFeatureStat.value}
-              </p>
-              <p className="text-white/60 text-base max-w-md leading-relaxed">
-                {livery.heroFeatureStat.label}
-              </p>
-            </div>
-          )}
-
-          {/* Headline (when no feature stat) */}
-          {!livery.heroFeatureStat && (
-            <h2 className="text-4xl font-bold leading-tight mb-4">
-              {livery.heroLine1}<br />
-              <span className="text-white/70">{livery.heroLine2}</span>
-            </h2>
-          )}
-
-          <p className="text-white/40 text-lg max-w-md mb-10">
-            {livery.heroSubtext}
-          </p>
-
-          {/* Stat cards */}
-          <div className="grid grid-cols-2 gap-3 max-w-md">
-            {livery.heroStats.map((stat, idx) => {
-              const Icon = STAT_ICONS[idx] ?? BarChart3
-              return (
-                <div key={stat.label} className="bg-white/8 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/12 transition-colors">
-                  <Icon className="w-4 h-4 text-white/40 mb-2" />
-                  <p className="text-xl font-bold tracking-tight">{stat.value}</p>
-                  <p className="text-[11px] text-white/45">{stat.label}</p>
+          {/* Middle: Content + Funnel side by side */}
+          <div className="flex items-center gap-8 xl:gap-12 flex-1 py-8">
+            {/* Left text column */}
+            <div className="flex-1 min-w-0">
+              {/* Big number callout */}
+              {livery.heroFeatureStat && (
+                <div className="mb-6" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
+                  <p className="text-7xl xl:text-8xl font-extrabold tracking-tighter leading-none mb-2 text-white">
+                    {livery.heroFeatureStat.value}
+                  </p>
+                  <p className="text-white/50 text-sm xl:text-base max-w-sm leading-relaxed">
+                    {livery.heroFeatureStat.label}
+                  </p>
                 </div>
-              )
-            })}
+              )}
+
+              {!livery.heroFeatureStat && (
+                <h2 className="text-4xl xl:text-5xl font-bold leading-tight mb-4" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
+                  {livery.heroLine1}<br />
+                  <span className="text-white/70">{livery.heroLine2}</span>
+                </h2>
+              )}
+
+              <p className="text-white/35 text-sm max-w-sm mb-8 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
+                {livery.heroSubtext}
+              </p>
+
+              {/* Stat cards — 2×2 grid */}
+              <div className="grid grid-cols-2 gap-2.5 max-w-sm" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
+                {livery.heroStats.map((stat, idx) => (
+                  <div
+                    key={stat.label}
+                    className="bg-white/[0.07] backdrop-blur-sm border border-white/[0.08] rounded-lg px-4 py-3 hover:bg-white/[0.12] transition-colors"
+                    style={{ animation: `hero-fade-in 0.6s ${1.0 + idx * 0.12}s ease-out both` }}
+                  >
+                    <p className="text-xl font-bold tracking-tight text-white">{stat.value}</p>
+                    <p className="text-[10px] text-white/40 mt-0.5">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Journey funnel visualization */}
+            <div
+              className="hidden xl:flex flex-col items-center shrink-0"
+              style={{ animation: 'hero-fade-in 1s 0.5s ease-out both' }}
+            >
+              <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-white/30 mb-4">Shopper Journey</p>
+              <JourneyFunnel />
+            </div>
+          </div>
+
+          {/* Bottom: Powered by */}
+          <div style={{ animation: 'hero-fade-in 0.8s 1.5s ease-out both' }}>
+            <p className="text-[10px] text-white/25">
+              Powered by {livery.poweredBy} · Credit card transaction intelligence
+            </p>
           </div>
         </div>
       </div>

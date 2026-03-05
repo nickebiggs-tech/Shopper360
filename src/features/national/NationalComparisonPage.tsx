@@ -122,10 +122,10 @@ export function NationalComparisonPage() {
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="P25" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="Median" stroke="#64748b" strokeWidth={1.5} dot={false} />
-              <Line type="monotone" dataKey="P75" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="Your Store" stroke="var(--color-chart-1)" strokeWidth={2.5} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="P25" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} animationDuration={1200} animationEasing="ease-out" />
+              <Line type="monotone" dataKey="Median" stroke="#64748b" strokeWidth={1.5} dot={false} animationDuration={1200} animationEasing="ease-out" animationBegin={150} />
+              <Line type="monotone" dataKey="P75" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} animationDuration={1200} animationEasing="ease-out" animationBegin={300} />
+              <Line type="monotone" dataKey="Your Store" stroke="var(--color-chart-1)" strokeWidth={2.5} dot={{ r: 3 }} animationDuration={1200} animationEasing="ease-out" animationBegin={450} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -139,10 +139,10 @@ export function NationalComparisonPage() {
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="P25" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="Median" stroke="#64748b" strokeWidth={1.5} dot={false} />
-              <Line type="monotone" dataKey="P75" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="Your Store" stroke="var(--color-chart-2)" strokeWidth={2.5} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="P25" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} animationDuration={1200} animationEasing="ease-out" />
+              <Line type="monotone" dataKey="Median" stroke="#64748b" strokeWidth={1.5} dot={false} animationDuration={1200} animationEasing="ease-out" animationBegin={150} />
+              <Line type="monotone" dataKey="P75" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} animationDuration={1200} animationEasing="ease-out" animationBegin={300} />
+              <Line type="monotone" dataKey="Your Store" stroke="var(--color-chart-2)" strokeWidth={2.5} dot={{ r: 3 }} animationDuration={1200} animationEasing="ease-out" animationBegin={450} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -156,10 +156,10 @@ export function NationalComparisonPage() {
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="P25" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="Median" stroke="#64748b" strokeWidth={1.5} dot={false} />
-              <Line type="monotone" dataKey="P75" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="Your Store" stroke="var(--color-chart-5)" strokeWidth={2.5} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="P25" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} animationDuration={1200} animationEasing="ease-out" />
+              <Line type="monotone" dataKey="Median" stroke="#64748b" strokeWidth={1.5} dot={false} animationDuration={1200} animationEasing="ease-out" animationBegin={150} />
+              <Line type="monotone" dataKey="P75" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={1} dot={false} animationDuration={1200} animationEasing="ease-out" animationBegin={300} />
+              <Line type="monotone" dataKey="Your Store" stroke="var(--color-chart-5)" strokeWidth={2.5} dot={{ r: 3 }} animationDuration={1200} animationEasing="ease-out" animationBegin={450} />
             </LineChart>
           </ResponsiveContainer>
         </div>

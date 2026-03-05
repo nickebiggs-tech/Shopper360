@@ -92,6 +92,7 @@ export function SegmentsPage() {
             <PieChart>
               <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={3} dataKey="value"
                 label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                animationDuration={1000} animationBegin={200}
               >
                 {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
               </Pie>
@@ -107,6 +108,7 @@ export function SegmentsPage() {
             <PieChart>
               <Pie data={revenuePie} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={3} dataKey="value"
                 label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                animationDuration={1000} animationBegin={400}
               >
                 {revenuePie.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
               </Pie>
@@ -124,7 +126,7 @@ export function SegmentsPage() {
               <XAxis dataKey="segment" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" domain={[0, 100]} />
               <Tooltip />
-              <Bar dataKey="retention" radius={[4, 4, 0, 0]}>
+              <Bar dataKey="retention" radius={[4, 4, 0, 0]} animationDuration={800} animationEasing="ease-out">
                 {retentionBySegment.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
               </Bar>
             </BarChart>
