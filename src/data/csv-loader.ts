@@ -2,8 +2,10 @@ import Papa from 'papaparse'
 import { parse } from 'date-fns'
 import type { Customer, StoreSummary, NationalBenchmark, CategoryData, SegmentBreakdown, Supplier, AudienceSegment, Segment } from './types'
 
+const BASE = import.meta.env.BASE_URL
+
 async function fetchAndParse<T>(url: string): Promise<T[]> {
-  const response = await fetch(url)
+  const response = await fetch(BASE + url)
   const text = await response.text()
   return new Promise((resolve, reject) => {
     Papa.parse<T>(text, {
@@ -65,7 +67,7 @@ function computeAudienceSegment(
 }
 
 export async function loadCustomers(): Promise<Customer[]> {
-  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_Customers.csv')
+  const raw = await fetchAndParse<Record<string, string>>('data/Shopper360_Customers.csv')
   return raw.map((r) => {
     const segment = (r['Segment'] || 'Regular Shoppers') as Segment
     const retentionScore = num(r['RetentionScore'])
@@ -106,7 +108,7 @@ export async function loadCustomers(): Promise<Customer[]> {
 }
 
 export async function loadSummary(): Promise<StoreSummary[]> {
-  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_Summary.csv')
+  const raw = await fetchAndParse<Record<string, string>>('data/Shopper360_Summary.csv')
   return raw.map((r) => ({
     periodMonth: parseDate(r['PeriodMonth'] || '2025-01'),
     totalCustomers: num(r['TotalCustomers']),
@@ -126,7 +128,7 @@ export async function loadSummary(): Promise<StoreSummary[]> {
 }
 
 export async function loadNational(): Promise<NationalBenchmark[]> {
-  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_National.csv')
+  const raw = await fetchAndParse<Record<string, string>>('data/Shopper360_National.csv')
   return raw.map((r) => ({
     periodMonth: parseDate(r['PeriodMonth'] || '2025-01'),
     avgBasketValue_P25: num(r['AvgBasketValue_P25']),
@@ -145,7 +147,7 @@ export async function loadNational(): Promise<NationalBenchmark[]> {
 }
 
 export async function loadCategories(): Promise<CategoryData[]> {
-  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_Categories.csv')
+  const raw = await fetchAndParse<Record<string, string>>('data/Shopper360_Categories.csv')
   return raw.map((r) => ({
     category: r['Category'] || '',
     revenue: num(r['Revenue']),
@@ -159,7 +161,7 @@ export async function loadCategories(): Promise<CategoryData[]> {
 }
 
 export async function loadSuppliers(): Promise<Supplier[]> {
-  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_Suppliers.csv')
+  const raw = await fetchAndParse<Record<string, string>>('data/Shopper360_Suppliers.csv')
   return raw.map((r) => ({
     mfrName: r['MFR_NAME'] || '',
     totalTYValue: num(r['Total_TY_Value']),
@@ -174,7 +176,7 @@ export async function loadSuppliers(): Promise<Supplier[]> {
 }
 
 export async function loadSegments(): Promise<SegmentBreakdown[]> {
-  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_Segments.csv')
+  const raw = await fetchAndParse<Record<string, string>>('data/Shopper360_Segments.csv')
   return raw.map((r) => ({
     periodMonth: parseDate(r['PeriodMonth'] || '2025-01'),
     segment: (r['Segment'] || 'Regular Shoppers') as Segment,
