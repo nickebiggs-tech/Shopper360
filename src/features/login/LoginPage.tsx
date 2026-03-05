@@ -215,7 +215,7 @@ export function LoginPage() {
           </form>
 
           <p className="text-xs text-slate-400 text-center mt-8">
-            Powered by NostraData Pty Ltd
+            Powered by NostraData &middot; Shopper360
           </p>
         </div>
       </div>

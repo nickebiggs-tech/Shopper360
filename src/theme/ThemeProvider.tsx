@@ -22,7 +22,7 @@ function applyLivery(livery: Livery) {
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [livery, setLiveryState] = useState<Livery>(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
-    return (saved && LIVERIES[saved]) || LIVERIES['nostradata']!
+    return (saved && LIVERIES[saved]) || LIVERIES['chemistwarehouse']!
   })
 
   const setLivery = useCallback((id: string) => {
