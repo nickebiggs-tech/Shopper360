@@ -76,9 +76,9 @@ export function VisitPatternsPage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Visit Patterns</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Visit Patterns</h1>
         <p className="text-sm text-slate-500 mt-1">Track foot traffic, visit frequency, and customer retention.</p>
       </div>
 
@@ -115,7 +115,7 @@ export function VisitPatternsPage() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Visit Volume Trend */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Visit Volume Over Time</h3>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={visitTrend}>
@@ -129,7 +129,7 @@ export function VisitPatternsPage() {
         </div>
 
         {/* Retention vs Churn */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Retention vs Churn Rate</h3>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={retentionTrend}>
@@ -145,7 +145,7 @@ export function VisitPatternsPage() {
         </div>
 
         {/* Visit Frequency Distribution */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Visit Frequency Distribution</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={visitFreqDist}>
@@ -159,7 +159,7 @@ export function VisitPatternsPage() {
         </div>
 
         {/* Recency Distribution */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Days Since Last Visit</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={recencyDist}>
@@ -174,7 +174,7 @@ export function VisitPatternsPage() {
       </div>
 
       {/* New Customers Trend */}
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
         <h3 className="text-sm font-semibold text-slate-700 mb-4">New Customer Acquisition</h3>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={visitTrend}>

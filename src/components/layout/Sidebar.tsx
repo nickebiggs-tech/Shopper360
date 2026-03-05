@@ -12,6 +12,7 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  X,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { useTheme } from '../../theme/ThemeProvider'
@@ -28,28 +29,35 @@ const NAV_ITEMS = [
   { to: '/admin/branding', icon: Settings, label: 'Admin' },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  mobileOpen: boolean
+  onMobileClose: () => void
+}
+
+export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const { livery } = useTheme()
 
-  return (
-    <aside
-      className={cn(
-        'h-screen flex flex-col bg-gradient-to-b from-sidebar-from to-sidebar-to text-white transition-all duration-300 relative',
-        collapsed ? 'w-16' : 'w-60',
-      )}
-    >
+  const navContent = (
+    <>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-xs font-bold shrink-0">
           S3
         </div>
-        {!collapsed && (
-          <div className="overflow-hidden">
+        {(!collapsed || mobileOpen) && (
+          <div className="overflow-hidden flex-1">
             <p className="font-semibold text-sm leading-tight">{livery.logoText}</p>
             <p className="text-[10px] text-white/50">{livery.tagline}</p>
           </div>
         )}
+        {/* Mobile close button */}
+        <button
+          onClick={onMobileClose}
+          className="lg:hidden ml-auto p-1 text-white/60 hover:text-white"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Nav */}
@@ -58,29 +66,52 @@ export function Sidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            onClick={onMobileClose}
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors',
                 isActive
                   ? 'bg-white/15 text-white font-medium'
                   : 'text-white/60 hover:text-white hover:bg-white/8',
-                collapsed && 'justify-center px-2',
+                collapsed && !mobileOpen && 'justify-center px-2',
               )
             }
           >
             <item.icon className="w-[18px] h-[18px] shrink-0" />
-            {!collapsed && <span>{item.label}</span>}
+            {(!collapsed || mobileOpen) && <span>{item.label}</span>}
           </NavLink>
         ))}
       </nav>
+    </>
+  )
 
-      {/* Collapse toggle */}
-      <button
-        onClick={() => setCollapsed((c) => !c)}
-        className="absolute -right-3 top-8 w-6 h-6 bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-slate-600 transition-colors"
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside
+        className={cn(
+          'hidden lg:flex h-screen flex-col bg-gradient-to-b from-sidebar-from to-sidebar-to text-white transition-all duration-300 relative',
+          collapsed ? 'w-16' : 'w-60',
+        )}
       >
-        {collapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
-      </button>
-    </aside>
+        {navContent}
+        <button
+          onClick={() => setCollapsed((c) => !c)}
+          className="absolute -right-3 top-8 w-6 h-6 bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-slate-600 transition-colors"
+        >
+          {collapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
+        </button>
+      </aside>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/50" onClick={onMobileClose} />
+          <aside className="relative w-72 max-w-[80vw] flex flex-col bg-gradient-to-b from-sidebar-from to-sidebar-to text-white shadow-2xl animate-slide-in">
+            {navContent}
+          </aside>
+        </div>
+      )}
+    </>
   )
 }

@@ -55,14 +55,14 @@ export function BasketAnalysisPage() {
   )
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Basket Analysis</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Basket Analysis</h1>
         <p className="text-sm text-slate-500 mt-1">Category performance, cross-selling opportunities, and basket composition.</p>
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 stagger-children">
         <KPICard title="Total Revenue" value={formatCurrency(totalRevenue)} icon={<ShoppingCart className="w-4 h-4" />} />
         <KPICard title="Transactions" value={formatNumber(totalTransactions)} icon={<Package className="w-4 h-4" />} />
         <KPICard title="Avg Cross-Sell Rate" value={formatPercentRaw(avgCrossSell)} icon={<ArrowRightLeft className="w-4 h-4" />} />
@@ -72,7 +72,7 @@ export function BasketAnalysisPage() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue by Category */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Revenue by Category</h3>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={sortedByRevenue} layout="vertical" margin={{ left: 100 }}>
@@ -96,7 +96,7 @@ export function BasketAnalysisPage() {
         </div>
 
         {/* Cross-Sell Scatter */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Cross-Sell Opportunities</h3>
           <ResponsiveContainer width="100%" height={350}>
             <ScatterChart margin={{ bottom: 10 }}>
@@ -128,7 +128,7 @@ export function BasketAnalysisPage() {
         </div>
 
         {/* Avg Items Per Basket */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg Items Per Basket by Category</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={avgItemsData}>
@@ -142,7 +142,7 @@ export function BasketAnalysisPage() {
         </div>
 
         {/* Category Growth */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Category Growth Rate (%)</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={growthData} layout="vertical" margin={{ left: 100 }}>

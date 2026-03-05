@@ -55,9 +55,9 @@ export function NationalComparisonPage() {
   const basketTier = latest ? getTier(latest.avgBasketValue_YourStore, latest.avgBasketValue_Median, latest.avgBasketValue_P75) : null
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">National Benchmarks</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">National Benchmarks</h1>
         <p className="text-sm text-slate-500 mt-1">See how your pharmacy compares to national percentile benchmarks.</p>
       </div>
 
@@ -95,7 +95,7 @@ export function NationalComparisonPage() {
           const tier = metric.yours != null && metric.median != null && metric.p75 != null
             ? getTier(metric.yours, metric.median, metric.p75) : null
           return (
-            <div key={metric.title} className="bg-white rounded-xl border border-slate-200 p-5">
+            <div key={metric.title} className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
               <p className="text-xs font-medium text-slate-500 uppercase mb-2">{metric.title}</p>
               <div className="flex items-end justify-between">
                 <div>
@@ -113,7 +113,7 @@ export function NationalComparisonPage() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6">
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg Basket Value — Your Store vs National</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={basketTrend}>
@@ -130,7 +130,7 @@ export function NationalComparisonPage() {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Retention Rate — Your Store vs National</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={retentionTrend}>
@@ -147,7 +147,7 @@ export function NationalComparisonPage() {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Visits Per Customer — Your Store vs National</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={visitsTrend}>

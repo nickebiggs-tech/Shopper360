@@ -6,7 +6,7 @@ export function BrandingPage() {
   const { livery, setLivery, liveryOptions } = useTheme()
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-3xl">
+    <div className="space-y-5 sm:space-y-6 page-enter max-w-3xl">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Admin — Branding</h1>
         <p className="text-sm text-slate-500 mt-1">Switch between pharmacy brand themes.</p>

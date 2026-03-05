@@ -28,7 +28,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen flex-col lg:flex-row">
       {/* Left hero */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -74,7 +74,7 @@ export function LoginPage() {
       </div>
 
       {/* Right login form */}
-      <div className="flex-1 lg:max-w-md flex items-center justify-center px-8 bg-white">
+      <div className="flex-1 lg:max-w-md flex items-center justify-center px-5 sm:px-8 bg-white">
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white text-xs font-bold">

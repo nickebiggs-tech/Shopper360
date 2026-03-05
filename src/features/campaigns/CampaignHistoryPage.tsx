@@ -37,10 +37,10 @@ export function CampaignHistoryPage() {
   const [campaigns] = useState(SAMPLE_CAMPAIGNS)
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 sm:space-y-6 page-enter">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Campaigns</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Campaigns</h1>
           <p className="text-sm text-slate-500 mt-1">Track and manage customer outreach campaigns.</p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">

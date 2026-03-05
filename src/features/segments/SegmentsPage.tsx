@@ -53,9 +53,9 @@ export function SegmentsPage() {
   const atRiskCount = segmentStats.find((s) => s.segment === 'At-Risk')?.count ?? 0
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Segments</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Segments</h1>
         <p className="text-sm text-slate-500 mt-1">Customer segmentation analysis and targeting.</p>
       </div>
 
@@ -86,7 +86,7 @@ export function SegmentsPage() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Customer Count Pie */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Customers by Segment</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -101,7 +101,7 @@ export function SegmentsPage() {
         </div>
 
         {/* Revenue by Segment */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Revenue by Segment</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>

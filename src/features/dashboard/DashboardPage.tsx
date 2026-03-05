@@ -2,14 +2,17 @@ import { useMemo } from 'react'
 import { format } from 'date-fns'
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Area, AreaChart,
 } from 'recharts'
-import { Users, ShoppingCart, DollarSign, TrendingUp, UserPlus, AlertTriangle } from 'lucide-react'
+import { Users, ShoppingCart, DollarSign, TrendingUp, UserPlus, Shield } from 'lucide-react'
 import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
 import { formatCurrency, formatNumber, formatPercentRaw } from '../../lib/formatters'
 
 const PIE_COLORS = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444']
+
+const ANIM = { duration: 1200, easing: 'ease-out' as const }
+const BAR_ANIM = { animationDuration: 800, animationEasing: 'ease-out' as const }
 
 export function DashboardPage() {
   const { state, selectedSummary, previousSummary } = useData()
@@ -49,16 +52,16 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Dashboard</h1>
         <p className="text-sm text-slate-500 mt-1">
           Overview for {selectedSummary ? format(selectedSummary.periodMonth, 'MMMM yyyy') : 'current period'}
         </p>
       </div>
 
-      {/* KPI Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      {/* KPI Grid — staggered animation */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 stagger-children">
         <KPICard
           title="Total Customers"
           value={formatNumber(selectedSummary?.totalCustomers ?? 0)}
@@ -99,28 +102,44 @@ export function DashboardPage() {
           value={formatPercentRaw(selectedSummary?.retentionRate ?? 0)}
           delta={selectedSummary && previousSummary ? selectedSummary.retentionRate - previousSummary.retentionRate : undefined}
           deltaLabel="pp change"
-          icon={<AlertTriangle className="w-4 h-4" />}
+          icon={<Shield className="w-4 h-4" />}
         />
       </div>
 
       {/* Charts Row 1 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Revenue Trend */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Revenue Trend — Area chart with gradient fill */}
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up" style={{ animationDelay: '200ms' }}>
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Revenue Trend</h3>
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={trendData}>
+            <AreaChart data={trendData}>
+              <defs>
+                <linearGradient id="revGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--color-chart-1)" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="var(--color-chart-1)" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
-              <Line type="monotone" dataKey="revenue" stroke="var(--color-chart-1)" strokeWidth={2} dot={{ r: 3 }} />
-            </LineChart>
+              <Area
+                type="monotone"
+                dataKey="revenue"
+                stroke="var(--color-chart-1)"
+                strokeWidth={2.5}
+                fill="url(#revGradient)"
+                dot={{ r: 4, fill: 'var(--color-chart-1)', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6, strokeWidth: 2, stroke: '#fff' }}
+                animationDuration={ANIM.duration}
+                animationEasing={ANIM.easing}
+              />
+            </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Segment Pie */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        {/* Segment Pie — with animation */}
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up" style={{ animationDelay: '300ms' }}>
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Customer Segments</h3>
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
@@ -128,10 +147,13 @@ export function DashboardPage() {
                 data={segmentCounts}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={3}
+                innerRadius={55}
+                outerRadius={95}
+                paddingAngle={4}
                 dataKey="value"
+                cornerRadius={4}
+                animationDuration={1000}
+                animationEasing="ease-out"
                 label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
               >
                 {segmentCounts.map((_, i) => (
@@ -145,9 +167,9 @@ export function DashboardPage() {
       </div>
 
       {/* Charts Row 2 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Avg Basket + Retention */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Basket & Retention dual axis — gradient lines */}
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up" style={{ animationDelay: '400ms' }}>
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Basket Value & Retention</h3>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={trendData}>
@@ -157,14 +179,31 @@ export function DashboardPage() {
               <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} stroke="#94a3b8" />
               <Tooltip />
               <Legend />
-              <Line yAxisId="left" type="monotone" dataKey="basket" stroke="var(--color-chart-1)" strokeWidth={2} name="Avg Basket ($)" />
-              <Line yAxisId="right" type="monotone" dataKey="retention" stroke="var(--color-chart-2)" strokeWidth={2} name="Retention (%)" />
+              <Line
+                yAxisId="left" type="monotone" dataKey="basket"
+                stroke="var(--color-chart-1)" strokeWidth={2.5}
+                dot={{ r: 4, fill: 'var(--color-chart-1)', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6 }}
+                name="Avg Basket ($)"
+                animationDuration={ANIM.duration}
+                animationEasing={ANIM.easing}
+              />
+              <Line
+                yAxisId="right" type="monotone" dataKey="retention"
+                stroke="var(--color-chart-2)" strokeWidth={2.5}
+                dot={{ r: 4, fill: 'var(--color-chart-2)', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6 }}
+                name="Retention (%)"
+                animationDuration={ANIM.duration}
+                animationEasing={ANIM.easing}
+                animationBegin={200}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Segment Stacked Bar */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
+        {/* Segment Stacked Bar — animated bars */}
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up" style={{ animationDelay: '500ms' }}>
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Segment Distribution Over Time</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={segmentTrend}>
@@ -174,7 +213,15 @@ export function DashboardPage() {
               <Tooltip />
               <Legend />
               {['Power Shoppers', 'Regular Shoppers', 'Occasional Visitors', 'New Customers', 'At-Risk'].map((seg, i) => (
-                <Bar key={seg} dataKey={seg} stackId="a" fill={PIE_COLORS[i]} />
+                <Bar
+                  key={seg}
+                  dataKey={seg}
+                  stackId="a"
+                  fill={PIE_COLORS[i]}
+                  radius={i === 4 ? [4, 4, 0, 0] : undefined}
+                  {...BAR_ANIM}
+                  animationBegin={i * 100}
+                />
               ))}
             </BarChart>
           </ResponsiveContainer>
