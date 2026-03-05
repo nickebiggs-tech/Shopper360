@@ -1,3 +1,5 @@
+const BASE = import.meta.env.BASE_URL
+
 export interface HeroStat {
   label: string
   value: string
@@ -15,6 +17,7 @@ export interface Livery {
   heroLine1: string
   heroLine2: string
   heroSubtext: string
+  heroFeatureStat?: { value: string; label: string }
   heroStats: HeroStat[]
   colors: Record<string, string>
 }
@@ -26,12 +29,12 @@ export const LIVERIES: Record<string, Livery> = {
     tagline: 'Shopper Intelligence',
     logoText: 'Shopper360',
     logoShort: 'S3',
-    logoWhite: '/logos/nostradata-white.svg',
-    logoColor: '/logos/nostradata-color.svg',
+    logoWhite: `${BASE}logos/nostradata-white.svg`,
+    logoColor: `${BASE}logos/nostradata-color.svg`,
     fontFamily: '"Inter", ui-sans-serif, system-ui, sans-serif',
-    heroLine1: 'Know your shoppers.',
-    heroLine2: 'Grow your pharmacy.',
-    heroSubtext: 'AI-powered insights into customer behaviour, basket composition, and retention opportunities.',
+    heroLine1: 'See the full journey.',
+    heroLine2: 'Shape every visit.',
+    heroSubtext: 'AI-powered shopper intelligence from first visit to loyal customer. Insights that drive action for pharmacies and their supplier partners.',
     heroStats: [
       { label: 'Active Shoppers', value: '450K+' },
       { label: 'Avg Basket', value: '$43.80' },
@@ -68,17 +71,18 @@ export const LIVERIES: Record<string, Livery> = {
     tagline: 'Consumer Health Intelligence',
     logoText: 'Shopper360',
     logoShort: 'IQ',
-    logoWhite: '/logos/iqvia-white.svg',
-    logoColor: '/logos/iqvia-color.svg',
+    logoWhite: `${BASE}logos/iqvia-white.svg`,
+    logoColor: `${BASE}logos/iqvia-color.svg`,
     fontFamily: '"Arial", "Helvetica Neue", Helvetica, sans-serif',
-    heroLine1: 'Consumer health intelligence.',
-    heroLine2: 'Powered by data.',
-    heroSubtext: 'Comprehensive shopper analytics across categories, brands, and market segments.',
+    heroLine1: 'The complete shopper journey.',
+    heroLine2: 'Powered by IQVIA data.',
+    heroSubtext: 'Map every step from discovery to purchase. Actionable intelligence for retailers and supplier partners.',
+    heroFeatureStat: { value: '12M+', label: 'consumer health journeys — powering smarter decisions for every partner' },
     heroStats: [
-      { label: 'Consumer Journeys', value: '12M+' },
-      { label: 'Avg Basket', value: '$48.20' },
+      { label: 'Brands Tracked', value: '2,500+' },
       { label: 'Categories', value: '350+' },
       { label: 'Market Coverage', value: '95%' },
+      { label: 'Retail Partners', value: '1,200+' },
     ],
     colors: {
       'theme-primary': '#00A3E0',
@@ -110,17 +114,18 @@ export const LIVERIES: Record<string, Livery> = {
     tagline: 'Shopper Intelligence',
     logoText: 'Shopper360',
     logoShort: 'CW',
-    logoWhite: '/logos/cw-white.svg',
-    logoColor: '/logos/cw-color.svg',
+    logoWhite: `${BASE}logos/cw-white.svg`,
+    logoColor: `${BASE}logos/cw-color.svg`,
     fontFamily: '"Arial", "Helvetica Neue", Helvetica, sans-serif',
-    heroLine1: '3 million shopper journeys.',
-    heroLine2: 'One powerful platform.',
-    heroSubtext: 'Deep insights into customer loyalty, basket composition, and competitive positioning across 500+ stores.',
+    heroLine1: '3.2 million shoppers.',
+    heroLine2: 'Their journey starts here.',
+    heroSubtext: 'Unique shopper intelligence for Chemist Warehouse and every supplier partner. From discovery to loyalty — every journey, every insight.',
+    heroFeatureStat: { value: '3.2M+', label: 'unique shoppers across 500+ stores — insights for CW and every supplier partner' },
     heroStats: [
-      { label: 'Shopper Journeys', value: '3M+' },
-      { label: 'Avg Basket', value: '$52.40' },
+      { label: 'Shopper Journeys', value: '18M+' },
+      { label: 'Supplier Partners', value: '120+' },
       { label: 'Categories', value: '200+' },
-      { label: 'Stores Tracked', value: '500+' },
+      { label: 'Stores', value: '500+' },
     ],
     colors: {
       'theme-primary': '#E30019',
