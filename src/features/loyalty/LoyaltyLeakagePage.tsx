@@ -19,7 +19,8 @@ const LOYALTY_TIERS = [
 ]
 
 export function LoyaltyLeakagePage() {
-  const { state } = useData()
+  const { state, networkScale } = useData()
+  const scaleN = (n: number) => Math.round(n * networkScale)
 
   const loyaltyDistribution = useMemo(() => {
     return LOYALTY_TIERS.map((tier) => {
@@ -112,12 +113,12 @@ export function LoyaltyLeakagePage() {
       .sort((a, b) => b.leakRate - a.leakRate)
   }, [state.customers])
 
-  const loyalCount = loyaltyDistribution[0]!.count
-  const leakingCount = loyaltyDistribution[3]!.count
-  const totalCustomers = state.customers.length
+  const loyalCount = scaleN(loyaltyDistribution[0]!.count)
+  const leakingCount = scaleN(loyaltyDistribution[3]!.count)
+  const totalCustomers = scaleN(state.customers.length)
   const atRiskRevenue = useMemo(() =>
-    state.customers.filter((c) => c.retentionScore < 50).reduce((s, c) => s + c.totalSpend, 0),
-    [state.customers],
+    state.customers.filter((c) => c.retentionScore < 50).reduce((s, c) => s + c.totalSpend, 0) * networkScale,
+    [state.customers, networkScale],
   )
 
   const retentionTrend = useMemo(() =>
@@ -129,7 +130,7 @@ export function LoyaltyLeakagePage() {
     [state.summary],
   )
 
-  // Auto-narrative
+  // Auto-narrative with CBA insights
   const narrative = useMemo(() => {
     const loyalPct = ((loyalCount / totalCustomers) * 100).toFixed(0)
     const leakPct = ((leakingCount / totalCustomers) * 100).toFixed(0)
@@ -137,16 +138,16 @@ export function LoyaltyLeakagePage() {
     const topLeakStage = leakageByLifeStage[0]
 
     const parts: string[] = []
-    parts.push(`Across the **CW network**, **${loyalPct}%** of shoppers are loyal (80+ retention) while **${leakPct}%** are actively leaking to competitors.`)
-    parts.push(`Revenue at risk from low-retention shoppers is **${formatCurrency(atRiskRevenue)}**.`)
+    parts.push(`Across the **CW network** (${formatNumber(totalCustomers)} shoppers), **${loyalPct}%** are loyal (80+ retention) while **${leakPct}%** are actively leaking to competitors.`)
+    parts.push(`CBA credit card analysis shows revenue at risk from low-retention shoppers is **${formatCurrency(atRiskRevenue)}** — this spend is flowing to Priceline, Terry White and other pharmacy competitors.`)
     if (topLeakCat) {
       parts.push(`The highest leakage category is **${topLeakCat.category}** at ${topLeakCat.leakRate.toFixed(0)}% leak rate.`)
     }
     if (topLeakStage) {
-      parts.push(`**${topLeakStage.lifeStage}** shoppers represent the largest leakage risk by spend (${formatCurrency(topLeakStage.totalSpend)}).`)
+      parts.push(`**${topLeakStage.lifeStage}** shoppers represent the largest leakage risk by spend (**${formatCurrency(topLeakStage.totalSpend * networkScale)}**).`)
     }
     return parts.join(' ')
-  }, [loyalCount, leakingCount, totalCustomers, atRiskRevenue, leakageByCategory, leakageByLifeStage])
+  }, [loyalCount, leakingCount, totalCustomers, atRiskRevenue, leakageByCategory, leakageByLifeStage, networkScale])
 
   return (
     <div className="space-y-5 sm:space-y-6 page-enter">
@@ -192,7 +193,7 @@ export function LoyaltyLeakagePage() {
         />
         <KPICard
           title="Loyalty Rate"
-          value={formatPercentRaw(((loyalCount + loyaltyDistribution[1]!.count) / totalCustomers) * 100)}
+          value={formatPercentRaw(((loyalCount + scaleN(loyaltyDistribution[1]!.count)) / totalCustomers) * 100)}
           icon={<ShieldCheck className="w-4 h-4" />}
         />
       </div>
@@ -207,7 +208,7 @@ export function LoyaltyLeakagePage() {
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: tier.color }} />
                 <p className="text-xs font-semibold text-slate-700">{tier.label}</p>
               </div>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900">{formatNumber(data.count)}</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-900">{formatNumber(scaleN(data.count))}</p>
               <p className="text-[10px] text-slate-400 mt-1">{tier.desc}</p>
               <div className="mt-2 text-xs text-slate-500">
                 <span>Avg basket: {formatCurrency(data.avgBasket)}</span>
@@ -338,9 +339,9 @@ export function LoyaltyLeakagePage() {
               {leakageByLifeStage.map((row) => (
                 <tr key={row.lifeStage} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-4 py-2.5 font-medium text-slate-900">{row.lifeStage}</td>
-                  <td className="px-4 py-2.5 text-right text-slate-700">{formatNumber(row.count)}</td>
+                  <td className="px-4 py-2.5 text-right text-slate-700">{formatNumber(scaleN(row.count))}</td>
                   <td className="px-4 py-2.5"><SegmentBadge segment={row.topSegment} /></td>
-                  <td className="px-4 py-2.5 text-right font-medium text-slate-900">{formatCurrency(row.totalSpend)}</td>
+                  <td className="px-4 py-2.5 text-right font-medium text-slate-900">{formatCurrency(row.totalSpend * networkScale)}</td>
                   <td className="px-4 py-2.5 text-right text-slate-600">{formatCurrencyDecimal(row.avgBasket)}</td>
                   <td className="px-4 py-2.5 text-center">
                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
@@ -367,8 +368,8 @@ export function LoyaltyLeakagePage() {
           </div>
           <p className="text-sm text-red-700">
             <strong>{formatNumber(leakingCount)} shoppers</strong> across the CW network have a loyalty score under 30, representing
-            <strong> {formatCurrency(loyaltyDistribution[3]!.totalSpend)}</strong> in total spend. These shoppers are primarily
-            going to competing pharmacies. A network-wide re-engagement strategy (loyalty offers, competitive pricing reviews) could recover 15-25% of this cohort.
+            <strong> {formatCurrency(loyaltyDistribution[3]!.totalSpend * networkScale)}</strong> in total spend. CBA card data confirms these shoppers are primarily
+            transacting at competing pharmacies. A network-wide re-engagement strategy (loyalty offers, competitive pricing reviews) could recover 15-25% of this cohort.
           </p>
         </div>
         <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200 rounded-xl p-5 animate-fade-in-up">
@@ -378,8 +379,8 @@ export function LoyaltyLeakagePage() {
           </div>
           <p className="text-sm text-emerald-700">
             <strong>{formatNumber(loyalCount)} loyal shoppers</strong> (80+ score) are the CW network's core base, contributing
-            <strong> {formatCurrency(loyaltyDistribution[0]!.totalSpend)}</strong> in spend. Protect them with loyalty rewards,
-            exclusive offers, and premium service. They are the strongest advocates for CW brand loyalty.
+            <strong> {formatCurrency(loyaltyDistribution[0]!.totalSpend * networkScale)}</strong> in spend. CBA data shows these shoppers consolidate 70%+ of pharmacy spend at CW. Protect them with loyalty rewards,
+            exclusive offers, and premium service.
           </p>
         </div>
       </div>

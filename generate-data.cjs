@@ -210,6 +210,9 @@ function generateSuppliers() {
     ['EGO PHARMACEUTICALS',       154000000, 1.3,  5.7, 'Beauty & Skincare;Sun & Tanning;Baby & Infant',      128, 14.60, 148000000, 1.4],
     ['EDGEWELL PERSONAL CARE',    132000000, 1.1,  2.2, 'Personal Care;Sun & Tanning;Hair Care',               96, 12.40, 118000000, 1.0],
     ['VITA HEALTH GROUP',         118000000, 1.0, 11.8, 'Vitamins & Supplements;Sports Nutrition;Natural Health',84, 19.80, 116000000, 1.1],
+    ['LVLUP SUPPS',               42000000, 0.4, 38.5, 'Sports Nutrition;Weight Management;Vitamins & Supplements', 18, 8.95, 36000000, 0.3],
+    ['MUSASHI',                    86000000, 0.7,  6.2, 'Sports Nutrition;Weight Management;Vitamins & Supplements', 62, 24.50, 78000000, 0.6],
+    ['BULK NUTRIENTS',             54000000, 0.5, 22.4, 'Sports Nutrition;Weight Management;Natural Health', 45, 18.60, 42000000, 0.4],
   ];
   writeCsv('Shopper360_Suppliers.csv', headers, rows);
 }
@@ -288,14 +291,21 @@ function generateCustomers() {
     'Woolworths Pharmacy',                                                 // 3%
   ];
 
-  const lifeStages = ['Young Adult','Young Family','Established Family','Empty Nester','Retiree'];
-  // Weighted for Australian demographics
+  const lifeStages = ['Young Adult','Young Family','Established Family','Empty Nester','Retiree','Mature Singles'];
+  // Weighted for Australian demographics (ABS 2024-25 + CBA cardholder data)
+  // Young Adult:        18%  (18-29, singles/share house, early career)
+  // Young Family:       19%  (30-39, couples with young children)
+  // Established Family: 22%  (40-54, families with older children/teens)
+  // Mature Singles:     12%  (35-55, single professionals, divorced)
+  // Empty Nester:       17%  (55-69, kids left home, couples)
+  // Retiree:            12%  (70+, pension/super income)
   const lifeStageWeighted = [
-    'Young Adult','Young Adult','Young Adult','Young Adult',               // 22%
-    'Young Family','Young Family','Young Family','Young Family',           // 20%
-    'Established Family','Established Family','Established Family','Established Family','Established Family', // 25%
-    'Empty Nester','Empty Nester','Empty Nester','Empty Nester',           // 20%
-    'Retiree','Retiree','Retiree',                                         // 13%
+    'Young Adult','Young Adult','Young Adult','Young Adult',               // 18%
+    'Young Family','Young Family','Young Family','Young Family',           // 19%
+    'Established Family','Established Family','Established Family','Established Family','Established Family', // 22%
+    'Mature Singles','Mature Singles','Mature Singles',                     // 12%
+    'Empty Nester','Empty Nester','Empty Nester',                          // 17%
+    'Retiree','Retiree','Retiree',                                         // 12%
   ];
 
   const channels = ['In-Store','Online','Click & Collect'];
@@ -338,7 +348,7 @@ function generateCustomers() {
       grocery: [680, 1450],    // Monthly grocery spend ($)
       healthConscious: 0.65,   // 65% are health-conscious
       channelWeights: [0.55, 0.30, 0.15], // In-Store, Online, Click&Collect
-      lifeStageWeights: [0.08, 0.18, 0.32, 0.28, 0.14], // skew older & families
+      lifeStageWeights: [0.06, 0.16, 0.28, 0.14, 0.24, 0.12], // skew older & families
     },
     'Regular Shoppers': {
       count: 2800,
@@ -357,7 +367,7 @@ function generateCustomers() {
       grocery: [720, 1380],
       healthConscious: 0.42,
       channelWeights: [0.72, 0.18, 0.10],
-      lifeStageWeights: [0.20, 0.22, 0.26, 0.20, 0.12],
+      lifeStageWeights: [0.18, 0.20, 0.24, 0.12, 0.16, 0.10],
     },
     'Occasional Visitors': {
       count: 2240,
@@ -376,7 +386,7 @@ function generateCustomers() {
       grocery: [580, 1250],
       healthConscious: 0.28,
       channelWeights: [0.78, 0.12, 0.10],
-      lifeStageWeights: [0.30, 0.18, 0.22, 0.18, 0.12],
+      lifeStageWeights: [0.26, 0.16, 0.20, 0.14, 0.14, 0.10],
     },
     'New Customers': {
       count: 1200,
@@ -395,7 +405,7 @@ function generateCustomers() {
       grocery: [520, 1180],
       healthConscious: 0.38,
       channelWeights: [0.60, 0.28, 0.12],  // new customers skew more online
-      lifeStageWeights: [0.35, 0.25, 0.20, 0.12, 0.08],  // skew younger
+      lifeStageWeights: [0.30, 0.22, 0.18, 0.14, 0.10, 0.06],  // skew younger
     },
     'At-Risk': {
       count: 800,
@@ -414,7 +424,7 @@ function generateCustomers() {
       grocery: [600, 1300],
       healthConscious: 0.32,
       channelWeights: [0.82, 0.10, 0.08],
-      lifeStageWeights: [0.15, 0.20, 0.25, 0.25, 0.15],
+      lifeStageWeights: [0.14, 0.18, 0.22, 0.14, 0.20, 0.12],
     },
   };
 
@@ -506,6 +516,7 @@ function generateCustomers() {
         case 'Young Family':       groceryBase = randFloat(880, 1480); break;  // growing family, nappies/formula
         case 'Established Family': groceryBase = randFloat(980, 1620); break;  // largest basket, teens eat a lot
         case 'Empty Nester':       groceryBase = randFloat(680, 1120); break;  // couple, quality over quantity
+        case 'Mature Singles':     groceryBase = randFloat(480, 920); break;   // single professional, quality-focused
         case 'Retiree':            groceryBase = randFloat(520, 880); break;   // smaller household, fixed income
         default:                   groceryBase = randFloat(680, 1200);
       }

@@ -66,6 +66,8 @@ interface DataContextValue {
   dispatch: React.Dispatch<Action>
   selectedSummary: StoreSummary | undefined
   previousSummary: StoreSummary | undefined
+  /** Scale factor from sample (8K rows) to full CW network (3.2M+). Multiply sample counts by this to get network-level numbers. */
+  networkScale: number
   addCohort: (cohort: Cohort) => void
   removeCohort: (id: string) => void
 }
@@ -134,8 +136,16 @@ export function DataProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(COHORT_STORAGE_KEY, JSON.stringify(updated))
   }, [state.cohorts])
 
+  // Scale factor: summary data has true CW network customer counts (3.2M+), sample has ~8K rows
+  const networkScale = useMemo(() => {
+    const sampleSize = state.customers.length
+    const latestSummary = state.summary.length > 0 ? state.summary[state.summary.length - 1] : undefined
+    if (!sampleSize || !latestSummary) return 1
+    return latestSummary.totalCustomers / sampleSize
+  }, [state.customers.length, state.summary])
+
   return (
-    <DataContext.Provider value={{ state, dispatch, selectedSummary, previousSummary, addCohort, removeCohort }}>
+    <DataContext.Provider value={{ state, dispatch, selectedSummary, previousSummary, networkScale, addCohort, removeCohort }}>
       {state.loading ? (
         <div className="flex items-center justify-center h-screen bg-slate-50">
           <div className="text-center">

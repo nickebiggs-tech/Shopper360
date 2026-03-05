@@ -16,6 +16,7 @@ interface PersonaPanelProps {
   customers: Customer[]
   title?: string
   compact?: boolean
+  networkScale?: number
 }
 
 interface ActiveFilter {
@@ -23,7 +24,8 @@ interface ActiveFilter {
   value: string | null
 }
 
-export function PersonaPanel({ customers, title, compact = false }: PersonaPanelProps) {
+export function PersonaPanel({ customers, title, compact = false, networkScale = 1 }: PersonaPanelProps) {
+  const scaleN = (n: number) => Math.round(n * networkScale)
   const [activeFilter, setActiveFilter] = useState<ActiveFilter>({ type: null, value: null })
 
   // Apply filter
@@ -141,9 +143,9 @@ export function PersonaPanel({ customers, title, compact = false }: PersonaPanel
 
     // Context if filter active
     if (activeFilter.type && activeFilter.value) {
-      parts.push(`**Filtered to ${activeFilter.value}** (${formatNumber(filtered.length)} shoppers):`)
+      parts.push(`**Filtered to ${activeFilter.value}** (${formatNumber(scaleN(filtered.length))} shoppers):`)
     } else {
-      parts.push(`Across **${formatNumber(filtered.length)} shoppers**:`)
+      parts.push(`Across **${formatNumber(scaleN(filtered.length))} CW network shoppers**:`)
     }
 
     // Life stage insight
@@ -168,9 +170,9 @@ export function PersonaPanel({ customers, title, compact = false }: PersonaPanel
       parts.push(`**${healthPct.toFixed(0)}%** are health-conscious — moderate wellness engagement.`)
     }
 
-    // Cross-shopping risk
+    // Cross-shopping risk (CBA card insight)
     if (topCrossShop) {
-      parts.push(`Top cross-shopping risk: **${topCrossShop.name}** (${topCrossShop.pct}% of shoppers also shop there).`)
+      parts.push(`CBA credit card data shows **${topCrossShop.name}** as the top cross-shopping competitor (${topCrossShop.pct}% of shoppers also transact there).`)
     }
 
     // Share of wallet opportunity
@@ -181,7 +183,7 @@ export function PersonaPanel({ customers, title, compact = false }: PersonaPanel
     }
 
     return parts.join(' ')
-  }, [filtered, lifeStageDist, segmentMix, channelDist, crossShopDist, kpis, activeFilter])
+  }, [filtered, lifeStageDist, segmentMix, channelDist, crossShopDist, kpis, activeFilter, networkScale])
 
   const handleFilter = (type: ActiveFilter['type'], value: string) => {
     if (activeFilter.type === type && activeFilter.value === value) {
@@ -209,7 +211,7 @@ export function PersonaPanel({ customers, title, compact = false }: PersonaPanel
               <X className="w-3 h-3" />
             </button>
           </div>
-          <span className="text-xs text-slate-400">{formatNumber(filtered.length)} of {formatNumber(customers.length)} shoppers</span>
+          <span className="text-xs text-slate-400">{formatNumber(scaleN(filtered.length))} of {formatNumber(scaleN(customers.length))} shoppers</span>
         </div>
       )}
 
@@ -224,7 +226,7 @@ export function PersonaPanel({ customers, title, compact = false }: PersonaPanel
 
       {/* KPI row */}
       <div className={cn('grid gap-3', compact ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6')}>
-        <MiniKPI icon={<Users className="w-3.5 h-3.5" />} label="Shoppers" value={formatNumber(kpis.count)} />
+        <MiniKPI icon={<Users className="w-3.5 h-3.5" />} label="Shoppers" value={formatNumber(scaleN(kpis.count))} />
         <MiniKPI icon={<ShoppingCart className="w-3.5 h-3.5" />} label="Avg Basket" value={formatCurrencyDecimal(kpis.avgBasket)} />
         <MiniKPI icon={<Wallet className="w-3.5 h-3.5" />} label="Share of Wallet" value={`${kpis.avgSoW.toFixed(0)}%`} />
         <MiniKPI icon={<HeartPulse className="w-3.5 h-3.5" />} label="Health Conscious" value={`${kpis.healthPct.toFixed(0)}%`} />
@@ -371,7 +373,7 @@ export function PersonaPanel({ customers, title, compact = false }: PersonaPanel
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">{arch.label}</p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{formatNumber(arch.count)} shoppers</p>
+                  <p className="text-[10px] text-slate-400 mt-0.5">{formatNumber(scaleN(arch.count))} shoppers</p>
                 </div>
                 <SegmentBadge segment={arch.dominantSeg} className="text-[9px] px-1.5" />
               </div>

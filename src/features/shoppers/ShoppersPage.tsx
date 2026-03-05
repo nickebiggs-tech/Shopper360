@@ -46,9 +46,10 @@ interface PersonaGroup {
 }
 
 export function ShoppersPage() {
-  const { state } = useData()
+  const { state, networkScale } = useData()
   const [segmentFilter, setSegmentFilter] = useState<string>('all')
   const [expandedPersona, setExpandedPersona] = useState<string | null>(null)
+  const scale = (n: number) => Math.round(n * networkScale)
 
   const baseCustomers = useMemo(() => {
     if (segmentFilter === 'all') return state.customers
@@ -111,29 +112,36 @@ export function ShoppersPage() {
         custs.forEach((c) => { catCounts[c.topCategory] = (catCounts[c.topCategory] || 0) + 1 })
         const topCategory = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || ''
 
-        // Auto-narrative
-        const narrative = buildNarrative(lifeStage, count, avgBasket, avgSoW, healthPct, topChannel, topCrossShop, avgRetention, topSegment, topCategory)
+        // Avg grocery (CBA insight)
+        const avgGrocery = custs.reduce((s, c) => s + c.avgMonthlyGrocerySpend, 0) / count
+        // Cross-shop percentage
+        const crossShopPct = (custs.filter((c) => c.crossShopRetailer && c.crossShopRetailer !== 'None').length / count) * 100
+
+        // Auto-narrative with scaled network numbers and CBA insights
+        const scaledCount = Math.round(count * networkScale)
+        const narrative = buildNarrative(lifeStage, scaledCount, avgBasket, avgSoW, healthPct, topChannel, topCrossShop, avgRetention, topSegment, topCategory, avgGrocery, crossShopPct)
 
         return {
-          lifeStage, count, avgBasket, avgVisits, avgRetention, avgSoW, healthPct,
+          lifeStage, count: scaledCount, avgBasket, avgVisits, avgRetention, avgSoW, healthPct,
           topSegment, topChannel, topCrossShop, channelBreakdown, segmentBreakdown,
           topCategory, narrative,
         }
       })
       .sort((a, b) => b.count - a.count)
-  }, [baseCustomers])
+  }, [baseCustomers, networkScale])
 
-  // Network-level summary
+  // Network-level summary (scaled to full CW network)
   const summary = useMemo(() => {
     const count = baseCustomers.length
-    if (count === 0) return { count: 0, avgBasket: 0, avgSoW: 0, avgRetention: 0 }
+    if (count === 0) return { count: 0, avgBasket: 0, avgSoW: 0, avgRetention: 0, avgGrocery: 0 }
     return {
-      count,
+      count: scale(count),
       avgBasket: baseCustomers.reduce((s, c) => s + c.avgBasketValue, 0) / count,
       avgSoW: baseCustomers.reduce((s, c) => s + c.shareOfWallet, 0) / count,
       avgRetention: baseCustomers.reduce((s, c) => s + c.retentionScore, 0) / count,
+      avgGrocery: baseCustomers.reduce((s, c) => s + c.avgMonthlyGrocerySpend, 0) / count,
     }
-  }, [baseCustomers])
+  }, [baseCustomers, networkScale])
 
   const handleExport = () => {
     const headers = ['Life Stage', 'Count', 'Avg Basket', 'Avg Visits', 'Retention', 'Share of Wallet', 'Health %', 'Top Segment', 'Top Channel', 'Top Cross-Shop', 'Top Category']
@@ -381,46 +389,60 @@ function buildNarrative(
   lifeStage: string, count: number, avgBasket: number, avgSoW: number,
   healthPct: number, _topChannel: string, topCrossShop: string,
   _avgRetention: number, _topSegment: Segment, _topCategory: string,
+  avgGrocery: number, crossShopPct: number,
 ): string {
   const parts: string[] = []
 
   parts.push(`**${lifeStage}** shoppers represent **${formatNumber(count)}** across the CW network.`)
 
   if (avgBasket > 80) {
-    parts.push(`Premium spenders with an avg basket of **${formatCurrencyDecimal(avgBasket)}** — high lifetime value.`)
+    parts.push(`Premium spenders with avg basket of **${formatCurrencyDecimal(avgBasket)}** — high lifetime value.`)
   } else if (avgBasket > 55) {
     parts.push(`Moderate spenders averaging **${formatCurrencyDecimal(avgBasket)}** per visit — opportunity to grow basket.`)
   } else {
     parts.push(`Lighter spenders at **${formatCurrencyDecimal(avgBasket)}** avg basket — cross-sell and upsell opportunities.`)
   }
 
+  // CBA share of wallet insight
   if (avgSoW > 60) {
-    parts.push(`Strong CW loyalty at **${avgSoW.toFixed(0)}%** share of wallet.`)
+    parts.push(`CBA card data shows strong CW loyalty at **${avgSoW.toFixed(0)}% share of wallet** — these shoppers consolidate pharmacy spend at CW.`)
   } else if (avgSoW < 35) {
-    parts.push(`Low loyalty (**${avgSoW.toFixed(0)}% SoW**) — high competitor leakage risk.`)
+    parts.push(`CBA spend analysis shows only **${avgSoW.toFixed(0)}% share of wallet** at CW — significant spend is going to competitors.`)
+  } else {
+    parts.push(`CBA card insights show **${avgSoW.toFixed(0)}%** share of wallet — moderate CW loyalty with room to grow.`)
+  }
+
+  // CBA cross-shopping insight
+  if (crossShopPct > 60 && topCrossShop !== 'None') {
+    parts.push(`**${crossShopPct.toFixed(0)}%** cross-shop at competitors, with **${topCrossShop}** the primary alternative.`)
+  } else if (topCrossShop !== 'None') {
+    parts.push(`Top cross-shopping risk: **${topCrossShop}**.`)
+  }
+
+  // CBA grocery spend insight (indicates household economics)
+  if (avgGrocery > 1200) {
+    parts.push(`High household spend (avg **$${avgGrocery.toFixed(0)}/mth** grocery) signals larger family with capacity for premium health products.`)
+  } else if (avgGrocery < 600) {
+    parts.push(`Lower household grocery spend (**$${avgGrocery.toFixed(0)}/mth**) suggests value-conscious singles — competitive pricing is key.`)
   }
 
   if (healthPct > 55) {
-    parts.push(`**${healthPct.toFixed(0)}%** are health-conscious — ideal for vitamin, supplement & wellness promotions.`)
+    parts.push(`**${healthPct.toFixed(0)}%** are health-conscious — strong affinity for vitamin, supplement & wellness ranges.`)
   }
 
-  if (topCrossShop !== 'None') {
-    parts.push(`Top cross-shopping risk is **${topCrossShop}**.`)
-  }
-
-  // Life-stage specific recommendations
+  // Life-stage specific CBA-informed recommendations
   if (lifeStage === 'Young Family') {
-    parts.push('Recommend targeting with baby care, children\'s health & family wellness ranges.')
+    parts.push('CBA data shows peak nappy/formula cross-category spend — bundle with baby care, children\'s health & immunity products.')
   } else if (lifeStage === 'Retiree') {
-    parts.push('Focus on prescription support, OTC pain relief, eye care & senior health.')
+    parts.push('CBA pension/super spend patterns indicate fixed-income — focus on prescription value, OTC pain relief & loyalty rewards.')
   } else if (lifeStage === 'Young Adult') {
-    parts.push('Engage with beauty, skincare, sports nutrition & digital-first experiences.')
+    parts.push('Digital-first cohort — CBA online spend indexes 2x average. Engage via beauty, skincare & social-driven campaigns.')
   } else if (lifeStage === 'Empty Nester') {
-    parts.push('Premium wellness, travel health & anti-aging categories resonate strongly.')
+    parts.push('CBA discretionary spend is highest in this cohort — premium wellness, travel health & anti-aging categories resonate.')
   } else if (lifeStage === 'Established Family') {
-    parts.push('Multi-category shoppers — basket builders through family health bundles.')
+    parts.push('Highest total household spend (CBA data) — multi-category basket builders. Family health bundles drive incremental revenue.')
   } else if (lifeStage === 'Mature Singles') {
-    parts.push('Self-care focused — personal care, supplements & convenience offerings.')
+    parts.push('CBA shows above-average self-care spend — personal care, mental wellness supplements & convenience-driven offerings.')
   }
 
   return parts.join(' ')

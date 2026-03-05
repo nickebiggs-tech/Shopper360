@@ -14,7 +14,8 @@ import type { Segment } from '../../data/types'
 const PIE_COLORS = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444']
 
 export function CampaignHistoryPage() {
-  const { state } = useData()
+  const { state, networkScale } = useData()
+  const scaleN = (n: number) => Math.round(n * networkScale)
 
   // Aggregate data for recommendations
   const segmentStats = useMemo(() => {
@@ -106,8 +107,8 @@ export function CampaignHistoryPage() {
         title: 'At-Risk Recovery Program',
         icon: AlertTriangle,
         color: '#EF4444',
-        narrative: `**${formatNumber(atRiskStats.count)} shoppers** are classified At-Risk with an avg retention score of ${atRiskStats.avgRetention.toFixed(0)}. They represent **${formatCurrency(atRiskStats.totalSpend)}** in spend. A network-wide re-engagement strategy (loyalty offers, lapsed-shopper communications) could recover 15-25% of this cohort.`,
-        impact: `Potential recovery: ${formatCurrency(atRiskStats.totalSpend * 0.2)}`,
+        narrative: `**${formatNumber(scaleN(atRiskStats.count))} shoppers** are classified At-Risk across the CW network, with avg retention score of ${atRiskStats.avgRetention.toFixed(0)}. CBA card data shows these shoppers have shifted spend to competitors — representing **${formatCurrency(atRiskStats.totalSpend * networkScale)}** in annual revenue at risk. A network-wide re-engagement strategy could recover 15-25% of this cohort.`,
+        impact: `Potential recovery: ${formatCurrency(atRiskStats.totalSpend * networkScale * 0.2)}`,
       })
     }
 
@@ -119,8 +120,8 @@ export function CampaignHistoryPage() {
         title: 'Share of Wallet Expansion',
         icon: TrendingUp,
         color: '#3B82F6',
-        narrative: `**${formatNumber(totalLow)} shoppers** across ${lowSoWSegments.map((s) => s.segment).join(', ')} segments have avg share of wallet under 40%. These shoppers are spending significantly at competitors. Category range reviews, loyalty incentives, and competitive price matching could lift SoW by 5-10pp.`,
-        impact: `Target: +5pp SoW across ${formatNumber(totalLow)} shoppers`,
+        narrative: `CBA credit card analysis reveals **${formatNumber(scaleN(totalLow))} shoppers** across ${lowSoWSegments.map((s) => s.segment).join(', ')} segments have avg share of wallet under 40% at CW. These shoppers are spending significantly at Priceline, Terry White & other pharmacy competitors. Category range reviews, loyalty incentives, and competitive price matching could lift SoW by 5-10pp.`,
+        impact: `Target: +5pp SoW across ${formatNumber(scaleN(totalLow))} shoppers`,
       })
     }
 
@@ -133,8 +134,8 @@ export function CampaignHistoryPage() {
         title: 'Wellness & Health Focus',
         icon: Heart,
         color: '#EC4899',
-        narrative: `**${healthPct.toFixed(0)}%** of the network's shoppers are health-conscious, with an avg basket of **${formatCurrencyDecimal(healthAvgBasket)}**. Expanding vitamin, supplement, and natural health ranges — combined with wellness education content — can drive basket growth and loyalty in this high-value cohort.`,
-        impact: `${formatNumber(healthStats.length)} health-conscious shoppers`,
+        narrative: `**${healthPct.toFixed(0)}%** of the CW network (${formatNumber(scaleN(healthStats.length))} shoppers) are health-conscious, with avg basket of **${formatCurrencyDecimal(healthAvgBasket)}**. CBA spend data shows this cohort indexes 1.4x on supplement and wellness categories. Expanding vitamin, natural health, and wellness ranges can drive basket growth and retention.`,
+        impact: `${formatNumber(scaleN(healthStats.length))} health-conscious shoppers`,
       })
     }
 
@@ -145,8 +146,8 @@ export function CampaignHistoryPage() {
         title: 'Competitive Defence Strategy',
         icon: ShieldCheck,
         color: '#F59E0B',
-        narrative: `**${topCompetitor.name}** is the #1 cross-shopping competitor with **${topCompetitor.pct}%** of CW shoppers also transacting there. Focus on price competitiveness in overlapping categories, exclusive CW-only product lines, and loyalty benefits that reduce switching behaviour.`,
-        impact: `Defend against ${topCompetitor.name} (${formatNumber(topCompetitor.value)} shared shoppers)`,
+        narrative: `CBA card-linked data identifies **${topCompetitor.name}** as the #1 cross-shopping competitor — **${topCompetitor.pct}%** of CW shoppers (${formatNumber(scaleN(topCompetitor.value))}) also transact there. Focus on price competitiveness in overlapping OTC & personal care categories, exclusive CW-only product lines, and loyalty benefits that reduce switching.`,
+        impact: `Defend against ${topCompetitor.name} (${formatNumber(scaleN(topCompetitor.value))} shared shoppers)`,
       })
     }
 
@@ -157,8 +158,8 @@ export function CampaignHistoryPage() {
         title: 'Power Shopper Retention',
         icon: Sparkles,
         color: '#8B5CF6',
-        narrative: `**${formatNumber(powerStats.count)} Power Shoppers** are your most valuable cohort with avg basket of **${formatCurrencyDecimal(powerStats.avgBasket)}** and **${formatCurrency(powerStats.totalSpend)}** total spend. VIP loyalty perks, early access to promotions, and personalised health consultations protect this revenue base.`,
-        impact: `Protect ${formatCurrency(powerStats.totalSpend)} in Power Shopper revenue`,
+        narrative: `**${formatNumber(scaleN(powerStats.count))} Power Shoppers** are CW's most valuable cohort — avg basket **${formatCurrencyDecimal(powerStats.avgBasket)}**, avg **${powerStats.avgSoW.toFixed(0)}% share of wallet** (CBA data). They contribute **${formatCurrency(powerStats.totalSpend * networkScale)}** annually. VIP loyalty perks, early access to promotions, and personalised health consultations protect this revenue base.`,
+        impact: `Protect ${formatCurrency(powerStats.totalSpend * networkScale)} in Power Shopper revenue`,
       })
     }
 
@@ -196,7 +197,7 @@ export function CampaignHistoryPage() {
 
       {/* Network KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 stagger-children">
-        <KPICard title="CW Network Shoppers" value={formatNumber(networkKPIs.count)} icon={<Users className="w-4 h-4" />} color="text-slate-900" />
+        <KPICard title="CW Network Shoppers" value={formatNumber(scaleN(networkKPIs.count))} icon={<Users className="w-4 h-4" />} color="text-slate-900" />
         <KPICard title="Avg Basket Value" value={formatCurrencyDecimal(networkKPIs.avgBasket)} icon={<ShoppingCart className="w-4 h-4" />} color="text-slate-900" />
         <KPICard title="Avg Share of Wallet" value={`${networkKPIs.avgSoW.toFixed(0)}%`} icon={<Target className="w-4 h-4" />} color="text-slate-900" />
         <KPICard title="At-Risk Revenue" value={formatCurrency(networkKPIs.atRiskRevenue)} icon={<AlertTriangle className="w-4 h-4" />} color="text-red-600" />

@@ -3,7 +3,7 @@ import { useData } from '../../data/DataProvider'
 import { PersonaPanel } from '../../components/ui/PersonaPanel'
 
 export function ShopperPersonasPage() {
-  const { state } = useData()
+  const { state, networkScale } = useData()
 
   return (
     <div className="space-y-5 sm:space-y-6 page-enter">
@@ -23,6 +23,7 @@ export function ShopperPersonasPage() {
       <PersonaPanel
         customers={state.customers}
         title="CW Network Shopper Profile"
+        networkScale={networkScale}
       />
     </div>
   )
