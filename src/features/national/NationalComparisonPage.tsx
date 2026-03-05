@@ -19,7 +19,7 @@ export function NationalComparisonPage() {
       P25: n.avgBasketValue_P25,
       Median: n.avgBasketValue_Median,
       P75: n.avgBasketValue_P75,
-      'Your Store': n.avgBasketValue_YourStore,
+      'CW Network': n.avgBasketValue_YourStore,
     })),
     [state.national],
   )
@@ -30,7 +30,7 @@ export function NationalComparisonPage() {
       P25: n.retentionRate_P25,
       Median: n.retentionRate_Median,
       P75: n.retentionRate_P75,
-      'Your Store': n.retentionRate_YourStore,
+      'CW Network': n.retentionRate_YourStore,
     })),
     [state.national],
   )
@@ -41,7 +41,7 @@ export function NationalComparisonPage() {
       P25: n.visitsPerCustomer_P25,
       Median: n.visitsPerCustomer_Median,
       P75: n.visitsPerCustomer_P75,
-      'Your Store': n.visitsPerCustomer_YourStore,
+      'CW Network': n.visitsPerCustomer_YourStore,
     })),
     [state.national],
   )
@@ -58,13 +58,13 @@ export function NationalComparisonPage() {
     <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-slate-900">National Benchmarks</h1>
-        <p className="text-sm text-slate-500 mt-1">See how your pharmacy compares to national percentile benchmarks.</p>
+        <p className="text-sm text-slate-500 mt-1">See how the CW network compares to national percentile benchmarks.</p>
       </div>
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 stagger-children">
         <KPICard
-          title="Your Avg Basket"
+          title="CW Avg Basket"
           value={formatCurrency(latest?.avgBasketValue_YourStore ?? 0)}
           icon={<BarChart3 className="w-4 h-4" />}
         />
@@ -74,7 +74,7 @@ export function NationalComparisonPage() {
           icon={<Target className="w-4 h-4" />}
         />
         <KPICard
-          title="Your Retention"
+          title="CW Retention"
           value={formatPercentRaw(latest?.retentionRate_YourStore ?? 0)}
           icon={<TrendingUp className="w-4 h-4" />}
         />
@@ -114,7 +114,7 @@ export function NationalComparisonPage() {
       {/* Charts */}
       <div className="grid grid-cols-1 gap-4 sm:gap-6">
         <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg Basket Value — Your Store vs National</h3>
+          <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg Basket Value — CW Network vs National</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={basketTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -131,7 +131,7 @@ export function NationalComparisonPage() {
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Retention Rate — Your Store vs National</h3>
+          <h3 className="text-sm font-semibold text-slate-700 mb-4">Retention Rate — CW Network vs National</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={retentionTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -148,7 +148,7 @@ export function NationalComparisonPage() {
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Visits Per Customer — Your Store vs National</h3>
+          <h3 className="text-sm font-semibold text-slate-700 mb-4">Visits Per Customer — CW Network vs National</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={visitsTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />

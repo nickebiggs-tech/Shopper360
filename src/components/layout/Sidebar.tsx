@@ -30,7 +30,7 @@ const NAV_ITEMS = [
   { to: '/suppliers', icon: Package, label: 'Suppliers' },
   { to: '/personas', icon: UserCircle, label: 'Personas' },
   { to: '/loyalty', icon: Heart, label: 'Loyalty' },
-  { to: '/campaigns', icon: Target, label: 'Campaigns' },
+  { to: '/campaigns', icon: Target, label: 'Recommendations' },
   { to: '/ask', icon: MessageSquare, label: 'Ask Shopper360' },
   { to: '/admin/branding', icon: Settings, label: 'Settings' },
 ]
@@ -46,15 +46,21 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
 
   const navContent = (
     <>
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
+      {/* Logo & Branding */}
+      <div className="flex items-center gap-3 px-4 py-4 border-b border-white/10">
         {collapsed && !mobileOpen ? (
           <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[10px] font-bold shrink-0 text-white">
-            {livery.logoShort}
+            S3
           </div>
         ) : (
           <div className="flex-1 overflow-hidden">
-            <img src={livery.logoWhite} alt={livery.name} className="h-9 object-contain object-left" />
+            <div className="flex items-center gap-2.5">
+              <img src={livery.logoWhite} alt={livery.name} className="h-7 object-contain object-left" />
+            </div>
+            <div className="mt-1.5 flex items-center gap-1.5">
+              <span className="text-[13px] font-bold text-white tracking-tight">Shopper<span className="text-white/70">360</span></span>
+              <span className="text-[9px] text-white/40 font-medium uppercase tracking-wider">Intelligence</span>
+            </div>
           </div>
         )}
         {/* Mobile close button */}

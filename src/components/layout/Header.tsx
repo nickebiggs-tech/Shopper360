@@ -20,9 +20,9 @@ export function Header({ onMenuToggle }: HeaderProps) {
         >
           <Menu className="w-5 h-5" />
         </button>
-        <span className="text-sm font-semibold text-primary">{livery.logoText}</span>
-        <span className="text-xs text-slate-400 hidden sm:inline">|</span>
-        <span className="text-xs text-slate-500 hidden sm:inline">{livery.name}</span>
+        <span className="text-sm font-bold text-primary tracking-tight">Shopper<span className="text-primary/60">360</span></span>
+        <span className="text-xs text-slate-300 hidden sm:inline">|</span>
+        <span className="text-xs text-slate-500 hidden sm:inline font-medium">{livery.name}</span>
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
