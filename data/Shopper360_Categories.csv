@@ -1,0 +1,16 @@
+Category,Revenue,Transactions,AvgItemsPerBasket,CrossSellRate,TopPairedCategory,GrowthRate,NationalAvgRevenue
+OTC Medicines,26678,1029,1.8,36.2,Beauty & Skincare,19.2,19224
+Prescription,122391,4481,2.8,24.4,Health Devices,-2.4,156485
+Vitamins & Supplements,95321,712,1.2,64.5,OTC Medicines,-10.1,85535
+Beauty & Skincare,18678,3656,3.0,47.6,Personal Care,8.6,23468
+Personal Care,16909,3600,1.8,19.5,OTC Medicines,11.1,16971
+Baby & Child,165859,3710,1.7,37.0,Allergy & Sinus,17.7,186860
+First Aid,165090,2171,2.9,56.7,Health Devices,-7.8,188810
+Health Devices,64001,3123,2.9,35.4,First Aid,13.3,62087
+Fragrance,77774,4186,2.8,18.1,OTC Medicines,7.0,103012
+Sun Care,34775,717,2.2,29.8,First Aid,20.0,23097
+Weight Management,174623,1141,2.2,16.4,Eye Care,3.0,236081
+Oral Care,135028,3053,3.5,57.5,First Aid,-0.3,102994
+Eye Care,138920,376,3.5,43.9,Prescription,21.1,93267
+Digestive Health,25618,917,2.4,60.3,Health Devices,12.4,22429
+Allergy & Sinus,16331,302,1.8,42.6,Beauty & Skincare,19.8,22852
