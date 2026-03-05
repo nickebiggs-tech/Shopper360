@@ -1,16 +1,21 @@
 MFR_NAME,Total_TY_Value,MFR_Market_Share_Pct,YoY_Growth,TopCategories,ProductCount,AvgPrice,YourStoreRevenue,YourStoreShare
-KENVUE,556206920,6.0,3.2,"OTC Medicines;Personal Care;Baby & Child",285,12.45,342500,5.8
-HALEON,437108328,4.7,1.8,"OTC Medicines;Oral Care;Vitamins & Supplements",220,14.20,268000,4.5
-BLACKMORES GROUP,366033276,3.9,5.1,"Vitamins & Supplements;Health Devices;Weight Management",180,18.90,245000,4.1
-ASPEN PHARMA PL,294676512,3.2,-0.5,"Prescription;OTC Medicines;Allergy & Sinus",195,16.80,178000,3.0
-OPELLA,293681869,3.1,2.4,"OTC Medicines;Digestive Health;Allergy & Sinus",165,13.50,182000,3.1
-RCKT BNCKSR AUS PL,292449734,3.1,4.8,"Personal Care;Baby & Child;Sun Care",240,9.80,195000,3.3
-PROCTER & GAMBLE,278130626,3.0,1.2,"Personal Care;Oral Care;Beauty & Skincare",210,11.30,168000,2.8
-INOVA,257805144,2.8,6.2,"Vitamins & Supplements;OTC Medicines;Digestive Health",145,19.50,172000,2.9
-LOREAL GROUPE,221515810,2.4,3.9,"Beauty & Skincare;Personal Care;Fragrance",175,22.40,148000,2.5
-BAYER CONSUMER,210316866,2.3,0.8,"OTC Medicines;Allergy & Sinus;First Aid",155,13.90,128000,2.2
-EGO,191527524,2.1,4.5,"Beauty & Skincare;Sun Care;Personal Care",120,16.70,135000,2.3
-NESTLE,184297642,2.0,2.1,"Vitamins & Supplements;Weight Management;Baby & Child",95,24.60,112000,1.9
-SWISSE,166245218,1.8,7.3,"Vitamins & Supplements;Beauty & Skincare;Weight Management",130,21.80,118000,2.0
-MCPHERSONS CNSMR,165696423,1.8,1.5,"Beauty & Skincare;Personal Care;Fragrance",110,14.20,98000,1.7
-APOTEX,151564545,1.6,-1.2,"Prescription;OTC Medicines;Allergy & Sinus",170,8.90,92000,1.6
+HALEON,892000000,6.8,2.1,OTC Medicines;Oral Care;Vitamins & Supplements,485,14.8,824000000,7.2
+KENVUE,756000000,6.2,3.8,Personal Care;Baby & Infant;OTC Medicines,412,12.45,698000000,6.5
+SANOFI CONSUMER HEALTHCARE,634000000,5.1,1.4,OTC Medicines;Vitamins & Supplements;Natural Health,328,16.9,572000000,5.4
+BLACKMORES GROUP,528000000,4.4,7.2,Vitamins & Supplements;Natural Health;Sports Nutrition,296,18.9,512000000,4.8
+SWISSE (H&H GROUP),487000000,4.1,5.6,Vitamins & Supplements;Beauty & Skincare;Weight Management,264,22.4,468000000,4.4
+RECKITT BENCKISER,445000000,3.9,2.3,OTC Medicines;Personal Care;Sexual Health,342,11.6,398000000,3.7
+BAYER CONSUMER HEALTH,412000000,3.5,-0.8,OTC Medicines;Vitamins & Supplements;Medical Devices,278,15.2,378000000,3.3
+ASPEN PHARMACARE,398000000,3.3,1.2,Prescription;OTC Medicines;Eye Care,312,16.8,362000000,3.1
+L'OREAL AUSTRALIA,367000000,3.1,9.4,Beauty & Skincare;Hair Care;Sun & Tanning,224,24.5,356000000,3.4
+PROCTER & GAMBLE,342000000,2.9,3.1,Personal Care;Oral Care;Hair Care,298,10.8,312000000,2.8
+JOHNSON & JOHNSON,318000000,2.7,1.9,Baby & Infant;Personal Care;First Aid,256,13.4,288000000,2.5
+COLGATE-PALMOLIVE,295000000,2.5,2.7,Oral Care;Personal Care;Pet Care,186,9.8,274000000,2.6
+PERRIGO AUSTRALIA,267000000,2.3,4.5,OTC Medicines;First Aid;Incontinence,342,8.6,248000000,2.4
+VIATRIS,243000000,2.1,-1.2,Prescription;OTC Medicines;Eye Care,198,18.4,218000000,1.9
+NATURE'S OWN (SANOFI),224000000,1.9,6.3,Vitamins & Supplements;Natural Health;Weight Management,176,16.2,214000000,2
+COTY,198000000,1.7,8.1,Fragrance;Beauty & Skincare;Personal Care,142,32.8,192000000,1.8
+CHURCH & DWIGHT,176000000,1.5,3.4,Personal Care;Oral Care;First Aid,164,11.2,162000000,1.4
+EGO PHARMACEUTICALS,154000000,1.3,5.7,Beauty & Skincare;Sun & Tanning;Baby & Infant,128,14.6,148000000,1.4
+EDGEWELL PERSONAL CARE,132000000,1.1,2.2,Personal Care;Sun & Tanning;Hair Care,96,12.4,118000000,1
+VITA HEALTH GROUP,118000000,1,11.8,Vitamins & Supplements;Sports Nutrition;Natural Health,84,19.8,116000000,1.1
