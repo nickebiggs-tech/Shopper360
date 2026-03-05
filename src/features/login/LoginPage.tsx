@@ -23,7 +23,7 @@ export function LoginPage() {
     if (success) {
       navigate('/dashboard', { replace: true })
     } else {
-      setError('Invalid credentials. Try George / 1234')
+      setError('Invalid credentials. Try Jim / 1234')
     }
   }
 
