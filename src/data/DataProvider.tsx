@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, useEffect, useMemo, useCallback, type ReactNode } from 'react'
 import { format } from 'date-fns'
-import type { Customer, StoreSummary, NationalBenchmark, CategoryData, SegmentBreakdown, Cohort } from './types'
-import { loadCustomers, loadSummary, loadNational, loadCategories, loadSegments } from './csv-loader'
+import type { Customer, StoreSummary, NationalBenchmark, CategoryData, SegmentBreakdown, Supplier, Cohort } from './types'
+import { loadCustomers, loadSummary, loadNational, loadCategories, loadSegments, loadSuppliers } from './csv-loader'
 
 interface DataState {
   customers: Customer[]
@@ -9,6 +9,7 @@ interface DataState {
   national: NationalBenchmark[]
   categories: CategoryData[]
   segmentBreakdown: SegmentBreakdown[]
+  suppliers: Supplier[]
   cohorts: Cohort[]
   selectedMonth: string
   loading: boolean
@@ -21,6 +22,7 @@ type Action =
   | { type: 'SET_NATIONAL'; payload: NationalBenchmark[] }
   | { type: 'SET_CATEGORIES'; payload: CategoryData[] }
   | { type: 'SET_SEGMENTS'; payload: SegmentBreakdown[] }
+  | { type: 'SET_SUPPLIERS'; payload: Supplier[] }
   | { type: 'SET_COHORTS'; payload: Cohort[] }
   | { type: 'ADD_COHORT'; payload: Cohort }
   | { type: 'REMOVE_COHORT'; payload: string }
@@ -34,6 +36,7 @@ const initialState: DataState = {
   national: [],
   categories: [],
   segmentBreakdown: [],
+  suppliers: [],
   cohorts: [],
   selectedMonth: '2026-03',
   loading: true,
@@ -47,6 +50,7 @@ function reducer(state: DataState, action: Action): DataState {
     case 'SET_NATIONAL': return { ...state, national: action.payload }
     case 'SET_CATEGORIES': return { ...state, categories: action.payload }
     case 'SET_SEGMENTS': return { ...state, segmentBreakdown: action.payload }
+    case 'SET_SUPPLIERS': return { ...state, suppliers: action.payload }
     case 'SET_COHORTS': return { ...state, cohorts: action.payload }
     case 'ADD_COHORT': return { ...state, cohorts: [...state.cohorts, action.payload] }
     case 'REMOVE_COHORT': return { ...state, cohorts: state.cohorts.filter(c => c.id !== action.payload) }
@@ -76,18 +80,20 @@ export function DataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function load() {
       try {
-        const [customers, summary, national, categories, segments] = await Promise.all([
+        const [customers, summary, national, categories, segments, suppliers] = await Promise.all([
           loadCustomers(),
           loadSummary(),
           loadNational(),
           loadCategories(),
           loadSegments(),
+          loadSuppliers(),
         ])
         dispatch({ type: 'SET_CUSTOMERS', payload: customers })
         dispatch({ type: 'SET_SUMMARY', payload: summary })
         dispatch({ type: 'SET_NATIONAL', payload: national })
         dispatch({ type: 'SET_CATEGORIES', payload: categories })
         dispatch({ type: 'SET_SEGMENTS', payload: segments })
+        dispatch({ type: 'SET_SUPPLIERS', payload: suppliers })
 
         // Load saved cohorts
         const saved = localStorage.getItem(COHORT_STORAGE_KEY)

@@ -13,6 +13,8 @@ import { NationalComparisonPage } from './features/national/NationalComparisonPa
 import { CampaignHistoryPage } from './features/campaigns/CampaignHistoryPage'
 import { AskAgentPage } from './features/agent/AskAgentPage'
 import { BrandingPage } from './features/admin/BrandingPage'
+import { SupplierInsightsPage } from './features/suppliers/SupplierInsightsPage'
+import { LoyaltyLeakagePage } from './features/loyalty/LoyaltyLeakagePage'
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
                 <Route path="/visits" element={<VisitPatternsPage />} />
                 <Route path="/segments" element={<SegmentsPage />} />
                 <Route path="/national" element={<NationalComparisonPage />} />
+                <Route path="/suppliers" element={<SupplierInsightsPage />} />
+                <Route path="/loyalty" element={<LoyaltyLeakagePage />} />
                 <Route path="/campaigns" element={<CampaignHistoryPage />} />
                 <Route path="/ask" element={<AskAgentPage />} />
                 <Route path="/admin/branding" element={<BrandingPage />} />

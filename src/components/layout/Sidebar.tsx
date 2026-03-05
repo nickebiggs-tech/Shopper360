@@ -13,6 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Package,
+  Heart,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { useTheme } from '../../theme/ThemeProvider'
@@ -24,9 +26,11 @@ const NAV_ITEMS = [
   { to: '/visits', icon: CalendarDays, label: 'Visit Patterns' },
   { to: '/segments', icon: PieChart, label: 'Segments' },
   { to: '/national', icon: BarChart3, label: 'Benchmarks' },
+  { to: '/suppliers', icon: Package, label: 'Suppliers' },
+  { to: '/loyalty', icon: Heart, label: 'Loyalty' },
   { to: '/campaigns', icon: Target, label: 'Campaigns' },
   { to: '/ask', icon: MessageSquare, label: 'Ask Shopper360' },
-  { to: '/admin/branding', icon: Settings, label: 'Admin' },
+  { to: '/admin/branding', icon: Settings, label: 'Settings' },
 ]
 
 interface SidebarProps {
@@ -42,13 +46,13 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
     <>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-xs font-bold shrink-0">
-          S3
-        </div>
-        {(!collapsed || mobileOpen) && (
-          <div className="overflow-hidden flex-1">
-            <p className="font-semibold text-sm leading-tight">{livery.logoText}</p>
-            <p className="text-[10px] text-white/50">{livery.tagline}</p>
+        {collapsed && !mobileOpen ? (
+          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[10px] font-bold shrink-0 text-white">
+            {livery.logoShort}
+          </div>
+        ) : (
+          <div className="flex-1 overflow-hidden">
+            <img src={livery.logoWhite} alt={livery.name} className="h-9 object-contain object-left" />
           </div>
         )}
         {/* Mobile close button */}

@@ -1,6 +1,6 @@
 import Papa from 'papaparse'
 import { parse } from 'date-fns'
-import type { Customer, StoreSummary, NationalBenchmark, CategoryData, SegmentBreakdown, AudienceSegment, Segment } from './types'
+import type { Customer, StoreSummary, NationalBenchmark, CategoryData, SegmentBreakdown, Supplier, AudienceSegment, Segment } from './types'
 
 async function fetchAndParse<T>(url: string): Promise<T[]> {
   const response = await fetch(url)
@@ -155,6 +155,21 @@ export async function loadCategories(): Promise<CategoryData[]> {
     topPairedCategory: r['TopPairedCategory'] || '',
     growthRate: num(r['GrowthRate']),
     nationalAvgRevenue: num(r['NationalAvgRevenue']),
+  }))
+}
+
+export async function loadSuppliers(): Promise<Supplier[]> {
+  const raw = await fetchAndParse<Record<string, string>>('/data/Shopper360_Suppliers.csv')
+  return raw.map((r) => ({
+    mfrName: r['MFR_NAME'] || '',
+    totalTYValue: num(r['Total_TY_Value']),
+    mfrMarketSharePct: num(r['MFR_Market_Share_Pct']),
+    yoyGrowth: num(r['YoY_Growth']),
+    topCategories: (r['TopCategories'] || '').split(';').filter(Boolean),
+    productCount: num(r['ProductCount']),
+    avgPrice: num(r['AvgPrice']),
+    yourStoreRevenue: num(r['YourStoreRevenue']),
+    yourStoreShare: num(r['YourStoreShare']),
   }))
 }
 

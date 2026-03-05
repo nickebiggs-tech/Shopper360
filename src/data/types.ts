@@ -95,6 +95,18 @@ export interface SegmentBreakdown {
   retentionRate: number
 }
 
+export interface Supplier {
+  mfrName: string
+  totalTYValue: number
+  mfrMarketSharePct: number
+  yoyGrowth: number
+  topCategories: string[]
+  productCount: number
+  avgPrice: number
+  yourStoreRevenue: number
+  yourStoreShare: number
+}
+
 export interface Cohort {
   id: string
   name: string

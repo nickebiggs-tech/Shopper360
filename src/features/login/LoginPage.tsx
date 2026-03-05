@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
-import { ShoppingCart, TrendingUp, Users, BarChart3, Eye, EyeOff } from 'lucide-react'
+import { TrendingUp, Users, ShoppingCart, BarChart3, Eye, EyeOff } from 'lucide-react'
 
 export function LoginPage() {
   const [username, setUsername] = useState('')
@@ -37,14 +37,8 @@ export function LoginPage() {
         </div>
 
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-              <ShoppingCart className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">{livery.logoText}</h1>
-              <p className="text-white/60 text-sm">{livery.tagline}</p>
-            </div>
+          <div className="mb-8">
+            <img src={livery.logoWhite} alt={livery.name} className="h-12 object-contain object-left" />
           </div>
 
           <h2 className="text-4xl font-bold leading-tight mb-4">
@@ -76,11 +70,8 @@ export function LoginPage() {
       {/* Right login form */}
       <div className="flex-1 lg:max-w-md flex items-center justify-center px-5 sm:px-8 bg-white">
         <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white text-xs font-bold">
-              S3
-            </div>
-            <span className="text-lg font-bold text-slate-900">{livery.logoText}</span>
+          <div className="mb-8">
+            <img src={livery.logoColor} alt={livery.name} className="h-10 object-contain object-left" />
           </div>
 
           <h3 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h3>
