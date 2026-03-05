@@ -86,6 +86,13 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
           </NavLink>
         ))}
       </nav>
+
+      {/* Powered by */}
+      {(!collapsed || mobileOpen) && (
+        <div className="px-4 py-3 border-t border-white/10">
+          <p className="text-[10px] text-white/30">Powered by {livery.poweredBy}</p>
+        </div>
+      )}
     </>
   )
 

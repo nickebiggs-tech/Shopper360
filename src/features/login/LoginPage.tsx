@@ -6,20 +6,20 @@ import { Users, Store, Layers, Handshake, TrendingUp, ShoppingCart, BarChart3, E
 
 const STAT_ICONS = [Users, ShoppingCart, TrendingUp, BarChart3, Store, Layers, Handshake]
 
-/** Shopper journey hub-and-spoke SVG — CW/brand at centre, journey stages radiating out */
+/** Shopper journey hub-and-spoke SVG — brand at centre, journey stages radiating out */
 function JourneyVisualization() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {/* Ambient glow blobs */}
-      <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-white/20 blur-3xl opacity-10" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-white/10 blur-3xl opacity-10" />
+      <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-white/20 blur-3xl opacity-[0.06]" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-white/10 blur-3xl opacity-[0.06]" />
 
       {/* Journey network SVG */}
       <svg
         viewBox="0 0 500 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute -right-16 top-1/2 -translate-y-1/2 w-[520px] h-[520px] opacity-[0.07]"
+        className="absolute -right-16 top-1/2 -translate-y-1/2 w-[520px] h-[520px] opacity-[0.06]"
         style={{ animation: 'spin 120s linear infinite' }}
       >
         {/* Outer orbital ring */}
@@ -32,53 +32,42 @@ function JourneyVisualization() {
         <circle cx="250" cy="250" r="12" fill="white" />
 
         {/* Journey stage nodes + connecting lines */}
-        {/* Discovery (top) */}
         <line x1="250" y1="200" x2="250" y2="60" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
         <circle cx="250" cy="45" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
         <circle cx="250" cy="45" r="5" fill="white" opacity="0.6" />
 
-        {/* Browse (top-right) */}
         <line x1="285" y1="215" x2="395" y2="105" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
         <circle cx="405" cy="95" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
         <circle cx="405" cy="95" r="4" fill="white" opacity="0.5" />
 
-        {/* Purchase (right) */}
         <line x1="300" y1="250" x2="440" y2="250" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
         <circle cx="455" cy="250" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
         <circle cx="455" cy="250" r="5" fill="white" opacity="0.6" />
 
-        {/* Repeat (bottom-right) */}
         <line x1="285" y1="285" x2="395" y2="395" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
         <circle cx="405" cy="405" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
         <circle cx="405" cy="405" r="4" fill="white" opacity="0.5" />
 
-        {/* Loyalty (bottom) */}
         <line x1="250" y1="300" x2="250" y2="440" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
         <circle cx="250" cy="455" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
         <circle cx="250" cy="455" r="5" fill="white" opacity="0.6" />
 
-        {/* Advocate (bottom-left) */}
         <line x1="215" y1="285" x2="105" y2="395" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
         <circle cx="95" cy="405" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
         <circle cx="95" cy="405" r="4" fill="white" opacity="0.5" />
 
-        {/* Awareness (left) */}
         <line x1="200" y1="250" x2="60" y2="250" stroke="white" strokeWidth="1.2" strokeDasharray="4 6" />
         <circle cx="45" cy="250" r="18" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.06" />
         <circle cx="45" cy="250" r="5" fill="white" opacity="0.6" />
 
-        {/* Research (top-left) */}
         <line x1="215" y1="215" x2="105" y2="105" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
         <circle cx="95" cy="95" r="15" stroke="white" strokeWidth="1.2" fill="white" fillOpacity="0.04" />
         <circle cx="95" cy="95" r="4" fill="white" opacity="0.5" />
 
-        {/* Small data particles on orbits */}
         <circle cx="250" cy="30" r="3" fill="white" opacity="0.3" />
         <circle cx="470" cy="250" r="3" fill="white" opacity="0.3" />
         <circle cx="250" cy="470" r="3" fill="white" opacity="0.3" />
         <circle cx="30" cy="250" r="3" fill="white" opacity="0.3" />
-        <circle cx="406" cy="150" r="2" fill="white" opacity="0.2" />
-        <circle cx="94" cy="350" r="2" fill="white" opacity="0.2" />
       </svg>
     </div>
   )
@@ -109,19 +98,20 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen flex-col lg:flex-row">
-      {/* Left hero */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
+      {/* Left hero — solid blue for CW, gradient for others */}
+      <div className="hidden lg:flex flex-1 bg-gradient-to-b from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
         <JourneyVisualization />
 
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="mb-8">
-            <img src={livery.logoWhite} alt={livery.name} className="h-12 object-contain object-left" />
+          {/* Brand logo */}
+          <div className="mb-10">
+            <img src={livery.logoWhite} alt={livery.name} className="h-14 object-contain object-left" />
           </div>
 
           {/* Feature stat callout (if available) */}
           {livery.heroFeatureStat && (
             <div className="mb-6">
-              <p className="text-6xl font-extrabold tracking-tight leading-none mb-2">
+              <p className="text-6xl font-extrabold tracking-tight leading-none mb-3">
                 {livery.heroFeatureStat.value}
               </p>
               <p className="text-white/60 text-base max-w-md leading-relaxed">
@@ -138,7 +128,7 @@ export function LoginPage() {
             </h2>
           )}
 
-          <p className="text-white/45 text-lg max-w-md mb-10">
+          <p className="text-white/40 text-lg max-w-md mb-10">
             {livery.heroSubtext}
           </p>
 
@@ -161,8 +151,9 @@ export function LoginPage() {
       {/* Right login form */}
       <div className="flex-1 lg:max-w-md flex items-center justify-center px-5 sm:px-8 bg-white">
         <div className="w-full max-w-sm">
+          {/* Logo on white bg */}
           <div className="mb-8">
-            <img src={livery.logoColor} alt={livery.name} className="h-10 object-contain object-left" />
+            <img src={livery.logoColor} alt={livery.name} className="h-12 object-contain object-left" />
           </div>
 
           <h3 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h3>
@@ -215,7 +206,7 @@ export function LoginPage() {
           </form>
 
           <p className="text-xs text-slate-400 text-center mt-8">
-            Powered by NostraData &middot; Shopper360
+            Powered by {livery.poweredBy}
           </p>
         </div>
       </div>
