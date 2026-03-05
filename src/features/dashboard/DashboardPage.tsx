@@ -54,9 +54,13 @@ export function DashboardPage() {
   return (
     <div className="space-y-5 sm:space-y-6 page-enter">
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Overview for {selectedSummary ? format(selectedSummary.periodMonth, 'MMMM yyyy') : 'current period'}
+        <div className="flex items-center gap-2 mb-0.5 sm:hidden">
+          <span className="text-base font-extrabold tracking-tight"><span className="text-primary">Shopper</span><span className="text-primary/50">360</span></span>
+          <span className="text-[8px] text-slate-400 font-semibold uppercase tracking-widest border border-slate-200 rounded px-1.5 py-0.5">Dashboard</span>
+        </div>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 hidden sm:block">Dashboard</h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1">
+          CW network overview for {selectedSummary ? format(selectedSummary.periodMonth, 'MMMM yyyy') : 'current period'}
         </p>
       </div>
 

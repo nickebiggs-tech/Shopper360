@@ -48,6 +48,9 @@
     color: #1e293b;
     /* Prevent mobile bounce/overscroll */
     overscroll-behavior: none;
+    /* Safe area for notched phones */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   html {
@@ -296,6 +299,27 @@
     transform: scale(0.97);
     transition: transform 0.1s ease;
   }
+
+  /* iOS-style touch ripple effect */
+  button:active, a:active, select:active {
+    opacity: 0.85;
+    transition: opacity 0.08s ease;
+  }
+
+  /* Prevent iOS tap highlight */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ---- iPhone notch / Dynamic Island safe areas ---- */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* ---- KPI accent stripe ---- */
@@ -328,5 +352,20 @@
   }
   .recharts-legend-wrapper {
     padding-top: 4px !important;
+  }
+}
+
+/* ---- Safe area inset utility ---- */
+.safe-area-inset {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ---- Hero select styling for mobile ---- */
+@media (max-width: 640px) {
+  select option {
+    font-size: 16px;
+    padding: 12px;
   }
 }

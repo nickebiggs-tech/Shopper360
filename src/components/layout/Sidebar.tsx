@@ -49,24 +49,25 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
       {/* Logo & Branding */}
       <div className="flex items-center gap-3 px-4 py-4 border-b border-white/10">
         {collapsed && !mobileOpen ? (
-          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[10px] font-bold shrink-0 text-white">
-            S3
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/40 to-accent/30 flex items-center justify-center shrink-0">
+            <span className="text-[11px] font-extrabold text-white">S3</span>
           </div>
         ) : (
           <div className="flex-1 overflow-hidden">
             <div className="flex items-center gap-2.5">
               <img src={livery.logoWhite} alt={livery.name} className="h-7 object-contain object-left" />
             </div>
-            <div className="mt-1.5 flex items-center gap-1.5">
-              <span className="text-[13px] font-bold text-white tracking-tight">Shopper<span className="text-white/70">360</span></span>
-              <span className="text-[9px] text-white/40 font-medium uppercase tracking-wider">Intelligence</span>
+            <div className="mt-1.5 flex items-center gap-2">
+              <span className="text-[15px] font-extrabold text-white tracking-tight">Shopper<span className="text-white/60">360</span></span>
+              <span className="text-[8px] text-white/30 font-semibold uppercase tracking-widest border border-white/10 rounded px-1.5 py-0.5">Intelligence</span>
             </div>
           </div>
         )}
         {/* Mobile close button */}
         <button
           onClick={onMobileClose}
-          className="lg:hidden ml-auto p-1 text-white/60 hover:text-white"
+          className="lg:hidden ml-auto p-2 text-white/60 hover:text-white active:bg-white/10 rounded-lg transition-colors"
+          aria-label="Close menu"
         >
           <X className="w-5 h-5" />
         </button>

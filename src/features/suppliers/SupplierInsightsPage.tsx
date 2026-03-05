@@ -12,6 +12,7 @@ import {
 import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
 import { PersonaPanel } from '../../components/ui/PersonaPanel'
+import { AnimateIn } from '../../components/ui/AnimateIn'
 import { formatCurrency, formatCurrencyDecimal, formatCompact, formatNumber } from '../../lib/formatters'
 import { cn } from '../../lib/utils'
 import type { Supplier, Customer } from '../../data/types'
@@ -76,144 +77,215 @@ export function SupplierInsightsPage() {
 
   return (
     <div className="space-y-5 sm:space-y-6 page-enter">
-      <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Supplier Insights</h1>
-        <p className="text-sm text-slate-500 mt-1">Key supplier performance, market share, and CW network alignment with top manufacturers.</p>
+      {/* ═══════ HERO: Supplier Selector ═══════ */}
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-primary/80 rounded-2xl p-5 sm:p-7 lg:p-8 overflow-hidden">
+        {/* Background pattern dots */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+        {/* Glow accent */}
+        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-primary/20 blur-3xl" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-accent/15 blur-2xl" />
+
+        <div className="relative z-10">
+          <div className="flex items-center gap-2.5 mb-2">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center">
+              <Package className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">Supplier Intelligence</h1>
+              <p className="text-[11px] sm:text-xs text-white/50">Powered by CBA card-linked shopper data</p>
+            </div>
+          </div>
+
+          <p className="text-sm sm:text-base text-white/70 mt-3 mb-5 max-w-xl leading-relaxed">
+            Select a supplier to see <strong className="text-white font-semibold">who buys their products</strong>, shopper personas, and
+            data-driven <strong className="text-white font-semibold">investment recommendations</strong> to grow sales through CW.
+          </p>
+
+          {/* Selector */}
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+            <div className="relative flex-1 sm:max-w-md">
+              <select
+                value={selectedSupplier}
+                onChange={(e) => setSelectedSupplier(e.target.value)}
+                className="w-full appearance-none pl-4 pr-10 py-3.5 sm:py-3 border-2 border-white/20 rounded-xl text-sm sm:text-base font-medium bg-white/10 text-white backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/40 transition-all placeholder:text-white/40"
+              >
+                <option value="" className="text-slate-900 bg-white">Choose a supplier to explore...</option>
+                {suppliers.map((s) => (
+                  <option key={s.mfrName} value={s.mfrName} className="text-slate-900 bg-white">{s.mfrName}</option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
+            </div>
+            {!selectedSupplier && (
+              <div className="flex items-center gap-2 text-white/40 animate-pulse">
+                <ArrowRight className="w-4 h-4" />
+                <span className="text-xs sm:text-sm font-medium">Select to drill into shopper personas</span>
+              </div>
+            )}
+            {selectedSupplier && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg backdrop-blur">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs text-emerald-300 font-medium">Viewing {selectedSupplier}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Quick stat pills */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            <span className="px-2.5 py-1 rounded-full bg-white/8 text-[10px] sm:text-xs text-white/60 font-medium">{suppliers.length} Suppliers</span>
+            <span className="px-2.5 py-1 rounded-full bg-white/8 text-[10px] sm:text-xs text-white/60 font-medium">{formatCompact(totalMarketValue)} Market Value</span>
+            <span className="px-2.5 py-1 rounded-full bg-white/8 text-[10px] sm:text-xs text-white/60 font-medium">{formatCurrency(totalCWRev)} CW Revenue</span>
+            <span className="px-2.5 py-1 rounded-full bg-white/8 text-[10px] sm:text-xs text-white/60 font-medium">{avgGrowth > 0 ? '+' : ''}{avgGrowth.toFixed(1)}% Avg Growth</span>
+          </div>
+        </div>
       </div>
+
+      {/* ═══════ Selected Supplier Deep Dive ═══════ */}
+      {activeSupplier && (
+        <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-5">
+          <SupplierPersonaView supplier={activeSupplier} customers={state.customers} networkScale={networkScale} />
+        </div>
+      )}
+
+      {/* Prompt when no supplier selected */}
+      {!activeSupplier && (
+        <div className="bg-white rounded-xl border-2 border-dashed border-slate-200 p-8 sm:p-12 text-center animate-fade-in">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
+            <Users className="w-7 h-7 sm:w-8 sm:h-8 text-primary/40" />
+          </div>
+          <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">Select a Supplier Above</h3>
+          <p className="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
+            Choose a supplier to see their <strong className="text-slate-500">shopper persona</strong>, life stage breakdown, channel preferences,
+            cross-shopping risk, and tailored <strong className="text-slate-500">investment recommendations</strong> to grow CW sales.
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 mt-5">
+            {suppliers.slice(0, 5).map((s) => (
+              <button
+                key={s.mfrName}
+                onClick={() => setSelectedSupplier(s.mfrName)}
+                className="px-3 py-1.5 rounded-full text-xs font-medium bg-primary/5 text-primary hover:bg-primary/10 transition-colors border border-primary/10"
+              >
+                {s.mfrName}
+              </button>
+            ))}
+            <span className="px-3 py-1.5 rounded-full text-xs text-slate-400">+{suppliers.length - 5} more</span>
+          </div>
+        </div>
+      )}
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 stagger-children">
-        <KPICard title="Top 15 Market Value" value={formatCompact(totalMarketValue)} icon={<Factory className="w-4 h-4" />} />
+        <KPICard title="Top Supplier Market Value" value={formatCompact(totalMarketValue)} icon={<Factory className="w-4 h-4" />} />
         <KPICard title="CW Network Revenue" value={formatCurrency(totalCWRev)} icon={<DollarSign className="w-4 h-4" />} />
         <KPICard title="Avg YoY Growth" value={`${avgGrowth.toFixed(1)}%`} delta={avgGrowth} icon={<TrendingUp className="w-4 h-4" />} />
         <KPICard title="Suppliers Tracked" value={String(suppliers.length)} icon={<Package className="w-4 h-4" />} />
       </div>
 
-      {/* Supplier Selector */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-primary" />
-            <label className="text-sm font-semibold text-slate-700">Select Supplier to View Shopper Personas</label>
-          </div>
-          <div className="relative flex-1 sm:max-w-sm">
-            <select
-              value={selectedSupplier}
-              onChange={(e) => setSelectedSupplier(e.target.value)}
-              className="w-full appearance-none pl-3 pr-8 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white"
-            >
-              <option value="">Choose a supplier...</option>
-              {suppliers.map((s) => (
-                <option key={s.mfrName} value={s.mfrName}>{s.mfrName}</option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-          </div>
-        </div>
-
-        {/* Selected supplier detail + persona */}
-        {activeSupplier && (
-          <SupplierPersonaView supplier={activeSupplier} customers={state.customers} networkScale={networkScale} />
-        )}
-      </div>
-
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Market Share Bar */}
-        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Market Share (%) — Top 15 Consumer Health</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={marketShareData} layout="vertical" margin={{ left: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
-              <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={110} />
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (!active || !payload?.length) return null
-                  const d = payload[0]?.payload as typeof marketShareData[number]
-                  return (
-                    <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-lg text-xs">
-                      <p className="font-semibold">{d.fullName}</p>
-                      <p>Market Share: {d.share}%</p>
-                      <p>Total Value: {formatCompact(d.value)}</p>
-                    </div>
-                  )
-                }}
-              />
-              <Bar dataKey="share" radius={[0, 6, 6, 0]} animationDuration={800}>
-                {marketShareData.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <AnimateIn delay={0}>
+          <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Market Share (%) — Top Consumer Health</h3>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={marketShareData} layout="vertical" margin={{ left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={110} />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload?.length) return null
+                    const d = payload[0]?.payload as typeof marketShareData[number]
+                    return (
+                      <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-lg text-xs">
+                        <p className="font-semibold">{d.fullName}</p>
+                        <p>Market Share: {d.share}%</p>
+                        <p>Total Value: {formatCompact(d.value)}</p>
+                      </div>
+                    )
+                  }}
+                />
+                <Bar dataKey="share" radius={[0, 6, 6, 0]} animationDuration={800}>
+                  {marketShareData.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </AnimateIn>
 
         {/* Growth vs Share Scatter */}
-        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Growth vs Market Share</h3>
-          <p className="text-xs text-slate-400 mb-3">Bubble size = total revenue. Top-right = strong & growing.</p>
-          <ResponsiveContainer width="100%" height={370}>
-            <ScatterChart margin={{ bottom: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="share" name="Market Share %" tick={{ fontSize: 11 }} stroke="#94a3b8" label={{ value: 'Market Share %', position: 'insideBottom', offset: -5, fontSize: 11 }} />
-              <YAxis dataKey="growth" name="YoY Growth %" tick={{ fontSize: 11 }} stroke="#94a3b8" label={{ value: 'YoY Growth %', angle: -90, position: 'insideLeft', fontSize: 11 }} />
-              <ZAxis dataKey="revenue" range={[60, 500]} />
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (!active || !payload?.length) return null
-                  const d = payload[0]?.payload as typeof scatterData[number]
-                  return (
-                    <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-lg text-xs">
-                      <p className="font-semibold">{d.name}</p>
-                      <p>Share: {d.share}% | Growth: {d.growth}%</p>
-                      <p>Revenue: {formatCompact(d.revenue)}</p>
-                    </div>
-                  )
-                }}
-              />
-              <Scatter data={scatterData} animationDuration={1000}>
-                {scatterData.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} fillOpacity={0.8} />
-                ))}
-              </Scatter>
-            </ScatterChart>
-          </ResponsiveContainer>
-        </div>
+        <AnimateIn delay={100}>
+          <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Growth vs Market Share</h3>
+            <p className="text-xs text-slate-400 mb-3">Bubble size = total revenue. Top-right = strong & growing.</p>
+            <ResponsiveContainer width="100%" height={370}>
+              <ScatterChart margin={{ bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="share" name="Market Share %" tick={{ fontSize: 11 }} stroke="#94a3b8" label={{ value: 'Market Share %', position: 'insideBottom', offset: -5, fontSize: 11 }} />
+                <YAxis dataKey="growth" name="YoY Growth %" tick={{ fontSize: 11 }} stroke="#94a3b8" label={{ value: 'YoY Growth %', angle: -90, position: 'insideLeft', fontSize: 11 }} />
+                <ZAxis dataKey="revenue" range={[60, 500]} />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload?.length) return null
+                    const d = payload[0]?.payload as typeof scatterData[number]
+                    return (
+                      <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-lg text-xs">
+                        <p className="font-semibold">{d.name}</p>
+                        <p>Share: {d.share}% | Growth: {d.growth}%</p>
+                        <p>Revenue: {formatCompact(d.revenue)}</p>
+                      </div>
+                    )
+                  }}
+                />
+                <Scatter data={scatterData} animationDuration={1000}>
+                  {scatterData.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} fillOpacity={0.8} />
+                  ))}
+                </Scatter>
+              </ScatterChart>
+            </ResponsiveContainer>
+          </div>
+        </AnimateIn>
 
         {/* YoY Growth */}
-        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Year-on-Year Growth (%)</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={growthData} layout="vertical" margin={{ left: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
-              <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={110} />
-              <Tooltip />
-              <Bar dataKey="growth" radius={[0, 6, 6, 0]} animationDuration={800}>
-                {growthData.map((d, i) => (
-                  <Cell key={i} fill={d.growth >= 0 ? '#10B981' : '#EF4444'} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <AnimateIn delay={200}>
+          <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Year-on-Year Growth (%)</h3>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={growthData} layout="vertical" margin={{ left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={110} />
+                <Tooltip />
+                <Bar dataKey="growth" radius={[0, 6, 6, 0]} animationDuration={800}>
+                  {growthData.map((d, i) => (
+                    <Cell key={i} fill={d.growth >= 0 ? '#10B981' : '#EF4444'} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </AnimateIn>
 
         {/* CW Network vs National Share */}
-        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">CW Network Share vs National Share</h3>
-          <p className="text-xs text-slate-400 mb-3">Compare CW network's supplier mix to the national average.</p>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={cwShareVsNational} layout="vertical" margin={{ left: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
-              <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={90} />
-              <Tooltip />
-              <Bar dataKey="national" fill="#94a3b8" name="National %" radius={[0, 4, 4, 0]} animationDuration={800} />
-              <Bar dataKey="cwNetwork" fill="var(--color-chart-1)" name="CW Network %" radius={[0, 4, 4, 0]} animationDuration={800} animationBegin={200} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <AnimateIn delay={300}>
+          <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">CW Network Share vs National Share</h3>
+            <p className="text-xs text-slate-400 mb-3">Compare CW network's supplier mix to the national average.</p>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={cwShareVsNational} layout="vertical" margin={{ left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} stroke="#94a3b8" width={90} />
+                <Tooltip />
+                <Bar dataKey="national" fill="#94a3b8" name="National %" radius={[0, 4, 4, 0]} animationDuration={800} />
+                <Bar dataKey="cwNetwork" fill="var(--color-chart-1)" name="CW Network %" radius={[0, 4, 4, 0]} animationDuration={800} animationBegin={200} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </AnimateIn>
       </div>
     </div>
   )
