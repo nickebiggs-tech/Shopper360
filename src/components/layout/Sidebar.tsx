@@ -22,13 +22,13 @@ import { useTheme } from '../../theme/ThemeProvider'
 
 const NAV_ITEMS = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/suppliers', icon: Package, label: 'Supplier Intelligence' },
   { to: '/shoppers', icon: Users, label: 'Shoppers' },
+  { to: '/segments', icon: PieChart, label: 'Segments' },
+  { to: '/personas', icon: UserCircle, label: 'Personas' },
+  { to: '/national', icon: BarChart3, label: 'Benchmarks' },
   { to: '/basket', icon: ShoppingCart, label: 'Basket Analysis' },
   { to: '/visits', icon: CalendarDays, label: 'Visit Patterns' },
-  { to: '/segments', icon: PieChart, label: 'Segments' },
-  { to: '/national', icon: BarChart3, label: 'Benchmarks' },
-  { to: '/suppliers', icon: Package, label: 'Suppliers' },
-  { to: '/personas', icon: UserCircle, label: 'Personas' },
   { to: '/loyalty', icon: Heart, label: 'Loyalty' },
   { to: '/campaigns', icon: Target, label: 'Recommendations' },
   { to: '/ask', icon: MessageSquare, label: 'Ask Shopper360' },
