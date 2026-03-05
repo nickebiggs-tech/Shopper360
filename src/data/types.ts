@@ -22,6 +22,14 @@ export interface Customer {
   spendChange: number
   nationalAvgBasket: number
   nationalAvgVisits: number
+  // CBA credit card behavioural insights
+  shareOfWallet: number
+  totalPharmacySpend: number
+  crossShopRetailer: string
+  preferredChannel: string
+  lifeStage: string
+  avgMonthlyGrocerySpend: number
+  healthConscious: string
   // computed
   opportunityScore: number
   audienceSegment: AudienceSegment

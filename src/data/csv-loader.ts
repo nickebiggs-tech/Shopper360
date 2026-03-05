@@ -101,6 +101,13 @@ export async function loadCustomers(): Promise<Customer[]> {
       spendChange: num(r['SpendChange']),
       nationalAvgBasket,
       nationalAvgVisits: num(r['NationalAvgVisits']),
+      shareOfWallet: num(r['ShareOfWallet']),
+      totalPharmacySpend: num(r['TotalPharmacySpend']),
+      crossShopRetailer: r['CrossShopRetailer'] || '',
+      preferredChannel: r['PreferredChannel'] || 'In-Store',
+      lifeStage: r['LifeStage'] || '',
+      avgMonthlyGrocerySpend: num(r['AvgMonthlyGrocerySpend']),
+      healthConscious: r['HealthConscious'] || 'N',
       opportunityScore: computeOpportunityScore(segment, retentionScore, daysSinceLastVisit, avgBasketValue, nationalAvgBasket),
       audienceSegment: computeAudienceSegment(segment, retentionScore, daysSinceLastVisit, totalSpend, categoryCount),
     }

@@ -89,6 +89,40 @@ export function ShoppersPage() {
       header: 'Top Category',
       size: 150,
     },
+    {
+      accessorKey: 'shareOfWallet',
+      header: 'Share of Wallet',
+      cell: ({ getValue }) => {
+        const v = getValue() as number
+        return (
+          <div className="flex items-center gap-2">
+            <div className="w-14 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div
+                className={cn('h-full rounded-full', v >= 60 ? 'bg-emerald-500' : v >= 35 ? 'bg-amber-500' : 'bg-red-400')}
+                style={{ width: `${v}%` }}
+              />
+            </div>
+            <span className="text-xs text-slate-500">{v}%</span>
+          </div>
+        )
+      },
+      size: 140,
+    },
+    {
+      accessorKey: 'crossShopRetailer',
+      header: 'Cross-Shop',
+      size: 150,
+    },
+    {
+      accessorKey: 'preferredChannel',
+      header: 'Channel',
+      size: 110,
+    },
+    {
+      accessorKey: 'lifeStage',
+      header: 'Life Stage',
+      size: 140,
+    },
   ], [])
 
   const table = useReactTable({
