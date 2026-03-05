@@ -2,12 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp } from 'lucide-react'
 
 /* ─── animated data-particle columns ─── */
-function DataParticles() {
-  // 12 particle columns flowing upward at different speeds/positions
-  const cols = [
+function DataParticles({ count = 12 }: { count?: number }) {
+  const configs = [
     { left: '8%', delay: '0s', dur: '7s', size: 3, anim: 'flow-up-1' },
     { left: '15%', delay: '1.2s', dur: '9s', size: 2, anim: 'flow-up-2' },
     { left: '22%', delay: '0.5s', dur: '8s', size: 4, anim: 'flow-up-3' },
@@ -21,6 +20,7 @@ function DataParticles() {
     { left: '86%', delay: '0.6s', dur: '8.5s', size: 3, anim: 'flow-up-2' },
     { left: '93%', delay: '2.0s', dur: '9.5s', size: 2, anim: 'flow-up-3' },
   ]
+  const cols = configs.slice(0, count)
   return (
     <>
       {cols.map((c, i) => (
@@ -101,72 +101,97 @@ function JourneyFunnel() {
 
   return (
     <svg viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[260px] h-[360px]">
-      {/* Connecting flow lines */}
       {stages.map((s, i) => {
         if (i === stages.length - 1) return null
         const next = stages[i + 1]!
         return (
           <g key={`line-${i}`}>
-            <line
-              x1={150 - s.w / 2 + 10}
-              y1={s.y + 36}
-              x2={150 - next.w / 2 + 10}
-              y2={next.y + 4}
-              stroke="white"
-              strokeWidth="1"
-              strokeDasharray="4 4"
-              opacity="0.2"
-              style={{ animation: 'dash-flow 1.5s linear infinite' }}
-            />
-            <line
-              x1={150 + s.w / 2 - 10}
-              y1={s.y + 36}
-              x2={150 + next.w / 2 - 10}
-              y2={next.y + 4}
-              stroke="white"
-              strokeWidth="1"
-              strokeDasharray="4 4"
-              opacity="0.2"
-              style={{ animation: 'dash-flow 1.5s linear infinite' }}
-            />
+            <line x1={150 - s.w / 2 + 10} y1={s.y + 36} x2={150 - next.w / 2 + 10} y2={next.y + 4}
+              stroke="white" strokeWidth="1" strokeDasharray="4 4" opacity="0.2"
+              style={{ animation: 'dash-flow 1.5s linear infinite' }} />
+            <line x1={150 + s.w / 2 - 10} y1={s.y + 36} x2={150 + next.w / 2 - 10} y2={next.y + 4}
+              stroke="white" strokeWidth="1" strokeDasharray="4 4" opacity="0.2"
+              style={{ animation: 'dash-flow 1.5s linear infinite' }} />
           </g>
         )
       })}
-      {/* Funnel stages */}
       {stages.map((s, i) => {
         const opacity = 0.08 + i * 0.04
         return (
           <g key={s.label}>
-            <rect
-              x={150 - s.w / 2}
-              y={s.y}
-              width={s.w}
-              height={36}
-              rx={8}
-              fill="white"
-              fillOpacity={opacity}
-              stroke="white"
-              strokeWidth="0.8"
-              strokeOpacity={0.2 + i * 0.05}
-            />
-            <text
-              x={150}
-              y={s.y + 22}
-              textAnchor="middle"
-              fill="white"
-              fillOpacity={0.5 + i * 0.1}
-              fontSize="12"
-              fontWeight="500"
-              fontFamily="inherit"
-            >
+            <rect x={150 - s.w / 2} y={s.y} width={s.w} height={36} rx={8}
+              fill="white" fillOpacity={opacity} stroke="white" strokeWidth="0.8" strokeOpacity={0.2 + i * 0.05} />
+            <text x={150} y={s.y + 22} textAnchor="middle" fill="white"
+              fillOpacity={0.5 + i * 0.1} fontSize="12" fontWeight="500" fontFamily="inherit">
               {s.label}
             </text>
           </g>
         )
       })}
-      {/* Arrow at bottom */}
       <polygon points="140,390 150,405 160,390" fill="white" fillOpacity="0.3" />
     </svg>
+  )
+}
+
+/* ─── mobile hero banner ─── */
+function MobileHero({ livery }: { livery: { heroStats: { label: string; value: string }[]; heroFeatureStat?: { value: string; label: string }; poweredBy: string } }) {
+  const mobileStats = [
+    { icon: Users, value: '3.2M+', label: 'Shoppers' },
+    { icon: BarChart3, value: '18M+', label: 'Journeys' },
+    { icon: ShieldCheck, value: '500+', label: 'Stores' },
+    { icon: TrendingUp, value: '120+', label: 'Partners' },
+  ]
+
+  return (
+    <div className="relative bg-gradient-to-br from-hero-from via-hero-mid to-hero-to overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 right-1/4 w-48 h-48 rounded-full bg-white/[0.06] blur-2xl" />
+        <div className="absolute bottom-0 left-1/4 w-32 h-32 rounded-full bg-white/[0.04] blur-2xl" />
+        <DataParticles count={6} />
+        <div className="absolute right-[20%] top-[50%]">
+          <div className="absolute -left-[60px] -top-[60px] w-[120px] h-[120px] rounded-full border border-white/10"
+            style={{ animation: 'pulse-ring 4s ease-in-out infinite' }} />
+          <div className="absolute -left-[100px] -top-[100px] w-[200px] h-[200px] rounded-full border border-white/[0.06]"
+            style={{ animation: 'pulse-ring-slow 5s ease-in-out 0.5s infinite' }} />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 px-5 pt-8 pb-6">
+        {/* Big number */}
+        <div style={{ animation: 'hero-number-in 0.8s 0.1s ease-out both' }}>
+          <p className="text-5xl font-extrabold tracking-tighter leading-none text-white mb-1">
+            {livery.heroFeatureStat?.value || '3.2M+'}
+          </p>
+          <p className="text-white/50 text-xs leading-relaxed max-w-[260px]">
+            unique shoppers across 500+ stores — the richest shopper journey data in Australian pharmacy
+          </p>
+        </div>
+
+        {/* Stat pills — horizontal scroll */}
+        <div className="flex gap-2 mt-5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
+          {mobileStats.map((stat, idx) => {
+            const Icon = stat.icon
+            return (
+              <div
+                key={stat.label}
+                className="flex items-center gap-2.5 bg-white/[0.10] backdrop-blur-sm border border-white/[0.08] rounded-xl px-3.5 py-2.5 shrink-0"
+                style={{ animation: `hero-fade-in 0.5s ${0.3 + idx * 0.1}s ease-out both` }}
+              >
+                <div className="w-8 h-8 rounded-lg bg-white/[0.12] flex items-center justify-center">
+                  <Icon className="w-4 h-4 text-white/80" />
+                </div>
+                <div>
+                  <p className="text-base font-bold text-white leading-none">{stat.value}</p>
+                  <p className="text-[10px] text-white/40 mt-0.5">{stat.label}</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -196,36 +221,30 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen flex-col lg:flex-row">
-      {/* Left hero */}
+      {/* Mobile hero banner — visible only on mobile/tablet */}
+      <div className="lg:hidden">
+        <MobileHero livery={livery} />
+      </div>
+
+      {/* Desktop hero — hidden on mobile */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-b from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
-        {/* Background layers */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Ambient glow */}
           <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-white/[0.04] blur-3xl" />
           <div className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full bg-white/[0.03] blur-3xl" />
-
-          {/* Flowing data particles */}
           <DataParticles />
-
-          {/* Pulse rings centred on the journey funnel area */}
           <div className="absolute right-[15%] top-[45%]">
             <PulseRings />
             <OrbitingIcons />
           </div>
         </div>
 
-        {/* Foreground content */}
         <div className="relative z-10 flex flex-col justify-between h-full px-12 xl:px-16 py-10">
-          {/* Top: Logo */}
           <div style={{ animation: 'hero-fade-in 0.8s ease-out both' }}>
             <img src={livery.logoWhite} alt={livery.name} className="h-12 object-contain object-left" />
           </div>
 
-          {/* Middle: Content + Funnel side by side */}
           <div className="flex items-center gap-8 xl:gap-12 flex-1 py-8">
-            {/* Left text column */}
             <div className="flex-1 min-w-0">
-              {/* Big number callout */}
               {livery.heroFeatureStat && (
                 <div className="mb-6" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
                   <p className="text-7xl xl:text-8xl font-extrabold tracking-tighter leading-none mb-2 text-white">
@@ -236,44 +255,32 @@ export function LoginPage() {
                   </p>
                 </div>
               )}
-
               {!livery.heroFeatureStat && (
                 <h2 className="text-4xl xl:text-5xl font-bold leading-tight mb-4" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
                   {livery.heroLine1}<br />
                   <span className="text-white/70">{livery.heroLine2}</span>
                 </h2>
               )}
-
               <p className="text-white/35 text-sm max-w-sm mb-8 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
                 {livery.heroSubtext}
               </p>
-
-              {/* Stat cards — 2×2 grid */}
               <div className="grid grid-cols-2 gap-2.5 max-w-sm" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
                 {livery.heroStats.map((stat, idx) => (
-                  <div
-                    key={stat.label}
+                  <div key={stat.label}
                     className="bg-white/[0.07] backdrop-blur-sm border border-white/[0.08] rounded-lg px-4 py-3 hover:bg-white/[0.12] transition-colors"
-                    style={{ animation: `hero-fade-in 0.6s ${1.0 + idx * 0.12}s ease-out both` }}
-                  >
+                    style={{ animation: `hero-fade-in 0.6s ${1.0 + idx * 0.12}s ease-out both` }}>
                     <p className="text-xl font-bold tracking-tight text-white">{stat.value}</p>
                     <p className="text-[10px] text-white/40 mt-0.5">{stat.label}</p>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Right: Journey funnel visualization */}
-            <div
-              className="hidden xl:flex flex-col items-center shrink-0"
-              style={{ animation: 'hero-fade-in 1s 0.5s ease-out both' }}
-            >
+            <div className="hidden xl:flex flex-col items-center shrink-0" style={{ animation: 'hero-fade-in 1s 0.5s ease-out both' }}>
               <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-white/30 mb-4">Shopper Journey</p>
               <JourneyFunnel />
             </div>
           </div>
 
-          {/* Bottom: Powered by */}
           <div style={{ animation: 'hero-fade-in 0.8s 1.5s ease-out both' }}>
             <p className="text-[10px] text-white/25">
               Powered by {livery.poweredBy} · Credit card transaction intelligence
@@ -282,18 +289,18 @@ export function LoginPage() {
         </div>
       </div>
 
-      {/* Right login form */}
+      {/* Login form */}
       <div className="flex-1 lg:max-w-md flex items-center justify-center px-5 sm:px-8 bg-white">
-        <div className="w-full max-w-sm">
-          {/* Logo on white bg */}
-          <div className="mb-8">
-            <img src={livery.logoColor} alt={livery.name} className="h-12 object-contain object-left" />
+        <div className="w-full max-w-sm" style={{ animation: 'hero-fade-in 0.6s 0.2s ease-out both' }}>
+          {/* Logo */}
+          <div className="mb-6 sm:mb-8">
+            <img src={livery.logoColor} alt={livery.name} className="h-10 sm:h-12 object-contain object-left" />
           </div>
 
-          <h3 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h3>
-          <p className="text-sm text-slate-500 mb-8">Sign in to access your shopper intelligence dashboard.</p>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-1">Welcome back</h3>
+          <p className="text-xs sm:text-sm text-slate-500 mb-6 sm:mb-8">Sign in to access your shopper intelligence dashboard.</p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Username</label>
               <input
@@ -301,11 +308,10 @@ export function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter username"
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
                 autoFocus
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
               <div className="relative">
@@ -314,32 +320,31 @@ export function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors pr-10"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors pr-10"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                >
+                <button type="button" onClick={() => setShowPassword((s) => !s)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
             {error && (
-              <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+              <p className="text-sm text-red-500 bg-red-50 rounded-xl px-3 py-2.5">{error}</p>
             )}
 
-            <button
-              type="submit"
-              disabled={loading || !username || !password}
-              className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Signing in...' : 'Sign In'}
+            <button type="submit" disabled={loading || !username || !password}
+              className="w-full bg-primary text-primary-foreground py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]">
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" style={{ animation: 'spin 0.8s linear infinite' }} />
+                  Signing in...
+                </span>
+              ) : 'Sign In'}
             </button>
           </form>
 
-          <p className="text-xs text-slate-400 text-center mt-8">
+          <p className="text-[10px] text-slate-400 text-center mt-6 sm:mt-8">
             Powered by {livery.poweredBy}
           </p>
         </div>

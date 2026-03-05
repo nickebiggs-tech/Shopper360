@@ -117,8 +117,8 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/50" onClick={onMobileClose} />
-          <aside className="relative w-72 max-w-[80vw] flex flex-col bg-gradient-to-b from-sidebar-from to-sidebar-to text-white shadow-2xl animate-slide-in">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onMobileClose} />
+          <aside className="relative w-72 max-w-[80vw] flex flex-col bg-gradient-to-b from-sidebar-from to-sidebar-to text-white shadow-2xl animate-slide-in safe-area-inset">
             {navContent}
           </aside>
         </div>

@@ -46,10 +46,14 @@
     -moz-osx-font-smoothing: grayscale;
     background-color: #f8fafc;
     color: #1e293b;
+    /* Prevent mobile bounce/overscroll */
+    overscroll-behavior: none;
   }
 
   html {
     scroll-behavior: smooth;
+    /* Prevent text size adjustment on rotation */
+    -webkit-text-size-adjust: 100%;
   }
 }
 
@@ -71,9 +75,18 @@
     background: #cbd5e1;
     border-radius: 3px;
   }
+
+  /* Hide scrollbar for mobile stat pills */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-/* ---- Animations ---- */
+/* ---- Core Animations ---- */
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(8px); }
@@ -101,11 +114,12 @@
 }
 
 @keyframes spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); transform-origin: center; }
-  to { transform: translate(-50%, -50%) rotate(360deg); transform-origin: center; }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Login journey animations */
+/* ---- Login Hero Animations ---- */
+
 @keyframes flow-up-1 {
   0% { transform: translateY(0); opacity: 0; }
   10% { opacity: 0.7; }
@@ -124,6 +138,7 @@
   90% { opacity: 0.6; }
   100% { transform: translateY(-400px); opacity: 0; }
 }
+
 @keyframes pulse-ring {
   0%, 100% { transform: scale(1); opacity: 0.15; }
   50% { transform: scale(1.08); opacity: 0.25; }
@@ -132,10 +147,12 @@
   0%, 100% { transform: scale(1); opacity: 0.08; }
   50% { transform: scale(1.12); opacity: 0.18; }
 }
+
 @keyframes float-gentle {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+
 @keyframes orbit {
   from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
   to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
@@ -144,13 +161,16 @@
   from { transform: rotate(0deg) translateX(190px) rotate(0deg); }
   to { transform: rotate(360deg) translateX(190px) rotate(-360deg); }
 }
+
 @keyframes dash-flow {
   to { stroke-dashoffset: -20; }
 }
+
 @keyframes hero-fade-in {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes hero-number-in {
   from { opacity: 0; transform: translateY(16px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -170,6 +190,14 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ---- Animated glow bar for KPI accents ---- */
+@keyframes kpi-glow-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* ---- Class-based animations ---- */
 
 .animate-fade-in {
   animation: fade-in 0.4s ease-out both;
@@ -195,7 +223,7 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* Staggered children animation */
+/* ---- Staggered children animation ---- */
 .stagger-children > * {
   animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -208,7 +236,7 @@
 .stagger-children > *:nth-child(7) { animation-delay: 360ms; }
 .stagger-children > *:nth-child(8) { animation-delay: 420ms; }
 
-/* Chart card hover effect */
+/* ---- Chart card with mobile-optimised hover ---- */
 .chart-card {
   transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
@@ -217,7 +245,7 @@
   transform: translateY(-1px);
 }
 
-/* KPI card hover lift */
+/* KPI card hover + active lift */
 .kpi-hover {
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -225,8 +253,11 @@
   box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
 }
+.kpi-hover:active {
+  transform: translateY(0px);
+}
 
-/* Gradient text utility */
+/* Gradient text */
 .text-gradient {
   background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
   -webkit-background-clip: text;
@@ -234,12 +265,13 @@
   background-clip: text;
 }
 
-/* Recharts tooltip styling */
+/* ---- Recharts tooltip — mobile-friendly ---- */
 .recharts-default-tooltip {
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.12) !important;
   border: 1px solid #e2e8f0 !important;
-  padding: 10px 14px !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
 }
 
 .recharts-tooltip-label {
@@ -248,7 +280,53 @@
   margin-bottom: 4px !important;
 }
 
-/* Smooth page transitions */
+/* ---- Smooth page transitions ---- */
 .page-enter {
   animation: fade-in-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ---- Mobile touch feedback ---- */
+@media (max-width: 1024px) {
+  .chart-card:active {
+    transform: scale(0.99);
+    transition: transform 0.1s ease;
+  }
+
+  .kpi-hover:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* ---- KPI accent stripe ---- */
+.kpi-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  overflow: hidden;
+}
+
+.kpi-accent-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: kpi-glow-slide 3s ease-in-out infinite;
+}
+
+/* ---- Recharts mobile legend sizing ---- */
+@media (max-width: 640px) {
+  .recharts-legend-item-text {
+    font-size: 10px !important;
+  }
+  .recharts-legend-wrapper {
+    padding-top: 4px !important;
+  }
 }
