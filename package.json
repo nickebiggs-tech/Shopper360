@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -43,6 +44,7 @@
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.16",
+    "gh-pages": "^6.3.0",
     "globals": "^15.14.0",
     "tailwindcss": "^4.0.0",
     "typescript": "~5.6.2",

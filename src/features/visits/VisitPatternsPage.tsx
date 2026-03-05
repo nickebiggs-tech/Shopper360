@@ -83,7 +83,7 @@ export function VisitPatternsPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KPICard
           title="Monthly Visits"
           value={formatNumber(selectedSummary?.visitCount ?? 0)}
@@ -113,7 +113,7 @@ export function VisitPatternsPage() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Visit Volume Trend */}
         <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Visit Volume Over Time</h3>

@@ -62,7 +62,7 @@ export function NationalComparisonPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KPICard
           title="Your Avg Basket"
           value={formatCurrency(latest?.avgBasketValue_YourStore ?? 0)}
@@ -86,7 +86,7 @@ export function NationalComparisonPage() {
       </div>
 
       {/* Tier Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {[
           { title: 'Avg Basket Value', yours: latest?.avgBasketValue_YourStore, median: latest?.avgBasketValue_Median, p75: latest?.avgBasketValue_P75, format: formatCurrency },
           { title: 'Retention Rate', yours: latest?.retentionRate_YourStore, median: latest?.retentionRate_Median, p75: latest?.retentionRate_P75, format: (v: number) => formatPercentRaw(v) },
@@ -112,7 +112,7 @@ export function NationalComparisonPage() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
         <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 chart-card animate-fade-in-up">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg Basket Value — Your Store vs National</h3>
           <ResponsiveContainer width="100%" height={300}>

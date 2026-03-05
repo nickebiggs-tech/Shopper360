@@ -60,7 +60,7 @@ export function SegmentsPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KPICard
           title="Total Customers"
           value={formatNumber(totalCustomers)}
@@ -116,7 +116,7 @@ export function SegmentsPage() {
         </div>
 
         {/* Retention by Segment */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 lg:col-span-2">
+        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5 lg:col-span-2">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg Retention Score by Segment</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={retentionBySegment}>
