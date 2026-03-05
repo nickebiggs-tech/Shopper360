@@ -15,6 +15,7 @@ import { AskAgentPage } from './features/agent/AskAgentPage'
 import { BrandingPage } from './features/admin/BrandingPage'
 import { SupplierInsightsPage } from './features/suppliers/SupplierInsightsPage'
 import { LoyaltyLeakagePage } from './features/loyalty/LoyaltyLeakagePage'
+import { ShopperPersonasPage } from './features/personas/ShopperPersonasPage'
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
                 <Route path="/segments" element={<SegmentsPage />} />
                 <Route path="/national" element={<NationalComparisonPage />} />
                 <Route path="/suppliers" element={<SupplierInsightsPage />} />
+                <Route path="/personas" element={<ShopperPersonasPage />} />
                 <Route path="/loyalty" element={<LoyaltyLeakagePage />} />
                 <Route path="/campaigns" element={<CampaignHistoryPage />} />
                 <Route path="/ask" element={<AskAgentPage />} />

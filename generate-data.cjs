@@ -74,7 +74,7 @@ function generateSummary() {
     const activePct = 0.62 + t * 0.04 + (rand() - 0.5) * 0.008;
     const activeCust = Math.round(totalCust * activePct);
     const newCust = Math.round(42000 + t * 26000 + (rand() - 0.5) * 3000);
-    const avgBasket = parseFloat((43.20 + t * 3.80 + (rand() - 0.5) * 0.50).toFixed(2));
+    const avgBasket = parseFloat((58.40 + t * 5.60 + (rand() - 0.5) * 0.80).toFixed(2));
     // Base ~$792M/month, with seasonal and slight growth
     const baseRev = 760000000 + t * 64000000;
     const totalRev = Math.round(baseRev * seasonal[i]);
@@ -167,10 +167,10 @@ function generateNational() {
     const t = i / 11;
     const s = seasonal[i];
     rows.push([MONTHS[i],
-      parseFloat((26 + t * 3 + s * 8 + (rand() - 0.5) * 0.3).toFixed(2)),
-      parseFloat((35 + t * 4 + s * 8 + (rand() - 0.5) * 0.3).toFixed(2)),
-      parseFloat((47 + t * 5 + s * 8 + (rand() - 0.5) * 0.4).toFixed(2)),
-      parseFloat((43 + t * 4 + s * 8 + (rand() - 0.5) * 0.4).toFixed(2)),
+      parseFloat((38 + t * 4 + s * 8 + (rand() - 0.5) * 0.3).toFixed(2)),
+      parseFloat((52 + t * 5 + s * 8 + (rand() - 0.5) * 0.3).toFixed(2)),
+      parseFloat((68 + t * 6 + s * 8 + (rand() - 0.5) * 0.4).toFixed(2)),
+      parseFloat((62 + t * 5 + s * 8 + (rand() - 0.5) * 0.4).toFixed(2)),
       parseFloat((56 + t * 4 + (rand() - 0.5) * 0.5).toFixed(1)),
       parseFloat((64 + t * 4 + (rand() - 0.5) * 0.4).toFixed(1)),
       parseFloat((74 + t * 4 + (rand() - 0.5) * 0.4).toFixed(1)),
@@ -323,7 +323,7 @@ function generateCustomers() {
     'Power Shoppers': {
       count: 960,
       visits: [52, 168],       // weekly+ shoppers over their tenure
-      basket: [68, 142],       // big baskets: scripts + vitamins + beauty
+      basket: [78, 165],       // big baskets: scripts + vitamins + beauty
       spend: [5200, 12800],    // ~$5.2K-$12.8K annual
       catCount: [6, 14],
       retention: [80, 99],
@@ -343,7 +343,7 @@ function generateCustomers() {
     'Regular Shoppers': {
       count: 2800,
       visits: [18, 56],        // 1.5-4.5x/month
-      basket: [38, 68],        // moderate baskets
+      basket: [48, 78],        // moderate baskets
       spend: [1800, 3600],     // ~$1.8-3.6K annual
       catCount: [3, 8],
       retention: [56, 82],
@@ -362,7 +362,7 @@ function generateCustomers() {
     'Occasional Visitors': {
       count: 2240,
       visits: [3, 16],         // quarterly/seasonal
-      basket: [22, 48],        // small/medium baskets
+      basket: [32, 58],        // small/medium baskets
       spend: [300, 1200],      // ~$300-1.2K annual
       catCount: [1, 4],
       retention: [22, 52],
@@ -381,7 +381,7 @@ function generateCustomers() {
     'New Customers': {
       count: 1200,
       visits: [1, 10],         // just started
-      basket: [30, 62],        // exploring
+      basket: [38, 72],        // exploring
       spend: [80, 600],        // early spend
       catCount: [1, 4],
       retention: [42, 74],
@@ -400,7 +400,7 @@ function generateCustomers() {
     'At-Risk': {
       count: 800,
       visits: [10, 48],        // were active, now lapsed
-      basket: [26, 54],        // used to spend more
+      basket: [34, 64],        // used to spend more
       spend: [400, 2800],      // lifetime value
       catCount: [2, 6],
       retention: [4, 28],
@@ -466,7 +466,7 @@ function generateCustomers() {
       const prevMonthSpend = parseFloat((avgBasket * monthlyEst * (0.75 + rand() * 0.5)).toFixed(2));
 
       const spendChange = randFloat(def.chg[0], def.chg[1]);
-      const natAvgBasket = randFloat(38, 42);
+      const natAvgBasket = randFloat(54, 62);
       const natAvgVisits = randFloat(2.4, 2.8, 1);
 
       // ── Australian Shopper Behaviour fields (CBA credit card insights) ──

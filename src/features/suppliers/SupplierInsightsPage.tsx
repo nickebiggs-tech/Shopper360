@@ -3,12 +3,13 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   Cell, ScatterChart, Scatter, ZAxis,
 } from 'recharts'
-import { Factory, TrendingUp, Package, DollarSign, ChevronDown, ChevronUp } from 'lucide-react'
+import { Factory, TrendingUp, Package, DollarSign, ChevronDown, ChevronUp, Users } from 'lucide-react'
 import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
+import { PersonaPanel } from '../../components/ui/PersonaPanel'
 import { formatCurrency, formatCompact, formatNumber } from '../../lib/formatters'
 import { cn } from '../../lib/utils'
-import type { Supplier } from '../../data/types'
+import type { Supplier, Customer } from '../../data/types'
 
 const COLORS = ['#0A8BA8', '#10B39B', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316', '#6366F1', '#84CC16', '#06B6D4', '#E11D48', '#7C3AED', '#D97706', '#0284C7']
 
@@ -215,7 +216,7 @@ export function SupplierInsightsPage() {
               </button>
 
               {expandedSupplier === sup.mfrName && (
-                <SupplierDetail supplier={sup} />
+                <SupplierDetail supplier={sup} customers={state.customers} />
               )}
             </div>
           ))}
@@ -225,10 +226,19 @@ export function SupplierInsightsPage() {
   )
 }
 
-function SupplierDetail({ supplier }: { supplier: Supplier }) {
+function SupplierDetail({ supplier, customers }: { supplier: Supplier; customers: Customer[] }) {
+  const [showPersona, setShowPersona] = useState(false)
   const shareGap = supplier.yourStoreShare - supplier.mfrMarketSharePct
   const isOverIndex = shareGap > 0
   const isUnderIndex = shareGap < -0.3
+
+  // Filter customers who buy in this supplier's categories
+  const supplierCustomers = useMemo(() => {
+    const cats = new Set(supplier.topCategories)
+    return customers.filter((c) =>
+      cats.has(c.topCategory) || cats.has(c.secondCategory) || cats.has(c.thirdCategory)
+    )
+  }, [supplier.topCategories, customers])
 
   return (
     <div className="border-t border-slate-200 p-4 bg-slate-50 animate-fade-in space-y-4">
@@ -274,6 +284,26 @@ function SupplierDetail({ supplier }: { supplier: Supplier }) {
         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-xs text-emerald-700">
           <strong>Strong performer:</strong> Your store over-indexes on {supplier.mfrName} by +{shareGap.toFixed(1)}pp vs national.
           This supplier is a key traffic driver — protect with good shelf placement and promotional support.
+        </div>
+      )}
+
+      {/* Shopper Persona Toggle */}
+      <button
+        onClick={() => setShowPersona(!showPersona)}
+        className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:opacity-90 transition-opacity"
+      >
+        <Users className="w-3.5 h-3.5" />
+        {showPersona ? 'Hide' : 'View'} {supplier.mfrName} Shopper Persona
+        <span className="text-white/60 ml-1">({formatNumber(supplierCustomers.length)} shoppers)</span>
+      </button>
+
+      {showPersona && supplierCustomers.length > 0 && (
+        <div className="mt-3 animate-fade-in-up">
+          <PersonaPanel
+            customers={supplierCustomers}
+            title={`${supplier.mfrName} Shopper Profile`}
+            compact={true}
+          />
         </div>
       )}
     </div>

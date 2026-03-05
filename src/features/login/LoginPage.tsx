@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
-import { Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp } from 'lucide-react'
+import { Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp, Pill, Heart, Sparkles, Baby, Sun, FlaskConical, Stethoscope } from 'lucide-react'
 
 /* ─── animated data-particle columns ─── */
 function DataParticles({ count = 12 }: { count?: number }) {
@@ -60,30 +60,31 @@ function PulseRings() {
   )
 }
 
-/* ─── orbiting category icons ─── */
+/* ─── orbiting category icons — professional SVG icons ─── */
 function OrbitingIcons() {
   const icons = [
-    { emoji: '💊', delay: '0s', ring: 'orbit' },
-    { emoji: '🧴', delay: '-15s', ring: 'orbit' },
-    { emoji: '🩹', delay: '-30s', ring: 'orbit' },
-    { emoji: '👶', delay: '-45s', ring: 'orbit' },
-    { emoji: '💄', delay: '-10s', ring: 'orbit-outer' },
-    { emoji: '🧪', delay: '-30s', ring: 'orbit-outer' },
-    { emoji: '☀️', delay: '-50s', ring: 'orbit-outer' },
+    { Icon: Pill, delay: '0s', ring: 'orbit' },
+    { Icon: Heart, delay: '-15s', ring: 'orbit' },
+    { Icon: Stethoscope, delay: '-30s', ring: 'orbit' },
+    { Icon: Baby, delay: '-45s', ring: 'orbit' },
+    { Icon: Sparkles, delay: '-10s', ring: 'orbit-outer' },
+    { Icon: FlaskConical, delay: '-30s', ring: 'orbit-outer' },
+    { Icon: Sun, delay: '-50s', ring: 'orbit-outer' },
   ]
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
       {icons.map((ic, i) => (
-        <span
+        <div
           key={i}
-          className="absolute left-0 top-0 text-lg opacity-[0.35]"
+          className="absolute left-0 top-0"
           style={{
             animation: `${ic.ring} 60s ${ic.delay} linear infinite`,
-            filter: 'grayscale(0.3)',
           }}
         >
-          {ic.emoji}
-        </span>
+          <div className="w-9 h-9 rounded-full bg-white/[0.10] backdrop-blur-sm flex items-center justify-center border border-white/[0.08]">
+            <ic.Icon className="w-4 h-4 text-white/50" strokeWidth={1.5} />
+          </div>
+        </div>
       ))}
     </div>
   )

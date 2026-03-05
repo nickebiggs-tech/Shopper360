@@ -15,6 +15,7 @@ import {
   X,
   Package,
   Heart,
+  UserCircle,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { useTheme } from '../../theme/ThemeProvider'
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { to: '/segments', icon: PieChart, label: 'Segments' },
   { to: '/national', icon: BarChart3, label: 'Benchmarks' },
   { to: '/suppliers', icon: Package, label: 'Suppliers' },
+  { to: '/personas', icon: UserCircle, label: 'Personas' },
   { to: '/loyalty', icon: Heart, label: 'Loyalty' },
   { to: '/campaigns', icon: Target, label: 'Campaigns' },
   { to: '/ask', icon: MessageSquare, label: 'Ask Shopper360' },
