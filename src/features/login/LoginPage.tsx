@@ -46,8 +46,7 @@ function DataParticles({ count = 12 }: { count?: number }) {
 
 /* ═══════════════════════════════════════════════════════════════════════
    SHOPPER ECOSYSTEM — the hero visual
-   Tells the story: Persona → CW hub → Shopping journey → Competitor leakage
-   Bigger SVG (viewBox 600×600) with generous margins for labels
+   viewBox 750×680 — shifted left-of-center so right-side labels don't clip
    ═══════════════════════════════════════════════════════════════════════ */
 function ShopperEcosystem() {
   const competitors = [
@@ -60,7 +59,6 @@ function ShopperEcosystem() {
     { name: 'Other Pharmacy', angle: 218, Icon: FlaskConical, color: '#F97316', share: '4%' },
   ]
 
-  // Journey stages — positioned on inner ring
   const journeyStages = [
     { label: 'Browse', angle: -70, Icon: Search, step: 1 },
     { label: 'Compare', angle: -20, Icon: BarChart3, step: 2 },
@@ -68,16 +66,17 @@ function ShopperEcosystem() {
     { label: 'Repeat', angle: 80, Icon: Repeat, step: 4 },
   ]
 
-  const cx = 300
-  const cy = 300
-  const cwR = 54          // CW hub
-  const journeyR = 110    // journey stage ring
-  const midWebR = 170     // inner web ring
-  const outerR = 235      // competitor nodes
+  // Shifted left of center so right-side labels have room
+  const cx = 320
+  const cy = 310
+  const cwR = 58
+  const journeyR = 120
+  const midWebR = 185
+  const outerR = 255
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full max-w-[620px] mx-auto">
-      {/* ─── Persona card — the shopper ─── */}
+    <div className="relative flex flex-col items-center justify-center w-full max-w-[660px] mx-auto">
+      {/* ─── Persona card ─── */}
       <div
         className="bg-white/[0.07] backdrop-blur-md border border-white/[0.12] rounded-2xl px-5 py-4 mb-3 w-[290px]"
         style={{ animation: 'hero-fade-in 0.8s 0.2s ease-out both' }}
@@ -99,7 +98,6 @@ function ShopperEcosystem() {
             </div>
           </div>
         </div>
-        {/* Mini share-of-wallet bar */}
         <div className="mt-3 flex items-center gap-2">
           <span className="text-[8px] text-white/30 shrink-0 w-[52px]">CW wallet</span>
           <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/[0.06] flex">
@@ -109,32 +107,32 @@ function ShopperEcosystem() {
         </div>
       </div>
 
-      {/* ─── Main ecosystem SVG — 600×600 viewBox for breathing room ─── */}
-      <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg"
-        className="w-full max-w-[560px] h-auto"
+      {/* ─── Main ecosystem SVG ─── */}
+      <svg viewBox="0 0 750 680" fill="none" xmlns="http://www.w3.org/2000/svg"
+        className="w-full max-w-[620px] h-auto"
       >
-        {/* ── Outer web ring (drawn with animation) ── */}
+        {/* Outer web ring */}
         <circle cx={cx} cy={cy} r={outerR}
           stroke="white" strokeWidth="0.6" strokeOpacity="0.07"
-          strokeDasharray="1500"
+          strokeDasharray="1600"
           style={{ animation: 'eco-ring-draw 2s 1.8s ease-out both' }}
         />
 
-        {/* ── Mid web ring ── */}
+        {/* Mid web ring */}
         <circle cx={cx} cy={cy} r={midWebR}
           stroke="white" strokeWidth="0.5" strokeOpacity="0.08"
           strokeDasharray="1200"
           style={{ animation: 'eco-ring-draw 1.8s 1.4s ease-out both' }}
         />
 
-        {/* ── Journey ring (dashed) ── */}
+        {/* Journey ring */}
         <circle cx={cx} cy={cy} r={journeyR}
           stroke="white" strokeWidth="0.8" strokeOpacity="0.1"
           strokeDasharray="6 4"
           style={{ animation: 'eco-ring-draw 1.5s 0.9s ease-out both' }}
         />
 
-        {/* ── Web spokes — from center to outer ring ── */}
+        {/* Web spokes */}
         {competitors.map((comp, i) => {
           const rad = (comp.angle * Math.PI) / 180
           const ex = cx + outerR * Math.cos(rad)
@@ -149,7 +147,7 @@ function ShopperEcosystem() {
           )
         })}
 
-        {/* ── Cross-web connections (mid ring polygon) ── */}
+        {/* Cross-web connections */}
         {competitors.map((comp, i) => {
           const next = competitors[(i + 1) % competitors.length]!
           const rad1 = (comp.angle * Math.PI) / 180
@@ -164,13 +162,13 @@ function ShopperEcosystem() {
           )
         })}
 
-        {/* ── Animated spend-flow dashes — CW → competitors ── */}
+        {/* Animated spend-flow dashes */}
         {competitors.map((comp, i) => {
           const rad = (comp.angle * Math.PI) / 180
-          const sx = cx + (cwR + 10) * Math.cos(rad)
-          const sy = cy + (cwR + 10) * Math.sin(rad)
-          const ex = cx + (outerR - 24) * Math.cos(rad)
-          const ey = cy + (outerR - 24) * Math.sin(rad)
+          const sx = cx + (cwR + 12) * Math.cos(rad)
+          const sy = cy + (cwR + 12) * Math.sin(rad)
+          const ex = cx + (outerR - 26) * Math.cos(rad)
+          const ey = cy + (outerR - 26) * Math.sin(rad)
           return (
             <line key={`flow-${comp.name}`}
               x1={sx} y1={sy} x2={ex} y2={ey}
@@ -181,11 +179,11 @@ function ShopperEcosystem() {
           )
         })}
 
-        {/* ── CW Hub — pulsing center ── */}
-        <circle cx={cx} cy={cy} r={cwR + 14} fill="white" fillOpacity="0.015"
+        {/* CW Hub — center */}
+        <circle cx={cx} cy={cy} r={cwR + 16} fill="white" fillOpacity="0.015"
           style={{ animation: 'pulse-ring 3s 0.8s ease-in-out infinite' }}
         />
-        <circle cx={cx} cy={cy} r={cwR + 6} fill="white" fillOpacity="0.03"
+        <circle cx={cx} cy={cy} r={cwR + 7} fill="white" fillOpacity="0.03"
           stroke="white" strokeWidth="0.5" strokeOpacity="0.1"
           style={{ animation: 'eco-scale-in 0.6s 0.5s ease-out both' }}
         />
@@ -196,106 +194,103 @@ function ShopperEcosystem() {
 
         {/* CW text */}
         <g style={{ animation: 'eco-scale-in 0.5s 0.6s ease-out both' }}>
-          <text x={cx} y={cy - 6} textAnchor="middle" fill="white" fillOpacity="0.95"
-            fontSize="22" fontWeight="800" fontFamily="inherit" letterSpacing="2">
+          <text x={cx} y={cy - 7} textAnchor="middle" fill="white" fillOpacity="0.95"
+            fontSize="24" fontWeight="800" fontFamily="inherit" letterSpacing="2">
             CW
           </text>
-          <text x={cx} y={cy + 13} textAnchor="middle" fill="white" fillOpacity="0.35"
-            fontSize="9" fontWeight="600" fontFamily="inherit" letterSpacing="1">
+          <text x={cx} y={cy + 14} textAnchor="middle" fill="white" fillOpacity="0.35"
+            fontSize="10" fontWeight="600" fontFamily="inherit" letterSpacing="1">
             PHARMACY
           </text>
         </g>
 
-        {/* ── Journey stages — inner ring ── */}
+        {/* Journey stages — bigger circles, larger labels */}
         {journeyStages.map((stage, i) => {
           const rad = (stage.angle * Math.PI) / 180
           const sx = cx + journeyR * Math.cos(rad)
           const sy = cy + journeyR * Math.sin(rad)
-          const connX = cx + (cwR + 4) * Math.cos(rad)
-          const connY = cy + (cwR + 4) * Math.sin(rad)
+          const connX = cx + (cwR + 5) * Math.cos(rad)
+          const connY = cy + (cwR + 5) * Math.sin(rad)
           const delay = 1.0 + i * 0.25
 
           return (
             <g key={stage.label} style={{ animation: `hero-fade-in 0.5s ${delay}s ease-out both` }}>
-              {/* Connector line */}
-              <line x1={connX} y1={connY} x2={sx - 12 * Math.cos(rad)} y2={sy - 12 * Math.sin(rad)}
+              <line x1={connX} y1={connY} x2={sx - 14 * Math.cos(rad)} y2={sy - 14 * Math.sin(rad)}
                 stroke="white" strokeWidth="0.6" strokeOpacity="0.12" strokeDasharray="2 3" />
-              {/* Stage circle */}
-              <circle cx={sx} cy={sy} r={18} fill="white" fillOpacity="0.06"
-                stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
-              {/* Icon */}
-              <foreignObject x={sx - 8} y={sy - 13} width={16} height={16}>
-                <stage.Icon style={{ width: 13, height: 13, margin: '1.5px', color: 'white', opacity: 0.55 }} />
+              {/* Bigger stage circle */}
+              <circle cx={sx} cy={sy} r={22} fill="white" fillOpacity="0.06"
+                stroke="white" strokeWidth="1" strokeOpacity="0.18" />
+              {/* Icon — bigger */}
+              <foreignObject x={sx - 9} y={sy - 14} width={18} height={18}>
+                <stage.Icon style={{ width: 15, height: 15, margin: '1.5px', color: 'white', opacity: 0.6 }} />
               </foreignObject>
-              {/* Label */}
-              <text x={sx} y={sy + 12} textAnchor="middle" fill="white" fillOpacity="0.45"
-                fontSize="8" fontWeight="600" fontFamily="inherit">
+              {/* Label — bigger */}
+              <text x={sx} y={sy + 14} textAnchor="middle" fill="white" fillOpacity="0.5"
+                fontSize="9.5" fontWeight="600" fontFamily="inherit">
                 {stage.label}
               </text>
-              {/* Step number badge */}
-              <circle cx={sx + 14} cy={sy - 14} r={6} fill="white" fillOpacity="0.1" />
-              <text x={sx + 14} y={sy - 11} textAnchor="middle" fill="white" fillOpacity="0.4"
-                fontSize="7" fontWeight="700" fontFamily="inherit">
+              {/* Step number */}
+              <circle cx={sx + 16} cy={sy - 16} r={7} fill="white" fillOpacity="0.1" />
+              <text x={sx + 16} y={sy - 13} textAnchor="middle" fill="white" fillOpacity="0.45"
+                fontSize="8" fontWeight="700" fontFamily="inherit">
                 {stage.step}
               </text>
             </g>
           )
         })}
 
-        {/* ── Arrow arc between journey stages ── */}
+        {/* Journey arc */}
         <path
-          d={`M ${cx + journeyR * Math.cos((-70 * Math.PI) / 180) + 20} ${cy + journeyR * Math.sin((-70 * Math.PI) / 180)}
+          d={`M ${cx + journeyR * Math.cos((-70 * Math.PI) / 180) + 24} ${cy + journeyR * Math.sin((-70 * Math.PI) / 180)}
               A ${journeyR} ${journeyR} 0 0 1
-              ${cx + journeyR * Math.cos((80 * Math.PI) / 180)} ${cy + journeyR * Math.sin((80 * Math.PI) / 180) - 20}`}
+              ${cx + journeyR * Math.cos((80 * Math.PI) / 180)} ${cy + journeyR * Math.sin((80 * Math.PI) / 180) - 24}`}
           stroke="white" strokeWidth="0.6" strokeOpacity="0.08" strokeDasharray="4 3"
           fill="none"
           style={{ animation: 'eco-ring-draw 2s 1.2s ease-out both' }}
         />
 
-        {/* ── Competitor nodes ── */}
+        {/* Competitor nodes — bigger, with clear labels */}
         {competitors.map((comp, i) => {
           const rad = (comp.angle * Math.PI) / 180
           const nx = cx + outerR * Math.cos(rad)
           const ny = cy + outerR * Math.sin(rad)
-          const lx = cx + (outerR + 30) * Math.cos(rad)
-          const ly = cy + (outerR + 30) * Math.sin(rad)
-          // Smart label anchoring based on position
+          const labelDist = outerR + 34
+          const lx = cx + labelDist * Math.cos(rad)
+          const ly = cy + labelDist * Math.sin(rad)
+          // Robust anchoring
           const isLeft = comp.angle > 100 || comp.angle < -100
-          const isTop = comp.angle < -50 && comp.angle > -130
-          const isBottom = comp.angle > 50 && comp.angle < 130
-          const anchor = isTop || isBottom ? 'middle' : isLeft ? 'end' : 'start'
+          const isNearTop = comp.angle < -50 && comp.angle > -130
+          const isNearBottom = comp.angle > 50 && comp.angle < 130
+          const anchor = isNearTop || isNearBottom ? 'middle' : isLeft ? 'end' : 'start'
           const delay = 2.2 + i * 0.12
 
           return (
             <g key={comp.name} style={{ animation: `hero-fade-in 0.5s ${delay}s ease-out both` }}>
-              {/* Glow behind node */}
-              <circle cx={nx} cy={ny} r={22} fill={comp.color} fillOpacity="0.06" />
-              {/* Node */}
-              <circle cx={nx} cy={ny} r={18} fill={comp.color} fillOpacity="0.12"
-                stroke={comp.color} strokeWidth="1.2" strokeOpacity="0.45" />
-              {/* Icon */}
-              <foreignObject x={nx - 9} y={ny - 9} width={18} height={18}>
-                <comp.Icon style={{ width: 14, height: 14, margin: '2px', color: comp.color, opacity: 0.85 }} />
+              <circle cx={nx} cy={ny} r={24} fill={comp.color} fillOpacity="0.06" />
+              <circle cx={nx} cy={ny} r={20} fill={comp.color} fillOpacity="0.12"
+                stroke={comp.color} strokeWidth="1.3" strokeOpacity="0.45" />
+              <foreignObject x={nx - 10} y={ny - 10} width={20} height={20}>
+                <comp.Icon style={{ width: 16, height: 16, margin: '2px', color: comp.color, opacity: 0.85 }} />
               </foreignObject>
-              {/* Label + share % */}
-              <text x={lx} y={ly} textAnchor={anchor} fill="white" fillOpacity="0.55"
-                fontSize="9.5" fontWeight="600" fontFamily="inherit">
+              {/* Label — bigger font */}
+              <text x={lx} y={ly} textAnchor={anchor} fill="white" fillOpacity="0.6"
+                fontSize="11" fontWeight="600" fontFamily="inherit">
                 {comp.name}
               </text>
-              <text x={lx} y={ly + 13} textAnchor={anchor} fill={comp.color}
-                fontSize="8" fontWeight="700" fontFamily="inherit" opacity="0.65">
+              <text x={lx} y={ly + 14} textAnchor={anchor} fill={comp.color}
+                fontSize="9.5" fontWeight="700" fontFamily="inherit" opacity="0.65">
                 {comp.share} of spend
               </text>
             </g>
           )
         })}
 
-        {/* ── "Where spend leaks" annotation ── */}
+        {/* "Where spend leaks" annotation */}
         <g style={{ animation: 'hero-fade-in 0.8s 3.2s ease-out both' }}>
-          <rect x={cx - 80} y={cy + outerR + 26} width={160} height={24} rx={12}
+          <rect x={cx - 90} y={cy + outerR + 28} width={180} height={26} rx={13}
             fill="white" fillOpacity="0.06" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" />
-          <text x={cx} y={cy + outerR + 42} textAnchor="middle" fill="white" fillOpacity="0.4"
-            fontSize="8.5" fontWeight="500" fontFamily="inherit">
+          <text x={cx} y={cy + outerR + 46} textAnchor="middle" fill="white" fillOpacity="0.4"
+            fontSize="9.5" fontWeight="500" fontFamily="inherit">
             72% of pharmacy spend leaks
           </text>
         </g>
@@ -315,16 +310,12 @@ function MobileHero({ livery }: { livery: { heroStats: { label: string; value: s
 
   return (
     <div className="relative bg-gradient-to-br from-hero-from via-hero-mid to-hero-to overflow-hidden">
-      {/* Background effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/4 right-1/4 w-48 h-48 rounded-full bg-white/[0.06] blur-2xl" />
         <div className="absolute bottom-0 left-1/4 w-32 h-32 rounded-full bg-white/[0.04] blur-2xl" />
         <DataParticles count={6} />
       </div>
-
-      {/* Content */}
       <div className="relative z-10 px-5 pt-8 pb-6">
-        {/* Big number */}
         <div style={{ animation: 'hero-number-in 0.8s 0.1s ease-out both' }}>
           <p className="text-5xl font-extrabold tracking-tighter leading-none text-white mb-1">
             {livery.heroFeatureStat?.value || '3.2M+'}
@@ -333,8 +324,6 @@ function MobileHero({ livery }: { livery: { heroStats: { label: string; value: s
             unique shoppers across 500+ stores — the richest shopper journey data in Australian pharmacy
           </p>
         </div>
-
-        {/* Stat pills — horizontal scroll */}
         <div className="flex gap-2 mt-5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
           {mobileStats.map((stat, idx) => {
             const Icon = stat.icon
@@ -386,14 +375,13 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen flex-col lg:flex-row">
-      {/* Mobile hero banner — visible only on mobile/tablet */}
+      {/* Mobile hero */}
       <div className="lg:hidden">
         <MobileHero livery={livery} />
       </div>
 
-      {/* Desktop hero — hidden on mobile */}
+      {/* Desktop hero */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-b from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
-        {/* Subtle background effects */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-[10%] right-[20%] w-[500px] h-[500px] rounded-full bg-white/[0.02] blur-3xl" />
           <div className="absolute bottom-[10%] left-[10%] w-[400px] h-[400px] rounded-full bg-white/[0.015] blur-3xl" />
@@ -401,7 +389,7 @@ export function LoginPage() {
         </div>
 
         <div className="relative z-10 flex flex-col justify-between h-full w-full px-10 xl:px-14 py-8">
-          {/* Top: logo + Shopper360 product name */}
+          {/* Top: logo + Shopper360 branding */}
           <div style={{ animation: 'hero-fade-in 0.8s ease-out both' }}>
             <img src={livery.logoWhite} alt={livery.name} className="h-11 object-contain object-left" />
             <p className="mt-2 text-[22px] xl:text-[26px] font-extrabold tracking-tight text-white/90 leading-none">
@@ -412,14 +400,14 @@ export function LoginPage() {
 
           {/* Center: stats + ecosystem */}
           <div className="flex items-center gap-6 xl:gap-10 flex-1 py-4">
-            {/* Left column — bigger stats */}
-            <div className="w-[280px] xl:w-[320px] shrink-0">
+            {/* Left column — BIGGER stat widgets */}
+            <div className="w-[300px] xl:w-[340px] shrink-0">
               {livery.heroFeatureStat && (
                 <div className="mb-6" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
                   <p className="text-7xl xl:text-8xl font-extrabold tracking-tighter leading-none mb-2 text-white">
                     {livery.heroFeatureStat.value}
                   </p>
-                  <p className="text-white/50 text-sm xl:text-base max-w-[280px] leading-relaxed">
+                  <p className="text-white/50 text-sm xl:text-base max-w-[300px] leading-relaxed">
                     {livery.heroFeatureStat.label}
                   </p>
                 </div>
@@ -430,28 +418,28 @@ export function LoginPage() {
                   <span className="text-white/70">{livery.heroLine2}</span>
                 </h2>
               )}
-              <p className="text-white/35 text-sm max-w-[280px] mb-8 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
+              <p className="text-white/35 text-sm max-w-[300px] mb-8 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
                 {livery.heroSubtext}
               </p>
-              <div className="grid grid-cols-2 gap-3 max-w-[300px]" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
+              <div className="grid grid-cols-2 gap-3.5 max-w-[320px]" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
                 {livery.heroStats.map((stat, idx) => (
                   <div key={stat.label}
-                    className="bg-white/[0.07] backdrop-blur-sm border border-white/[0.08] rounded-xl px-4 py-3.5 hover:bg-white/[0.12] transition-colors"
+                    className="bg-white/[0.07] backdrop-blur-sm border border-white/[0.08] rounded-xl px-5 py-4 hover:bg-white/[0.12] transition-colors"
                     style={{ animation: `hero-fade-in 0.6s ${1.0 + idx * 0.12}s ease-out both` }}>
-                    <p className="text-2xl xl:text-[26px] font-bold tracking-tight text-white leading-none">{stat.value}</p>
-                    <p className="text-[10px] xl:text-[11px] text-white/40 mt-1.5">{stat.label}</p>
+                    <p className="text-[28px] xl:text-[32px] font-bold tracking-tight text-white leading-none">{stat.value}</p>
+                    <p className="text-[11px] xl:text-xs text-white/45 mt-2 font-medium">{stat.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Right: Big Shopper Ecosystem — the hero */}
+            {/* Right: Shopper Ecosystem */}
             <div className="flex-1 flex items-center justify-center min-w-0">
               <ShopperEcosystem />
             </div>
           </div>
 
-          {/* Bottom — more readable footer */}
+          {/* Bottom footer */}
           <div className="flex items-center gap-3" style={{ animation: 'hero-fade-in 0.8s 3.5s ease-out both' }}>
             <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent to-white/10" />
             <p className="text-[11px] text-white/45 font-medium tracking-wide">
@@ -469,7 +457,6 @@ export function LoginPage() {
       {/* Login form */}
       <div className="flex-1 lg:max-w-md flex items-center justify-center px-5 sm:px-8 bg-white">
         <div className="w-full max-w-sm" style={{ animation: 'hero-fade-in 0.6s 0.2s ease-out both' }}>
-          {/* Logo */}
           <div className="mb-6 sm:mb-8">
             <img src={livery.logoColor} alt={livery.name} className="h-10 sm:h-12 object-contain object-left" />
           </div>
