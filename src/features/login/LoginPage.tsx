@@ -47,15 +47,16 @@ function DataParticles({ count = 12 }: { count?: number }) {
 /* ═══════════════════════════════════════════════════════════════════════
    SHOPPER ECOSYSTEM — the hero visual
    Tells the story: Persona → CW hub → Shopping journey → Competitor leakage
+   Bigger SVG (viewBox 600×600) with generous margins for labels
    ═══════════════════════════════════════════════════════════════════════ */
 function ShopperEcosystem() {
   const competitors = [
     { name: 'Priceline', angle: -90, Icon: Pill, color: '#3B82F6', share: '12%' },
     { name: 'Mecca / Sephora', angle: -39, Icon: Sparkles, color: '#EC4899', share: '8%' },
-    { name: 'Online', angle: 12, Icon: Globe, color: '#F59E0B', share: '15%' },
+    { name: 'Online Retail', angle: 12, Icon: Globe, color: '#F59E0B', share: '15%' },
     { name: 'Supermarkets', angle: 63, Icon: ShoppingCart, color: '#10B981', share: '18%' },
-    { name: 'Discount', angle: 116, Icon: Store, color: '#8B5CF6', share: '6%' },
-    { name: 'Terry White', angle: 167, Icon: Heart, color: '#06B6D4', share: '9%' },
+    { name: 'Discount Stores', angle: 116, Icon: Store, color: '#8B5CF6', share: '6%' },
+    { name: 'Amcal', angle: 167, Icon: Heart, color: '#06B6D4', share: '9%' },
     { name: 'Other Pharmacy', angle: 218, Icon: FlaskConical, color: '#F97316', share: '4%' },
   ]
 
@@ -67,18 +68,18 @@ function ShopperEcosystem() {
     { label: 'Repeat', angle: 80, Icon: Repeat, step: 4 },
   ]
 
-  const cx = 250
-  const cy = 250
-  const cwR = 48          // CW hub
-  const journeyR = 95     // journey stage ring
-  const midWebR = 145     // inner web ring
-  const outerR = 205      // competitor nodes
+  const cx = 300
+  const cy = 300
+  const cwR = 54          // CW hub
+  const journeyR = 110    // journey stage ring
+  const midWebR = 170     // inner web ring
+  const outerR = 235      // competitor nodes
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full max-w-[580px] mx-auto">
+    <div className="relative flex flex-col items-center justify-center w-full max-w-[620px] mx-auto">
       {/* ─── Persona card — the shopper ─── */}
       <div
-        className="bg-white/[0.07] backdrop-blur-md border border-white/[0.12] rounded-2xl px-5 py-4 mb-4 w-[280px]"
+        className="bg-white/[0.07] backdrop-blur-md border border-white/[0.12] rounded-2xl px-5 py-4 mb-3 w-[290px]"
         style={{ animation: 'hero-fade-in 0.8s 0.2s ease-out both' }}
       >
         <div className="flex items-center gap-3.5">
@@ -108,14 +109,14 @@ function ShopperEcosystem() {
         </div>
       </div>
 
-      {/* ─── Main ecosystem SVG ─── */}
-      <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"
-        className="w-full max-w-[480px] h-auto"
+      {/* ─── Main ecosystem SVG — 600×600 viewBox for breathing room ─── */}
+      <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg"
+        className="w-full max-w-[560px] h-auto"
       >
         {/* ── Outer web ring (drawn with animation) ── */}
         <circle cx={cx} cy={cy} r={outerR}
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.06"
-          strokeDasharray="1200"
+          stroke="white" strokeWidth="0.6" strokeOpacity="0.07"
+          strokeDasharray="1500"
           style={{ animation: 'eco-ring-draw 2s 1.8s ease-out both' }}
         />
 
@@ -168,8 +169,8 @@ function ShopperEcosystem() {
           const rad = (comp.angle * Math.PI) / 180
           const sx = cx + (cwR + 10) * Math.cos(rad)
           const sy = cy + (cwR + 10) * Math.sin(rad)
-          const ex = cx + (outerR - 22) * Math.cos(rad)
-          const ey = cy + (outerR - 22) * Math.sin(rad)
+          const ex = cx + (outerR - 24) * Math.cos(rad)
+          const ey = cy + (outerR - 24) * Math.sin(rad)
           return (
             <line key={`flow-${comp.name}`}
               x1={sx} y1={sy} x2={ex} y2={ey}
@@ -181,26 +182,26 @@ function ShopperEcosystem() {
         })}
 
         {/* ── CW Hub — pulsing center ── */}
-        <circle cx={cx} cy={cy} r={cwR + 12} fill="white" fillOpacity="0.015"
+        <circle cx={cx} cy={cy} r={cwR + 14} fill="white" fillOpacity="0.015"
           style={{ animation: 'pulse-ring 3s 0.8s ease-in-out infinite' }}
         />
-        <circle cx={cx} cy={cy} r={cwR + 5} fill="white" fillOpacity="0.03"
+        <circle cx={cx} cy={cy} r={cwR + 6} fill="white" fillOpacity="0.03"
           stroke="white" strokeWidth="0.5" strokeOpacity="0.1"
           style={{ animation: 'eco-scale-in 0.6s 0.5s ease-out both' }}
         />
         <circle cx={cx} cy={cy} r={cwR} fill="white" fillOpacity="0.08"
-          stroke="white" strokeWidth="2" strokeOpacity="0.25"
+          stroke="white" strokeWidth="2.5" strokeOpacity="0.25"
           style={{ animation: 'eco-scale-in 0.5s 0.4s ease-out both' }}
         />
 
         {/* CW text */}
         <g style={{ animation: 'eco-scale-in 0.5s 0.6s ease-out both' }}>
           <text x={cx} y={cy - 6} textAnchor="middle" fill="white" fillOpacity="0.95"
-            fontSize="20" fontWeight="800" fontFamily="inherit" letterSpacing="2">
+            fontSize="22" fontWeight="800" fontFamily="inherit" letterSpacing="2">
             CW
           </text>
-          <text x={cx} y={cy + 12} textAnchor="middle" fill="white" fillOpacity="0.35"
-            fontSize="8" fontWeight="600" fontFamily="inherit" letterSpacing="1">
+          <text x={cx} y={cy + 13} textAnchor="middle" fill="white" fillOpacity="0.35"
+            fontSize="9" fontWeight="600" fontFamily="inherit" letterSpacing="1">
             PHARMACY
           </text>
         </g>
@@ -210,32 +211,31 @@ function ShopperEcosystem() {
           const rad = (stage.angle * Math.PI) / 180
           const sx = cx + journeyR * Math.cos(rad)
           const sy = cy + journeyR * Math.sin(rad)
-          // Connecting arc dots from CW to stage
           const connX = cx + (cwR + 4) * Math.cos(rad)
           const connY = cy + (cwR + 4) * Math.sin(rad)
           const delay = 1.0 + i * 0.25
 
           return (
             <g key={stage.label} style={{ animation: `hero-fade-in 0.5s ${delay}s ease-out both` }}>
-              {/* Tiny connector line */}
-              <line x1={connX} y1={connY} x2={sx - 10 * Math.cos(rad)} y2={sy - 10 * Math.sin(rad)}
+              {/* Connector line */}
+              <line x1={connX} y1={connY} x2={sx - 12 * Math.cos(rad)} y2={sy - 12 * Math.sin(rad)}
                 stroke="white" strokeWidth="0.6" strokeOpacity="0.12" strokeDasharray="2 3" />
               {/* Stage circle */}
-              <circle cx={sx} cy={sy} r={16} fill="white" fillOpacity="0.06"
+              <circle cx={sx} cy={sy} r={18} fill="white" fillOpacity="0.06"
                 stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
               {/* Icon */}
-              <foreignObject x={sx - 7} y={sy - 12} width={14} height={14}>
-                <stage.Icon style={{ width: 11, height: 11, margin: '1.5px', color: 'white', opacity: 0.5 }} />
+              <foreignObject x={sx - 8} y={sy - 13} width={16} height={16}>
+                <stage.Icon style={{ width: 13, height: 13, margin: '1.5px', color: 'white', opacity: 0.55 }} />
               </foreignObject>
               {/* Label */}
-              <text x={sx} y={sy + 10} textAnchor="middle" fill="white" fillOpacity="0.4"
-                fontSize="7" fontWeight="600" fontFamily="inherit">
+              <text x={sx} y={sy + 12} textAnchor="middle" fill="white" fillOpacity="0.45"
+                fontSize="8" fontWeight="600" fontFamily="inherit">
                 {stage.label}
               </text>
-              {/* Step number */}
-              <circle cx={sx + 12} cy={sy - 12} r={5} fill="white" fillOpacity="0.1" />
-              <text x={sx + 12} y={sy - 9} textAnchor="middle" fill="white" fillOpacity="0.35"
-                fontSize="6" fontWeight="700" fontFamily="inherit">
+              {/* Step number badge */}
+              <circle cx={sx + 14} cy={sy - 14} r={6} fill="white" fillOpacity="0.1" />
+              <text x={sx + 14} y={sy - 11} textAnchor="middle" fill="white" fillOpacity="0.4"
+                fontSize="7" fontWeight="700" fontFamily="inherit">
                 {stage.step}
               </text>
             </g>
@@ -244,9 +244,9 @@ function ShopperEcosystem() {
 
         {/* ── Arrow arc between journey stages ── */}
         <path
-          d={`M ${cx + journeyR * Math.cos((-70 * Math.PI) / 180) + 18} ${cy + journeyR * Math.sin((-70 * Math.PI) / 180)}
+          d={`M ${cx + journeyR * Math.cos((-70 * Math.PI) / 180) + 20} ${cy + journeyR * Math.sin((-70 * Math.PI) / 180)}
               A ${journeyR} ${journeyR} 0 0 1
-              ${cx + journeyR * Math.cos((80 * Math.PI) / 180)} ${cy + journeyR * Math.sin((80 * Math.PI) / 180) - 18}`}
+              ${cx + journeyR * Math.cos((80 * Math.PI) / 180)} ${cy + journeyR * Math.sin((80 * Math.PI) / 180) - 20}`}
           stroke="white" strokeWidth="0.6" strokeOpacity="0.08" strokeDasharray="4 3"
           fill="none"
           style={{ animation: 'eco-ring-draw 2s 1.2s ease-out both' }}
@@ -257,33 +257,33 @@ function ShopperEcosystem() {
           const rad = (comp.angle * Math.PI) / 180
           const nx = cx + outerR * Math.cos(rad)
           const ny = cy + outerR * Math.sin(rad)
-          const lx = cx + (outerR + 26) * Math.cos(rad)
-          const ly = cy + (outerR + 26) * Math.sin(rad)
-          // Smart label anchoring
-          const isLeft = comp.angle > 90 || comp.angle < -90
-          const isTop = comp.angle < -45 && comp.angle > -135
-          const isBottom = comp.angle > 45 && comp.angle < 135
+          const lx = cx + (outerR + 30) * Math.cos(rad)
+          const ly = cy + (outerR + 30) * Math.sin(rad)
+          // Smart label anchoring based on position
+          const isLeft = comp.angle > 100 || comp.angle < -100
+          const isTop = comp.angle < -50 && comp.angle > -130
+          const isBottom = comp.angle > 50 && comp.angle < 130
           const anchor = isTop || isBottom ? 'middle' : isLeft ? 'end' : 'start'
           const delay = 2.2 + i * 0.12
 
           return (
             <g key={comp.name} style={{ animation: `hero-fade-in 0.5s ${delay}s ease-out both` }}>
               {/* Glow behind node */}
-              <circle cx={nx} cy={ny} r={20} fill={comp.color} fillOpacity="0.06" />
+              <circle cx={nx} cy={ny} r={22} fill={comp.color} fillOpacity="0.06" />
               {/* Node */}
-              <circle cx={nx} cy={ny} r={16} fill={comp.color} fillOpacity="0.12"
-                stroke={comp.color} strokeWidth="1.2" strokeOpacity="0.4" />
+              <circle cx={nx} cy={ny} r={18} fill={comp.color} fillOpacity="0.12"
+                stroke={comp.color} strokeWidth="1.2" strokeOpacity="0.45" />
               {/* Icon */}
-              <foreignObject x={nx - 8} y={ny - 8} width={16} height={16}>
-                <comp.Icon style={{ width: 13, height: 13, margin: '1.5px', color: comp.color, opacity: 0.85 }} />
+              <foreignObject x={nx - 9} y={ny - 9} width={18} height={18}>
+                <comp.Icon style={{ width: 14, height: 14, margin: '2px', color: comp.color, opacity: 0.85 }} />
               </foreignObject>
               {/* Label + share % */}
-              <text x={lx} y={ly} textAnchor={anchor} fill="white" fillOpacity="0.5"
-                fontSize="8.5" fontWeight="600" fontFamily="inherit">
+              <text x={lx} y={ly} textAnchor={anchor} fill="white" fillOpacity="0.55"
+                fontSize="9.5" fontWeight="600" fontFamily="inherit">
                 {comp.name}
               </text>
-              <text x={lx} y={ly + 11} textAnchor={anchor} fill={comp.color}
-                fontSize="7.5" fontWeight="700" fontFamily="inherit" opacity="0.6">
+              <text x={lx} y={ly + 13} textAnchor={anchor} fill={comp.color}
+                fontSize="8" fontWeight="700" fontFamily="inherit" opacity="0.65">
                 {comp.share} of spend
               </text>
             </g>
@@ -292,10 +292,10 @@ function ShopperEcosystem() {
 
         {/* ── "Where spend leaks" annotation ── */}
         <g style={{ animation: 'hero-fade-in 0.8s 3.2s ease-out both' }}>
-          <rect x={cx - 70} y={cy + outerR + 22} width={140} height={22} rx={11}
+          <rect x={cx - 80} y={cy + outerR + 26} width={160} height={24} rx={12}
             fill="white" fillOpacity="0.06" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" />
-          <text x={cx} y={cy + outerR + 37} textAnchor="middle" fill="white" fillOpacity="0.35"
-            fontSize="7.5" fontWeight="500" fontFamily="inherit">
+          <text x={cx} y={cy + outerR + 42} textAnchor="middle" fill="white" fillOpacity="0.4"
+            fontSize="8.5" fontWeight="500" fontFamily="inherit">
             72% of pharmacy spend leaks
           </text>
         </g>
@@ -401,41 +401,45 @@ export function LoginPage() {
         </div>
 
         <div className="relative z-10 flex flex-col justify-between h-full w-full px-10 xl:px-14 py-8">
-          {/* Top: logo */}
+          {/* Top: logo + Shopper360 product name */}
           <div style={{ animation: 'hero-fade-in 0.8s ease-out both' }}>
-            <img src={livery.logoWhite} alt={livery.name} className="h-10 object-contain object-left" />
+            <img src={livery.logoWhite} alt={livery.name} className="h-11 object-contain object-left" />
+            <p className="mt-2 text-[22px] xl:text-[26px] font-extrabold tracking-tight text-white/90 leading-none">
+              Shopper<span className="text-white/50">360</span>
+            </p>
+            <p className="text-[10px] text-white/30 mt-1 tracking-wide">Shopper Intelligence Platform</p>
           </div>
 
-          {/* Center: ecosystem fills the space */}
+          {/* Center: stats + ecosystem */}
           <div className="flex items-center gap-6 xl:gap-10 flex-1 py-4">
-            {/* Left column — compact stats */}
-            <div className="w-[260px] xl:w-[300px] shrink-0">
+            {/* Left column — bigger stats */}
+            <div className="w-[280px] xl:w-[320px] shrink-0">
               {livery.heroFeatureStat && (
-                <div className="mb-5" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
-                  <p className="text-6xl xl:text-7xl font-extrabold tracking-tighter leading-none mb-2 text-white">
+                <div className="mb-6" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
+                  <p className="text-7xl xl:text-8xl font-extrabold tracking-tighter leading-none mb-2 text-white">
                     {livery.heroFeatureStat.value}
                   </p>
-                  <p className="text-white/50 text-xs xl:text-sm max-w-[240px] leading-relaxed">
+                  <p className="text-white/50 text-sm xl:text-base max-w-[280px] leading-relaxed">
                     {livery.heroFeatureStat.label}
                   </p>
                 </div>
               )}
               {!livery.heroFeatureStat && (
-                <h2 className="text-3xl xl:text-4xl font-bold leading-tight mb-3" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
+                <h2 className="text-4xl xl:text-5xl font-bold leading-tight mb-4" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
                   {livery.heroLine1}<br />
                   <span className="text-white/70">{livery.heroLine2}</span>
                 </h2>
               )}
-              <p className="text-white/30 text-xs max-w-[240px] mb-6 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
+              <p className="text-white/35 text-sm max-w-[280px] mb-8 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
                 {livery.heroSubtext}
               </p>
-              <div className="grid grid-cols-2 gap-2 max-w-[260px]" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
+              <div className="grid grid-cols-2 gap-3 max-w-[300px]" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
                 {livery.heroStats.map((stat, idx) => (
                   <div key={stat.label}
-                    className="bg-white/[0.06] backdrop-blur-sm border border-white/[0.06] rounded-lg px-3 py-2.5 hover:bg-white/[0.10] transition-colors"
+                    className="bg-white/[0.07] backdrop-blur-sm border border-white/[0.08] rounded-xl px-4 py-3.5 hover:bg-white/[0.12] transition-colors"
                     style={{ animation: `hero-fade-in 0.6s ${1.0 + idx * 0.12}s ease-out both` }}>
-                    <p className="text-lg font-bold tracking-tight text-white">{stat.value}</p>
-                    <p className="text-[9px] text-white/35 mt-0.5">{stat.label}</p>
+                    <p className="text-2xl xl:text-[26px] font-bold tracking-tight text-white leading-none">{stat.value}</p>
+                    <p className="text-[10px] xl:text-[11px] text-white/40 mt-1.5">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -447,11 +451,17 @@ export function LoginPage() {
             </div>
           </div>
 
-          {/* Bottom */}
-          <div style={{ animation: 'hero-fade-in 0.8s 3.5s ease-out both' }}>
-            <p className="text-[10px] text-white/20">
-              Powered by {livery.poweredBy} · CBA credit card transaction intelligence · {new Date().getFullYear()}
+          {/* Bottom — more readable footer */}
+          <div className="flex items-center gap-3" style={{ animation: 'hero-fade-in 0.8s 3.5s ease-out both' }}>
+            <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent to-white/10" />
+            <p className="text-[11px] text-white/45 font-medium tracking-wide">
+              Powered by <span className="text-white/65 font-semibold">{livery.poweredBy}</span>
+              <span className="text-white/25 mx-2">·</span>
+              CBA credit card transaction intelligence
+              <span className="text-white/25 mx-2">·</span>
+              {new Date().getFullYear()}
             </p>
+            <div className="h-px flex-1 max-w-[120px] bg-gradient-to-l from-transparent to-white/10" />
           </div>
         </div>
       </div>
