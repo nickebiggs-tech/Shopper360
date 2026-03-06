@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
-import { Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp, Pill, Heart, Sparkles, Baby, Sun, FlaskConical, Stethoscope, ShoppingCart, Globe, Store } from 'lucide-react'
+import {
+  Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp,
+  Pill, Heart, Sparkles, FlaskConical, ShoppingCart, Globe, Store,
+  Search, Repeat, CreditCard,
+} from 'lucide-react'
 
 /* ─── animated data-particle columns ─── */
 function DataParticles({ count = 12 }: { count?: number }) {
@@ -40,218 +44,262 @@ function DataParticles({ count = 12 }: { count?: number }) {
   )
 }
 
-/* ─── pulsing concentric rings ─── */
-function PulseRings() {
-  return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-      <div
-        className="absolute -left-[100px] -top-[100px] w-[200px] h-[200px] rounded-full border border-white/15"
-        style={{ animation: 'pulse-ring 4s ease-in-out infinite' }}
-      />
-      <div
-        className="absolute -left-[160px] -top-[160px] w-[320px] h-[320px] rounded-full border border-white/10"
-        style={{ animation: 'pulse-ring-slow 5s ease-in-out 0.5s infinite' }}
-      />
-      <div
-        className="absolute -left-[230px] -top-[230px] w-[460px] h-[460px] rounded-full border border-white/[0.06]"
-        style={{ animation: 'pulse-ring-slow 6s ease-in-out 1s infinite' }}
-      />
-    </div>
-  )
-}
-
-/* ─── orbiting category icons — professional SVG icons ─── */
-function OrbitingIcons() {
-  const icons = [
-    { Icon: Pill, delay: '0s', ring: 'orbit' },
-    { Icon: Heart, delay: '-15s', ring: 'orbit' },
-    { Icon: Stethoscope, delay: '-30s', ring: 'orbit' },
-    { Icon: Baby, delay: '-45s', ring: 'orbit' },
-    { Icon: Sparkles, delay: '-10s', ring: 'orbit-outer' },
-    { Icon: FlaskConical, delay: '-30s', ring: 'orbit-outer' },
-    { Icon: Sun, delay: '-50s', ring: 'orbit-outer' },
-  ]
-  return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-      {icons.map((ic, i) => (
-        <div
-          key={i}
-          className="absolute left-0 top-0"
-          style={{
-            animation: `${ic.ring} 60s ${ic.delay} linear infinite`,
-          }}
-        >
-          <div className="w-9 h-9 rounded-full bg-white/[0.10] backdrop-blur-sm flex items-center justify-center border border-white/[0.08]">
-            <ic.Icon className="w-4 h-4 text-white/50" strokeWidth={1.5} />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-/* ─── Shopper Ecosystem — person at heart of CW with competitor web ─── */
+/* ═══════════════════════════════════════════════════════════════════════
+   SHOPPER ECOSYSTEM — the hero visual
+   Tells the story: Persona → CW hub → Shopping journey → Competitor leakage
+   ═══════════════════════════════════════════════════════════════════════ */
 function ShopperEcosystem() {
-  // Competitors positioned around the shopper (angle in degrees, distance from center)
   const competitors = [
-    { name: 'Priceline', angle: 0, Icon: Pill, color: '#3B82F6' },
-    { name: 'Mecca', angle: 51, Icon: Sparkles, color: '#EC4899' },
-    { name: 'Online', angle: 103, Icon: Globe, color: '#F59E0B' },
-    { name: 'Supermarkets', angle: 154, Icon: ShoppingCart, color: '#10B981' },
-    { name: 'Discount', angle: 206, Icon: Store, color: '#8B5CF6' },
-    { name: 'Terry White', angle: 257, Icon: Heart, color: '#06B6D4' },
-    { name: 'Other Rx', angle: 309, Icon: FlaskConical, color: '#F97316' },
+    { name: 'Priceline', angle: -90, Icon: Pill, color: '#3B82F6', share: '12%' },
+    { name: 'Mecca / Sephora', angle: -39, Icon: Sparkles, color: '#EC4899', share: '8%' },
+    { name: 'Online', angle: 12, Icon: Globe, color: '#F59E0B', share: '15%' },
+    { name: 'Supermarkets', angle: 63, Icon: ShoppingCart, color: '#10B981', share: '18%' },
+    { name: 'Discount', angle: 116, Icon: Store, color: '#8B5CF6', share: '6%' },
+    { name: 'Terry White', angle: 167, Icon: Heart, color: '#06B6D4', share: '9%' },
+    { name: 'Other Pharmacy', angle: 218, Icon: FlaskConical, color: '#F97316', share: '4%' },
   ]
 
-  const cx = 200
-  const cy = 200
-  const innerR = 52   // CW ring
-  const midR = 110    // web ring 1
-  const outerR = 165   // competitor nodes
+  // Journey stages — positioned on inner ring
+  const journeyStages = [
+    { label: 'Browse', angle: -70, Icon: Search, step: 1 },
+    { label: 'Compare', angle: -20, Icon: BarChart3, step: 2 },
+    { label: 'Purchase', angle: 30, Icon: CreditCard, step: 3 },
+    { label: 'Repeat', angle: 80, Icon: Repeat, step: 4 },
+  ]
+
+  const cx = 250
+  const cy = 250
+  const cwR = 48          // CW hub
+  const journeyR = 95     // journey stage ring
+  const midWebR = 145     // inner web ring
+  const outerR = 205      // competitor nodes
 
   return (
-    <div className="relative w-[340px] h-[440px] flex flex-col items-center">
-      {/* Persona card — floating above */}
+    <div className="relative flex flex-col items-center justify-center w-full max-w-[580px] mx-auto">
+      {/* ─── Persona card — the shopper ─── */}
       <div
-        className="bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl px-4 py-3 mb-3 w-[220px]"
-        style={{ animation: 'hero-fade-in 0.8s 0.8s ease-out both' }}
+        className="bg-white/[0.07] backdrop-blur-md border border-white/[0.12] rounded-2xl px-5 py-4 mb-4 w-[280px]"
+        style={{ animation: 'hero-fade-in 0.8s 0.2s ease-out both' }}
       >
-        <div className="flex items-center gap-3">
-          {/* Avatar */}
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 border border-white/15 flex items-center justify-center shrink-0">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/25 to-white/5 border border-white/20 flex items-center justify-center shrink-0">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 text-white/80" fill="none" stroke="currentColor" strokeWidth="1.5">
               <circle cx="12" cy="8" r="4" />
               <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
             </svg>
           </div>
-          <div className="min-w-0">
-            <p className="text-[11px] font-semibold text-white/80 leading-tight">Sarah M.</p>
-            <p className="text-[9px] text-white/40 leading-tight mt-0.5">Young Family · Health-conscious</p>
-            <p className="text-[9px] text-white/30 leading-tight">$142 avg basket · 3.2 visits/mo</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-bold text-white/90 leading-tight">Sarah Mitchell</p>
+            <p className="text-[10px] text-white/45 leading-tight mt-0.5">Young Family · Health-conscious</p>
+            <div className="flex items-center gap-3 mt-1.5">
+              <span className="text-[9px] text-white/30 bg-white/[0.06] px-1.5 py-0.5 rounded">$142/basket</span>
+              <span className="text-[9px] text-white/30 bg-white/[0.06] px-1.5 py-0.5 rounded">3.2×/mo</span>
+              <span className="text-[9px] text-white/30 bg-white/[0.06] px-1.5 py-0.5 rounded">28% SoW</span>
+            </div>
           </div>
+        </div>
+        {/* Mini share-of-wallet bar */}
+        <div className="mt-3 flex items-center gap-2">
+          <span className="text-[8px] text-white/30 shrink-0 w-[52px]">CW wallet</span>
+          <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/[0.06] flex">
+            <div className="h-full bg-primary/70 rounded-full" style={{ width: '28%' }} />
+          </div>
+          <span className="text-[8px] text-white/40 font-medium shrink-0">28%</span>
         </div>
       </div>
 
-      {/* Main SVG spider web */}
-      <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[320px] h-[320px]"
-        style={{ animation: 'hero-fade-in 1s 0.3s ease-out both' }}
+      {/* ─── Main ecosystem SVG ─── */}
+      <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"
+        className="w-full max-w-[480px] h-auto"
       >
-        {/* Web rings (spider web concentric) */}
-        <circle cx={cx} cy={cy} r={midR} stroke="white" strokeWidth="0.5" strokeOpacity="0.08" />
-        <circle cx={cx} cy={cy} r={outerR} stroke="white" strokeWidth="0.5" strokeOpacity="0.06" />
+        {/* ── Outer web ring (drawn with animation) ── */}
+        <circle cx={cx} cy={cy} r={outerR}
+          stroke="white" strokeWidth="0.5" strokeOpacity="0.06"
+          strokeDasharray="1200"
+          style={{ animation: 'eco-ring-draw 2s 1.8s ease-out both' }}
+        />
 
-        {/* Web spokes — lines from center to each competitor */}
-        {competitors.map((comp) => {
+        {/* ── Mid web ring ── */}
+        <circle cx={cx} cy={cy} r={midWebR}
+          stroke="white" strokeWidth="0.5" strokeOpacity="0.08"
+          strokeDasharray="1200"
+          style={{ animation: 'eco-ring-draw 1.8s 1.4s ease-out both' }}
+        />
+
+        {/* ── Journey ring (dashed) ── */}
+        <circle cx={cx} cy={cy} r={journeyR}
+          stroke="white" strokeWidth="0.8" strokeOpacity="0.1"
+          strokeDasharray="6 4"
+          style={{ animation: 'eco-ring-draw 1.5s 0.9s ease-out both' }}
+        />
+
+        {/* ── Web spokes — from center to outer ring ── */}
+        {competitors.map((comp, i) => {
           const rad = (comp.angle * Math.PI) / 180
           const ex = cx + outerR * Math.cos(rad)
           const ey = cy + outerR * Math.sin(rad)
           return (
-            <line
-              key={`spoke-${comp.name}`}
+            <line key={`spoke-${comp.name}`}
               x1={cx} y1={cy} x2={ex} y2={ey}
-              stroke="white" strokeWidth="0.6" strokeOpacity="0.06"
+              stroke="white" strokeWidth="0.5" strokeOpacity="0.05"
+              strokeDasharray="200"
+              style={{ animation: `eco-spoke-grow 1s ${1.6 + i * 0.08}s ease-out both` }}
             />
           )
         })}
 
-        {/* Cross-web connections (inner web pattern) */}
+        {/* ── Cross-web connections (mid ring polygon) ── */}
         {competitors.map((comp, i) => {
           const next = competitors[(i + 1) % competitors.length]!
           const rad1 = (comp.angle * Math.PI) / 180
           const rad2 = (next.angle * Math.PI) / 180
-          const x1 = cx + midR * Math.cos(rad1)
-          const y1 = cy + midR * Math.sin(rad1)
-          const x2 = cx + midR * Math.cos(rad2)
-          const y2 = cy + midR * Math.sin(rad2)
           return (
-            <line
-              key={`web-${i}`}
-              x1={x1} y1={y1} x2={x2} y2={y2}
-              stroke="white" strokeWidth="0.5" strokeOpacity="0.06"
+            <line key={`web-${i}`}
+              x1={cx + midWebR * Math.cos(rad1)} y1={cy + midWebR * Math.sin(rad1)}
+              x2={cx + midWebR * Math.cos(rad2)} y2={cy + midWebR * Math.sin(rad2)}
+              stroke="white" strokeWidth="0.4" strokeOpacity="0.05"
+              style={{ animation: `hero-fade-in 0.6s ${2.0 + i * 0.06}s ease-out both` }}
             />
           )
         })}
 
-        {/* Animated spend-flow dashes — from CW center outward to competitors */}
+        {/* ── Animated spend-flow dashes — CW → competitors ── */}
         {competitors.map((comp, i) => {
           const rad = (comp.angle * Math.PI) / 180
-          const sx = cx + innerR * Math.cos(rad)
-          const sy = cy + innerR * Math.sin(rad)
-          const ex = cx + (outerR - 20) * Math.cos(rad)
-          const ey = cy + (outerR - 20) * Math.sin(rad)
+          const sx = cx + (cwR + 10) * Math.cos(rad)
+          const sy = cy + (cwR + 10) * Math.sin(rad)
+          const ex = cx + (outerR - 22) * Math.cos(rad)
+          const ey = cy + (outerR - 22) * Math.sin(rad)
           return (
-            <line
-              key={`flow-${comp.name}`}
+            <line key={`flow-${comp.name}`}
               x1={sx} y1={sy} x2={ex} y2={ey}
-              stroke={comp.color}
-              strokeWidth="1.2"
-              strokeDasharray="3 6"
-              strokeOpacity="0.35"
-              style={{ animation: `dash-flow 2s ${i * 0.3}s linear infinite` }}
+              stroke={comp.color} strokeWidth="1.5" strokeDasharray="4 8"
+              strokeOpacity="0.4"
+              style={{ animation: `dash-flow 2.5s ${2.4 + i * 0.15}s linear infinite, hero-fade-in 0.5s ${2.4 + i * 0.15}s ease-out both` }}
             />
           )
         })}
 
-        {/* Inner CW ring — glow */}
-        <circle cx={cx} cy={cy} r={innerR + 8} fill="white" fillOpacity="0.02"
-          style={{ animation: 'pulse-ring 3s ease-in-out infinite' }}
+        {/* ── CW Hub — pulsing center ── */}
+        <circle cx={cx} cy={cy} r={cwR + 12} fill="white" fillOpacity="0.015"
+          style={{ animation: 'pulse-ring 3s 0.8s ease-in-out infinite' }}
         />
-        <circle cx={cx} cy={cy} r={innerR} fill="white" fillOpacity="0.06"
-          stroke="white" strokeWidth="1.5" strokeOpacity="0.2"
+        <circle cx={cx} cy={cy} r={cwR + 5} fill="white" fillOpacity="0.03"
+          stroke="white" strokeWidth="0.5" strokeOpacity="0.1"
+          style={{ animation: 'eco-scale-in 0.6s 0.5s ease-out both' }}
+        />
+        <circle cx={cx} cy={cy} r={cwR} fill="white" fillOpacity="0.08"
+          stroke="white" strokeWidth="2" strokeOpacity="0.25"
+          style={{ animation: 'eco-scale-in 0.5s 0.4s ease-out both' }}
         />
 
-        {/* CW logo text at center */}
-        <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fillOpacity="0.9"
-          fontSize="16" fontWeight="800" fontFamily="inherit" letterSpacing="1">
-          CW
-        </text>
-        <text x={cx} y={cy + 8} textAnchor="middle" fill="white" fillOpacity="0.35"
-          fontSize="7" fontWeight="500" fontFamily="inherit" letterSpacing="0.5">
-          SHOPPER
-        </text>
-
-        {/* Shopper silhouette icon at center */}
-        <g transform={`translate(${cx - 6}, ${cy + 14})`} opacity="0.4">
-          <circle cx="6" cy="3" r="3" fill="white" />
-          <path d="M0 13c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="white" strokeWidth="1.2" fill="none" />
+        {/* CW text */}
+        <g style={{ animation: 'eco-scale-in 0.5s 0.6s ease-out both' }}>
+          <text x={cx} y={cy - 6} textAnchor="middle" fill="white" fillOpacity="0.95"
+            fontSize="20" fontWeight="800" fontFamily="inherit" letterSpacing="2">
+            CW
+          </text>
+          <text x={cx} y={cy + 12} textAnchor="middle" fill="white" fillOpacity="0.35"
+            fontSize="8" fontWeight="600" fontFamily="inherit" letterSpacing="1">
+            PHARMACY
+          </text>
         </g>
 
-        {/* Competitor nodes */}
-        {competitors.map((comp, i) => {
-          const rad = (comp.angle * Math.PI) / 180
-          const nx = cx + outerR * Math.cos(rad)
-          const ny = cy + outerR * Math.sin(rad)
-          // Label offset — push label outward
-          const lx = cx + (outerR + 22) * Math.cos(rad)
-          const ly = cy + (outerR + 22) * Math.sin(rad)
-          const anchor = comp.angle > 90 && comp.angle < 270 ? 'end' : 'start'
-          const adjustedAnchor = Math.abs(comp.angle - 180) < 30 || comp.angle < 30 || comp.angle > 330 ? 'middle' : anchor
+        {/* ── Journey stages — inner ring ── */}
+        {journeyStages.map((stage, i) => {
+          const rad = (stage.angle * Math.PI) / 180
+          const sx = cx + journeyR * Math.cos(rad)
+          const sy = cy + journeyR * Math.sin(rad)
+          // Connecting arc dots from CW to stage
+          const connX = cx + (cwR + 4) * Math.cos(rad)
+          const connY = cy + (cwR + 4) * Math.sin(rad)
+          const delay = 1.0 + i * 0.25
 
           return (
-            <g key={comp.name} style={{ animation: `hero-fade-in 0.5s ${0.6 + i * 0.12}s ease-out both` }}>
-              {/* Node circle */}
-              <circle cx={nx} cy={ny} r={14} fill={comp.color} fillOpacity="0.15"
-                stroke={comp.color} strokeWidth="1" strokeOpacity="0.4" />
-              {/* Lucide icon via foreignObject */}
-              <foreignObject x={nx - 8} y={ny - 8} width={16} height={16}>
-                <comp.Icon style={{ width: 12, height: 12, margin: '2px', color: comp.color, opacity: 0.8 }} />
+            <g key={stage.label} style={{ animation: `hero-fade-in 0.5s ${delay}s ease-out both` }}>
+              {/* Tiny connector line */}
+              <line x1={connX} y1={connY} x2={sx - 10 * Math.cos(rad)} y2={sy - 10 * Math.sin(rad)}
+                stroke="white" strokeWidth="0.6" strokeOpacity="0.12" strokeDasharray="2 3" />
+              {/* Stage circle */}
+              <circle cx={sx} cy={sy} r={16} fill="white" fillOpacity="0.06"
+                stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
+              {/* Icon */}
+              <foreignObject x={sx - 7} y={sy - 12} width={14} height={14}>
+                <stage.Icon style={{ width: 11, height: 11, margin: '1.5px', color: 'white', opacity: 0.5 }} />
               </foreignObject>
               {/* Label */}
-              <text x={lx} y={ly + 3} textAnchor={adjustedAnchor} fill="white" fillOpacity="0.45"
-                fontSize="8" fontWeight="500" fontFamily="inherit">
-                {comp.name}
+              <text x={sx} y={sy + 10} textAnchor="middle" fill="white" fillOpacity="0.4"
+                fontSize="7" fontWeight="600" fontFamily="inherit">
+                {stage.label}
+              </text>
+              {/* Step number */}
+              <circle cx={sx + 12} cy={sy - 12} r={5} fill="white" fillOpacity="0.1" />
+              <text x={sx + 12} y={sy - 9} textAnchor="middle" fill="white" fillOpacity="0.35"
+                fontSize="6" fontWeight="700" fontFamily="inherit">
+                {stage.step}
               </text>
             </g>
           )
         })}
-      </svg>
 
-      {/* Bottom label */}
-      <p className="text-[9px] text-white/25 mt-1 tracking-widest uppercase"
-        style={{ animation: 'hero-fade-in 0.6s 1.5s ease-out both' }}
-      >
-        Shopper Ecosystem
-      </p>
+        {/* ── Arrow arc between journey stages ── */}
+        <path
+          d={`M ${cx + journeyR * Math.cos((-70 * Math.PI) / 180) + 18} ${cy + journeyR * Math.sin((-70 * Math.PI) / 180)}
+              A ${journeyR} ${journeyR} 0 0 1
+              ${cx + journeyR * Math.cos((80 * Math.PI) / 180)} ${cy + journeyR * Math.sin((80 * Math.PI) / 180) - 18}`}
+          stroke="white" strokeWidth="0.6" strokeOpacity="0.08" strokeDasharray="4 3"
+          fill="none"
+          style={{ animation: 'eco-ring-draw 2s 1.2s ease-out both' }}
+        />
+
+        {/* ── Competitor nodes ── */}
+        {competitors.map((comp, i) => {
+          const rad = (comp.angle * Math.PI) / 180
+          const nx = cx + outerR * Math.cos(rad)
+          const ny = cy + outerR * Math.sin(rad)
+          const lx = cx + (outerR + 26) * Math.cos(rad)
+          const ly = cy + (outerR + 26) * Math.sin(rad)
+          // Smart label anchoring
+          const isLeft = comp.angle > 90 || comp.angle < -90
+          const isTop = comp.angle < -45 && comp.angle > -135
+          const isBottom = comp.angle > 45 && comp.angle < 135
+          const anchor = isTop || isBottom ? 'middle' : isLeft ? 'end' : 'start'
+          const delay = 2.2 + i * 0.12
+
+          return (
+            <g key={comp.name} style={{ animation: `hero-fade-in 0.5s ${delay}s ease-out both` }}>
+              {/* Glow behind node */}
+              <circle cx={nx} cy={ny} r={20} fill={comp.color} fillOpacity="0.06" />
+              {/* Node */}
+              <circle cx={nx} cy={ny} r={16} fill={comp.color} fillOpacity="0.12"
+                stroke={comp.color} strokeWidth="1.2" strokeOpacity="0.4" />
+              {/* Icon */}
+              <foreignObject x={nx - 8} y={ny - 8} width={16} height={16}>
+                <comp.Icon style={{ width: 13, height: 13, margin: '1.5px', color: comp.color, opacity: 0.85 }} />
+              </foreignObject>
+              {/* Label + share % */}
+              <text x={lx} y={ly} textAnchor={anchor} fill="white" fillOpacity="0.5"
+                fontSize="8.5" fontWeight="600" fontFamily="inherit">
+                {comp.name}
+              </text>
+              <text x={lx} y={ly + 11} textAnchor={anchor} fill={comp.color}
+                fontSize="7.5" fontWeight="700" fontFamily="inherit" opacity="0.6">
+                {comp.share} of spend
+              </text>
+            </g>
+          )
+        })}
+
+        {/* ── "Where spend leaks" annotation ── */}
+        <g style={{ animation: 'hero-fade-in 0.8s 3.2s ease-out both' }}>
+          <rect x={cx - 70} y={cy + outerR + 22} width={140} height={22} rx={11}
+            fill="white" fillOpacity="0.06" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" />
+          <text x={cx} y={cy + outerR + 37} textAnchor="middle" fill="white" fillOpacity="0.35"
+            fontSize="7.5" fontWeight="500" fontFamily="inherit">
+            72% of pharmacy spend leaks
+          </text>
+        </g>
+      </svg>
     </div>
   )
 }
@@ -272,12 +320,6 @@ function MobileHero({ livery }: { livery: { heroStats: { label: string; value: s
         <div className="absolute top-1/4 right-1/4 w-48 h-48 rounded-full bg-white/[0.06] blur-2xl" />
         <div className="absolute bottom-0 left-1/4 w-32 h-32 rounded-full bg-white/[0.04] blur-2xl" />
         <DataParticles count={6} />
-        <div className="absolute right-[20%] top-[50%]">
-          <div className="absolute -left-[60px] -top-[60px] w-[120px] h-[120px] rounded-full border border-white/10"
-            style={{ animation: 'pulse-ring 4s ease-in-out infinite' }} />
-          <div className="absolute -left-[100px] -top-[100px] w-[200px] h-[200px] rounded-full border border-white/[0.06]"
-            style={{ animation: 'pulse-ring-slow 5s ease-in-out 0.5s infinite' }} />
-        </div>
       </div>
 
       {/* Content */}
@@ -351,61 +393,64 @@ export function LoginPage() {
 
       {/* Desktop hero — hidden on mobile */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-b from-hero-from via-hero-mid to-hero-to relative overflow-hidden">
+        {/* Subtle background effects */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-white/[0.04] blur-3xl" />
-          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full bg-white/[0.03] blur-3xl" />
+          <div className="absolute top-[10%] right-[20%] w-[500px] h-[500px] rounded-full bg-white/[0.02] blur-3xl" />
+          <div className="absolute bottom-[10%] left-[10%] w-[400px] h-[400px] rounded-full bg-white/[0.015] blur-3xl" />
           <DataParticles />
-          <div className="absolute right-[15%] top-[45%]">
-            <PulseRings />
-            <OrbitingIcons />
-          </div>
         </div>
 
-        <div className="relative z-10 flex flex-col justify-between h-full px-12 xl:px-16 py-10">
+        <div className="relative z-10 flex flex-col justify-between h-full w-full px-10 xl:px-14 py-8">
+          {/* Top: logo */}
           <div style={{ animation: 'hero-fade-in 0.8s ease-out both' }}>
-            <img src={livery.logoWhite} alt={livery.name} className="h-12 object-contain object-left" />
+            <img src={livery.logoWhite} alt={livery.name} className="h-10 object-contain object-left" />
           </div>
 
-          <div className="flex items-center gap-8 xl:gap-12 flex-1 py-8">
-            <div className="flex-1 min-w-0">
+          {/* Center: ecosystem fills the space */}
+          <div className="flex items-center gap-6 xl:gap-10 flex-1 py-4">
+            {/* Left column — compact stats */}
+            <div className="w-[260px] xl:w-[300px] shrink-0">
               {livery.heroFeatureStat && (
-                <div className="mb-6" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
-                  <p className="text-7xl xl:text-8xl font-extrabold tracking-tighter leading-none mb-2 text-white">
+                <div className="mb-5" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
+                  <p className="text-6xl xl:text-7xl font-extrabold tracking-tighter leading-none mb-2 text-white">
                     {livery.heroFeatureStat.value}
                   </p>
-                  <p className="text-white/50 text-sm xl:text-base max-w-sm leading-relaxed">
+                  <p className="text-white/50 text-xs xl:text-sm max-w-[240px] leading-relaxed">
                     {livery.heroFeatureStat.label}
                   </p>
                 </div>
               )}
               {!livery.heroFeatureStat && (
-                <h2 className="text-4xl xl:text-5xl font-bold leading-tight mb-4" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
+                <h2 className="text-3xl xl:text-4xl font-bold leading-tight mb-3" style={{ animation: 'hero-number-in 1s 0.2s ease-out both' }}>
                   {livery.heroLine1}<br />
                   <span className="text-white/70">{livery.heroLine2}</span>
                 </h2>
               )}
-              <p className="text-white/35 text-sm max-w-sm mb-8 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
+              <p className="text-white/30 text-xs max-w-[240px] mb-6 leading-relaxed" style={{ animation: 'hero-fade-in 0.8s 0.6s ease-out both' }}>
                 {livery.heroSubtext}
               </p>
-              <div className="grid grid-cols-2 gap-2.5 max-w-sm" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
+              <div className="grid grid-cols-2 gap-2 max-w-[260px]" style={{ animation: 'hero-fade-in 0.8s 0.9s ease-out both' }}>
                 {livery.heroStats.map((stat, idx) => (
                   <div key={stat.label}
-                    className="bg-white/[0.07] backdrop-blur-sm border border-white/[0.08] rounded-lg px-4 py-3 hover:bg-white/[0.12] transition-colors"
+                    className="bg-white/[0.06] backdrop-blur-sm border border-white/[0.06] rounded-lg px-3 py-2.5 hover:bg-white/[0.10] transition-colors"
                     style={{ animation: `hero-fade-in 0.6s ${1.0 + idx * 0.12}s ease-out both` }}>
-                    <p className="text-xl font-bold tracking-tight text-white">{stat.value}</p>
-                    <p className="text-[10px] text-white/40 mt-0.5">{stat.label}</p>
+                    <p className="text-lg font-bold tracking-tight text-white">{stat.value}</p>
+                    <p className="text-[9px] text-white/35 mt-0.5">{stat.label}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="hidden xl:flex flex-col items-center shrink-0" style={{ animation: 'hero-fade-in 1s 0.5s ease-out both' }}>
+
+            {/* Right: Big Shopper Ecosystem — the hero */}
+            <div className="flex-1 flex items-center justify-center min-w-0">
               <ShopperEcosystem />
             </div>
           </div>
 
-          <div style={{ animation: 'hero-fade-in 0.8s 1.5s ease-out both' }}>
-            <p className="text-[10px] text-white/25">
-              Powered by {livery.poweredBy} · Credit card transaction intelligence
+          {/* Bottom */}
+          <div style={{ animation: 'hero-fade-in 0.8s 3.5s ease-out both' }}>
+            <p className="text-[10px] text-white/20">
+              Powered by {livery.poweredBy} · CBA credit card transaction intelligence · {new Date().getFullYear()}
             </p>
           </div>
         </div>
