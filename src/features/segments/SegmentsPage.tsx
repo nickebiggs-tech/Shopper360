@@ -8,9 +8,11 @@ import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
 import { SegmentBadge } from '../../components/ui/SegmentBadge'
 import { formatCurrency, formatNumber, formatPercentRaw, formatCompact } from '../../lib/formatters'
+import { SEGMENT_DEFINITIONS as SEGMENT_DEFS } from '../../lib/constants'
 import type { Segment } from '../../data/types'
 
-const PIE_COLORS = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444']
+// CW brand-aligned: Navy, CW Blue, Gold, Green, CW Red
+const PIE_COLORS = ['#003B73', '#0072CE', '#F7C600', '#10B981', '#E30613']
 const SEGMENTS: Segment[] = ['Power Shoppers', 'Regular Shoppers', 'Occasional Visitors', 'New Customers', 'At-Risk']
 
 /* ------------------------------------------------------------------ */
@@ -298,6 +300,38 @@ export function SegmentsPage() {
           </div>
         </div>
       )}
+
+      {/* ─── Segment Definitions ─── */}
+      <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 animate-fade-in-up">
+        <h3 className="text-sm font-bold text-slate-900 mb-1">Understanding Your Shopper Segments</h3>
+        <p className="text-xs text-slate-400 mb-4">Five behavioural groups derived from CBA credit card data — click any pie slice above to drill in</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {SEGMENTS.map((seg, idx) => {
+            const def = SEGMENT_DEFS[seg]
+            if (!def) return null
+            const isActive = expandedSegment === seg
+            return (
+              <button
+                key={seg}
+                onClick={() => setExpandedSegment(isActive ? null : seg)}
+                className={`text-left rounded-xl border-2 p-3.5 transition-all hover:shadow-md ${isActive ? 'shadow-lg scale-[1.02]' : 'hover:scale-[1.01]'}`}
+                style={{ borderColor: isActive ? def.color : '#e2e8f0', backgroundColor: isActive ? def.color + '08' : undefined }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: PIE_COLORS[idx] ?? def.color }} />
+                  <p className="text-xs font-bold text-slate-900 leading-tight">{def.title}</p>
+                </div>
+                <p className="text-[11px] font-medium mb-1.5" style={{ color: def.color }}>{def.short}</p>
+                <p className="text-[10px] text-slate-500 leading-relaxed line-clamp-3">{def.detail}</p>
+                <div className="mt-2.5 pt-2 border-t border-slate-100">
+                  <p className="text-[9px] text-slate-400 leading-relaxed"><strong className="text-slate-600">Criteria:</strong> {def.criteria}</p>
+                  <p className="text-[9px] mt-1 leading-relaxed" style={{ color: def.color }}><strong>Action:</strong> {def.action}</p>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

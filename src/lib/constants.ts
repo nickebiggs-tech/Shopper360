@@ -22,6 +22,49 @@ export const SEGMENT_LABELS: Record<string, string> = {
   'At-Risk': 'At-Risk — No visit in 45+ days, declining activity',
 }
 
+export const SEGMENT_DEFINITIONS: Record<string, { title: string; short: string; detail: string; criteria: string; action: string; color: string }> = {
+  'Power Shoppers': {
+    title: 'Power Shoppers',
+    short: 'Your most valuable loyalists',
+    detail: 'High-frequency, high-value shoppers who consolidate most of their pharmacy spend at CW. They visit weekly or more, maintain large basket sizes, and actively engage with loyalty programs. CBA data confirms 70%+ of their pharmacy wallet flows through CW.',
+    criteria: 'Retention score 70+, visits 4+/month, basket $80+',
+    action: 'Protect & reward — exclusive offers, early access, premium service',
+    color: '#003B73',
+  },
+  'Regular Shoppers': {
+    title: 'Regular Shoppers',
+    short: 'Consistent mid-tier contributors',
+    detail: 'Reliable shoppers who visit 2-3 times per month with moderate basket values. They shop across multiple categories and represent the stable core of CW revenue. Some potential to upsell into Power Shopper territory with the right nudges.',
+    criteria: 'Retention score 40-69, visits 2-3/month, basket $40-$80',
+    action: 'Grow — category expansion offers, basket-building bundles',
+    color: '#0072CE',
+  },
+  'Occasional Visitors': {
+    title: 'Occasional Visitors',
+    short: 'Light-touch, cherry-picking shoppers',
+    detail: 'Shoppers who visit monthly or less, often for specific needs (scripts, seasonal items). They browse 1-2 categories and have lower share-of-wallet at CW. CBA data shows significant pharmacy spend at competitors.',
+    criteria: 'Retention score 20-39, visits 1/month or less, narrow categories',
+    action: 'Engage — targeted campaigns, category discovery, incentivise frequency',
+    color: '#F7C600',
+  },
+  'New Customers': {
+    title: 'New Customers',
+    short: 'Recently acquired — the onboarding window',
+    detail: 'Shoppers who joined in the last 90 days. Critical onboarding period where shopping habits form. Early behaviour (basket size, repeat visits, category count) predicts long-term segment placement. High-potential cohort.',
+    criteria: 'Joined within 90 days, any spend level',
+    action: 'Nurture — welcome offers, guided category discovery, loyalty sign-up',
+    color: '#10B981',
+  },
+  'At-Risk': {
+    title: 'At-Risk',
+    short: 'Declining activity — churn imminent',
+    detail: 'Previously active shoppers showing declining visit frequency, shrinking baskets, or no visit in 45+ days. CBA credit card data confirms spend shifting to competitor pharmacies. Revenue at risk without intervention.',
+    criteria: 'No visit 45+ days, declining spend trend, retention score <20',
+    action: 'Win-back — re-engagement SMS, personalised offers, competitive pricing',
+    color: '#E30613',
+  },
+}
+
 export const CATEGORIES = [
   'OTC Medicines',
   'Prescription',

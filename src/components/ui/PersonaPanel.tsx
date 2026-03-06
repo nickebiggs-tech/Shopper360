@@ -9,8 +9,9 @@ import { formatCurrencyDecimal, formatNumber } from '../../lib/formatters'
 import { SegmentBadge } from './SegmentBadge'
 import type { Customer, Segment } from '../../data/types'
 
-const PIE_COLORS = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444']
-const CHANNEL_COLORS = ['#0A8BA8', '#10B39B', '#F59E0B']
+// CW brand-aligned: Navy, CW Blue, Gold, Green, CW Red
+const PIE_COLORS = ['#003B73', '#0072CE', '#F7C600', '#10B981', '#E30613']
+const CHANNEL_COLORS = ['#003B73', '#E30613', '#F7C600']
 
 interface PersonaPanelProps {
   customers: Customer[]

@@ -9,7 +9,8 @@ import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
 import { formatCurrency, formatNumber, formatPercentRaw } from '../../lib/formatters'
 
-const PIE_COLORS = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444']
+// CW brand-aligned: Navy, CW Blue, Gold, Green, CW Red
+const PIE_COLORS = ['#003B73', '#0072CE', '#F7C600', '#10B981', '#E30613']
 
 const ANIM = { duration: 1200, easing: 'ease-out' as const }
 const BAR_ANIM = { animationDuration: 800, animationEasing: 'ease-out' as const }
