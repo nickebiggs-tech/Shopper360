@@ -7,7 +7,7 @@ import {
 import {
   Factory, TrendingUp, Package, DollarSign, ChevronDown, Users,
   Lightbulb, Store, Monitor, ShoppingBag, Target, ShieldCheck,
-  ArrowRight, Megaphone, BarChart3, Heart,
+  ArrowRight, Megaphone, BarChart3, Heart, Globe, Pill, Sparkles, X,
 } from 'lucide-react'
 import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
@@ -308,7 +308,23 @@ const CHANNEL_ICONS: Record<string, typeof Store> = {
   'Click & Collect': ShoppingBag,
 }
 
+/* ─────────── Leakage destination data (per category type) ─────────── */
+const LEAKAGE_DESTINATIONS: Record<string, { name: string; pct: number; icon: typeof Store; color: string }[]> = {
+  'Prescription':            [{ name: 'Other Pharmacies', pct: 45, icon: Pill, color: '#3B82F6' }, { name: 'GP Clinics', pct: 20, icon: Heart, color: '#10B981' }, { name: 'Hospital', pct: 20, icon: ShieldCheck, color: '#8B5CF6' }, { name: 'Online', pct: 15, icon: Globe, color: '#F59E0B' }],
+  'OTC Medicines':           [{ name: 'Other Pharmacies', pct: 40, icon: Pill, color: '#3B82F6' }, { name: 'Supermarkets', pct: 28, icon: ShoppingBag, color: '#10B981' }, { name: 'Online', pct: 20, icon: Globe, color: '#F59E0B' }, { name: 'Convenience', pct: 12, icon: Store, color: '#94a3b8' }],
+  'Beauty & Skincare':       [{ name: 'Mecca / Sephora', pct: 25, icon: Sparkles, color: '#EC4899' }, { name: 'Priceline', pct: 22, icon: Pill, color: '#3B82F6' }, { name: 'Online (Adore etc)', pct: 23, icon: Globe, color: '#F59E0B' }, { name: 'Department Stores', pct: 18, icon: Store, color: '#8B5CF6' }, { name: 'Other', pct: 12, icon: ShoppingBag, color: '#94a3b8' }],
+  'Vitamins & Supplements':  [{ name: 'Online (iHerb etc)', pct: 30, icon: Globe, color: '#F59E0B' }, { name: 'Other Pharmacies', pct: 25, icon: Pill, color: '#3B82F6' }, { name: 'Supermarkets', pct: 22, icon: ShoppingBag, color: '#10B981' }, { name: 'Health Stores', pct: 23, icon: Heart, color: '#EC4899' }],
+  'Fragrance':               [{ name: 'Department Stores', pct: 30, icon: Store, color: '#8B5CF6' }, { name: 'Mecca / Sephora', pct: 25, icon: Sparkles, color: '#EC4899' }, { name: 'Online', pct: 22, icon: Globe, color: '#F59E0B' }, { name: 'Duty Free', pct: 13, icon: ShoppingBag, color: '#10B981' }, { name: 'Priceline', pct: 10, icon: Pill, color: '#3B82F6' }],
+  'Baby & Infant':           [{ name: 'Supermarkets', pct: 35, icon: ShoppingBag, color: '#10B981' }, { name: 'Online (Amazon etc)', pct: 25, icon: Globe, color: '#F59E0B' }, { name: 'Other Pharmacies', pct: 25, icon: Pill, color: '#3B82F6' }, { name: 'Baby Bunting', pct: 15, icon: Store, color: '#8B5CF6' }],
+  'Personal Care':           [{ name: 'Supermarkets', pct: 40, icon: ShoppingBag, color: '#10B981' }, { name: 'Priceline', pct: 20, icon: Pill, color: '#3B82F6' }, { name: 'Online', pct: 20, icon: Globe, color: '#F59E0B' }, { name: 'Discount Stores', pct: 20, icon: Store, color: '#94a3b8' }],
+  'Sports Nutrition':        [{ name: 'Online (direct)', pct: 40, icon: Globe, color: '#F59E0B' }, { name: 'Supplement Stores', pct: 25, icon: Store, color: '#8B5CF6' }, { name: 'GNC / Fitness', pct: 20, icon: Heart, color: '#EC4899' }, { name: 'Supermarkets', pct: 15, icon: ShoppingBag, color: '#10B981' }],
+  'Weight Management':       [{ name: 'Online', pct: 35, icon: Globe, color: '#F59E0B' }, { name: 'Other Pharmacies', pct: 25, icon: Pill, color: '#3B82F6' }, { name: 'Supermarkets', pct: 20, icon: ShoppingBag, color: '#10B981' }, { name: 'Health Stores', pct: 20, icon: Heart, color: '#EC4899' }],
+  'Hair Care':               [{ name: 'Supermarkets', pct: 40, icon: ShoppingBag, color: '#10B981' }, { name: 'Online', pct: 20, icon: Globe, color: '#F59E0B' }, { name: 'Salons', pct: 20, icon: Sparkles, color: '#EC4899' }, { name: 'Department Stores', pct: 20, icon: Store, color: '#8B5CF6' }],
+}
+const DEFAULT_LEAKAGE = [{ name: 'Other Pharmacies', pct: 35, icon: Pill, color: '#3B82F6' }, { name: 'Supermarkets', pct: 25, icon: ShoppingBag, color: '#10B981' }, { name: 'Online', pct: 25, icon: Globe, color: '#F59E0B' }, { name: 'Other', pct: 15, icon: Store, color: '#94a3b8' }]
+
 function SupplierPersonaView({ supplier, customers, networkScale }: { supplier: Supplier; customers: Customer[]; networkScale: number }) {
+  const { state } = useData()
   const scaleN = (n: number) => Math.round(n * networkScale)
   const shareGap = supplier.yourStoreShare - supplier.mfrMarketSharePct
   const isOverIndex = shareGap > 0
@@ -526,6 +542,43 @@ function SupplierPersonaView({ supplier, customers, networkScale }: { supplier: 
     return recs
   }, [analytics, supplier, isUnderIndex, shareGap, networkScale])
 
+  // Supplier-level category share of wallet
+  const [expandedSupplierCat, setExpandedSupplierCat] = useState<string | null>(null)
+
+  const supplierCategoryShare = useMemo(() => {
+    return supplier.topCategories
+      .map((catName) => {
+        const catData = state.categories.find((c) => c.category === catName)
+        if (!catData) return null
+
+        // CW captures ~28% of pharmacy market. Total = CW revenue / 0.28
+        const totalMarket = catData.revenue / 0.28
+        const cwShare = (catData.revenue / totalMarket) * 100
+        const lostRevenue = totalMarket - catData.revenue
+
+        // How many of THIS supplier's shoppers buy this category
+        const buyersInCat = supplierCustomers.filter(
+          (c) => c.topCategory === catName || c.secondCategory === catName || c.thirdCategory === catName,
+        ).length
+
+        return {
+          category: catName,
+          cwRevenue: catData.revenue * networkScale,
+          totalMarket: totalMarket * networkScale,
+          cwShare,
+          lostRevenue: lostRevenue * networkScale,
+          growthRate: catData.growthRate,
+          crossSellRate: catData.crossSellRate,
+          topPaired: catData.topPairedCategory,
+          buyersInCat,
+          buyersPct: supplierCustomers.length > 0 ? (buyersInCat / supplierCustomers.length) * 100 : 0,
+          leakageDestinations: LEAKAGE_DESTINATIONS[catName] || DEFAULT_LEAKAGE,
+        }
+      })
+      .filter((c): c is NonNullable<typeof c> => c !== null)
+      .sort((a, b) => b.totalMarket - a.totalMarket)
+  }, [supplier.topCategories, state.categories, supplierCustomers, networkScale])
+
   // Life stage pie data for mini chart
   const lifeStageChartData = analytics?.lifeStageSorted.map((ls) => ({
     name: ls.name,
@@ -699,6 +752,205 @@ function SupplierPersonaView({ supplier, customers, networkScale }: { supplier: 
               </div>
             </div>
           </div>
+
+          {/* ─── Supplier Category Share of Wallet ─── */}
+          {supplierCategoryShare.length > 0 && (
+            <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <ShoppingBag className="w-4 h-4 text-primary" />
+                    {supplier.mfrName} — Category Share of Wallet
+                  </h3>
+                  <p className="text-[10px] sm:text-xs text-slate-400 mt-0.5">
+                    CW's share of the total pharmacy market in {supplier.mfrName}'s categories — and where the rest goes
+                  </p>
+                </div>
+                <span className="text-[10px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium shrink-0">
+                  {supplierCategoryShare.length} {supplierCategoryShare.length === 1 ? 'category' : 'categories'}
+                </span>
+              </div>
+
+              {/* Category cards */}
+              <div className="space-y-3">
+                {supplierCategoryShare.map((cat, idx) => {
+                  const isExpanded = expandedSupplierCat === cat.category
+                  return (
+                    <div
+                      key={cat.category}
+                      className="border border-slate-200 rounded-xl overflow-hidden animate-fade-in-up hover:shadow-sm transition-shadow"
+                      style={{ animationDelay: `${idx * 60}ms` }}
+                    >
+                      {/* Category row */}
+                      <button
+                        onClick={() => setExpandedSupplierCat(isExpanded ? null : cat.category)}
+                        className="w-full flex flex-col sm:flex-row sm:items-center gap-3 p-3 sm:p-4 text-left hover:bg-slate-50/50 transition-colors"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <h4 className="text-xs sm:text-sm font-semibold text-slate-900 truncate">{cat.category}</h4>
+                            <span className={cn(
+                              'text-[9px] font-medium px-1.5 py-0.5 rounded-full shrink-0',
+                              cat.growthRate > 8 ? 'bg-emerald-50 text-emerald-600' :
+                              cat.growthRate > 3 ? 'bg-blue-50 text-blue-600' :
+                              'bg-slate-50 text-slate-500'
+                            )}>
+                              {cat.growthRate > 0 ? '+' : ''}{cat.growthRate.toFixed(1)}% YoY
+                            </span>
+                          </div>
+                          {/* Share bar */}
+                          <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden flex">
+                            <div
+                              className="h-full rounded-l-full bg-gradient-to-r from-primary to-primary/80 flex items-center justify-center transition-all duration-500"
+                              style={{ width: `${cat.cwShare}%` }}
+                            >
+                              <span className="text-[8px] text-white font-bold px-1">CW {cat.cwShare.toFixed(0)}%</span>
+                            </div>
+                            <div
+                              className="h-full rounded-r-full bg-slate-300 flex items-center justify-center"
+                              style={{ width: `${100 - cat.cwShare}%` }}
+                            >
+                              <span className="text-[8px] text-slate-600 font-medium px-1">Competitors {(100 - cat.cwShare).toFixed(0)}%</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="flex gap-3 sm:gap-4 shrink-0">
+                          <div className="text-center">
+                            <p className="text-[9px] text-slate-400">CW Revenue</p>
+                            <p className="text-xs font-bold text-primary">{formatCompact(cat.cwRevenue)}</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-[9px] text-slate-400">Lost to Competitors</p>
+                            <p className="text-xs font-bold text-red-500">{formatCompact(cat.lostRevenue)}</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-[9px] text-slate-400">{supplier.mfrName} Buyers</p>
+                            <p className="text-xs font-bold text-slate-700">{cat.buyersPct.toFixed(0)}%</p>
+                          </div>
+                        </div>
+
+                        {/* Expand arrow */}
+                        <ChevronDown className={cn(
+                          'w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200',
+                          isExpanded && 'rotate-180'
+                        )} />
+                      </button>
+
+                      {/* Expanded: WHERE does competitor spend go? */}
+                      {isExpanded && (
+                        <div className="px-3 sm:px-4 pb-4 pt-1 bg-gradient-to-b from-slate-50/50 to-white border-t border-slate-100 animate-fade-in">
+                          <div className="flex items-center justify-between mb-3">
+                            <div>
+                              <p className="text-xs font-semibold text-slate-700">Where Does Non-CW {cat.category} Spend Go?</p>
+                              <p className="text-[10px] text-slate-400">
+                                Of the <strong className="text-red-600">{formatCompact(cat.lostRevenue)}</strong> spent outside CW on {cat.category}...
+                              </p>
+                            </div>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setExpandedSupplierCat(null) }}
+                              className="p-1 rounded-md hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          {/* Competitor destination cards */}
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                            {cat.leakageDestinations.map((dest) => {
+                              const DestIcon = dest.icon
+                              const destRevenue = cat.lostRevenue * (dest.pct / 100)
+                              return (
+                                <div key={dest.name} className="bg-white rounded-lg border border-slate-200 p-2.5 text-center hover:shadow-sm transition-shadow">
+                                  <div className="w-7 h-7 mx-auto rounded-lg flex items-center justify-center mb-1" style={{ backgroundColor: dest.color + '15' }}>
+                                    <DestIcon className="w-3.5 h-3.5" style={{ color: dest.color }} />
+                                  </div>
+                                  <p className="text-[9px] font-semibold text-slate-700 mb-0.5 truncate">{dest.name}</p>
+                                  <p className="text-sm font-bold" style={{ color: dest.color }}>{dest.pct}%</p>
+                                  <p className="text-[8px] text-slate-400">{formatCompact(destRevenue)}</p>
+                                </div>
+                              )
+                            })}
+                          </div>
+
+                          {/* Visual summary bar */}
+                          <div className="mt-3 flex items-center gap-2">
+                            <div className="flex-1 h-3.5 rounded-full overflow-hidden flex">
+                              <div
+                                className="h-full bg-primary/80 flex items-center justify-center text-[7px] text-white font-bold"
+                                style={{ width: `${cat.cwShare}%` }}
+                              >
+                                CW
+                              </div>
+                              {cat.leakageDestinations.map((dest) => (
+                                <div
+                                  key={dest.name}
+                                  className="h-full"
+                                  style={{ width: `${(100 - cat.cwShare) * (dest.pct / 100)}%`, backgroundColor: dest.color }}
+                                  title={`${dest.name}: ${dest.pct}%`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+                            <span className="flex items-center gap-1 text-[8px] text-slate-500">
+                              <div className="w-2 h-2 rounded-sm bg-primary/80" /> CW Network
+                            </span>
+                            {cat.leakageDestinations.slice(0, 4).map((dest) => (
+                              <span key={dest.name} className="flex items-center gap-1 text-[8px] text-slate-500">
+                                <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: dest.color }} /> {dest.name}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Strategic insight */}
+                          <div className="mt-3 bg-amber-50/70 border border-amber-200/60 rounded-lg p-2.5">
+                            <p className="text-[10px] text-amber-800 leading-relaxed">
+                              <strong>Opportunity for {supplier.mfrName}:</strong>{' '}
+                              {cat.leakageDestinations[0] && (
+                                <>
+                                  <strong>{cat.leakageDestinations[0].name}</strong> captures {cat.leakageDestinations[0].pct}% of non-CW {cat.category} spend
+                                  ({formatCompact(cat.lostRevenue * (cat.leakageDestinations[0].pct / 100))}).
+                                  {' '}
+                                </>
+                              )}
+                              Invest in CW-exclusive promotions, competitive pricing, and shelf prominence in {cat.category} to
+                              recapture share from {cat.leakageDestinations.slice(0, 2).map((d) => d.name).join(' and ')}.
+                              {cat.crossSellRate > 0 && (
+                                <> Cross-sell rate is {cat.crossSellRate}% — pair with {cat.topPaired} for bundle uplift.</>
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Aggregate summary */}
+              {supplierCategoryShare.length > 1 && (() => {
+                const totalCW = supplierCategoryShare.reduce((s, c) => s + c.cwRevenue, 0)
+                const totalMkt = supplierCategoryShare.reduce((s, c) => s + c.totalMarket, 0)
+                const totalLost = totalMkt - totalCW
+                const avgShare = (totalCW / totalMkt) * 100
+                return (
+                  <div className="mt-4 bg-gradient-to-r from-primary/5 to-primary/[0.02] border border-primary/20 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Target className="w-4 h-4 text-primary" />
+                      <span className="text-xs font-semibold text-primary">Share Summary</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed flex-1">
+                      Across {supplier.mfrName}'s <strong>{supplierCategoryShare.length} categories</strong>, CW captures <strong>{avgShare.toFixed(1)}%</strong> of
+                      the <strong>{formatCompact(totalMkt)}</strong> total market — <strong className="text-red-600">{formatCompact(totalLost)}</strong> is flowing to
+                      competitors. Targeted investment in these categories can shift share towards CW.
+                    </p>
+                  </div>
+                )
+              })()}
+            </div>
+          )}
 
           {/* ─── Investment Recommendations ─── */}
           <div>
