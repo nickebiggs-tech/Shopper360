@@ -14,17 +14,17 @@ import { formatCurrencyDecimal, formatNumber } from '../../lib/formatters'
 import { cn } from '../../lib/utils'
 import type { Customer, Segment } from '../../data/types'
 
-// CW brand-aligned: Navy, CW Blue, Gold, Green, CW Red, Pink
-const PIE_COLORS = ['#003B73', '#0072CE', '#F7C600', '#10B981', '#E30613', '#EC4899']
-const CHANNEL_COLORS = ['#003B73', '#E30613', '#F7C600']
+// Refined palette: Blue, Indigo, Amber, Teal, Rose, Pink
+const PIE_COLORS = ['#2563EB', '#7C3AED', '#D97706', '#0D9488', '#DC2626', '#DB2777']
+const CHANNEL_COLORS = ['#2563EB', '#0D9488', '#D97706']
 
 const LIFE_STAGE_CONFIG: Record<string, { icon: typeof Baby; color: string; gradient: string }> = {
-  'Young Adult': { icon: Sparkles, color: '#0072CE', gradient: 'from-blue-50 to-blue-100/30' },
-  'Young Family': { icon: Baby, color: '#E30613', gradient: 'from-red-50 to-red-100/30' },
-  'Established Family': { icon: Users, color: '#003B73', gradient: 'from-sky-50 to-sky-100/30' },
-  'Empty Nester': { icon: Home, color: '#F7C600', gradient: 'from-amber-50 to-amber-100/30' },
-  'Retiree': { icon: Heart, color: '#10B981', gradient: 'from-emerald-50 to-emerald-100/30' },
-  'Mature Singles': { icon: UserCircle, color: '#8B5CF6', gradient: 'from-violet-50 to-violet-100/30' },
+  'Young Adult': { icon: Sparkles, color: '#7C3AED', gradient: 'from-violet-50 to-violet-100/30' },
+  'Young Family': { icon: Baby, color: '#DB2777', gradient: 'from-pink-50 to-pink-100/30' },
+  'Established Family': { icon: Users, color: '#2563EB', gradient: 'from-blue-50 to-blue-100/30' },
+  'Empty Nester': { icon: Home, color: '#D97706', gradient: 'from-amber-50 to-amber-100/30' },
+  'Retiree': { icon: Heart, color: '#DC2626', gradient: 'from-red-50 to-red-100/30' },
+  'Mature Singles': { icon: UserCircle, color: '#0D9488', gradient: 'from-teal-50 to-teal-100/30' },
 }
 
 const DEFAULT_STAGE = { icon: UserCircle, color: '#64748b', gradient: 'from-slate-50 to-slate-100/30' }

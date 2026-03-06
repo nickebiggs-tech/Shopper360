@@ -11,8 +11,8 @@ import { formatCurrency, formatNumber, formatPercentRaw, formatCompact } from '.
 import { SEGMENT_DEFINITIONS as SEGMENT_DEFS } from '../../lib/constants'
 import type { Segment } from '../../data/types'
 
-// CW brand-aligned: Navy, CW Blue, Gold, Green, CW Red
-const PIE_COLORS = ['#003B73', '#0072CE', '#F7C600', '#10B981', '#E30613']
+// Refined palette: Blue, Indigo, Amber, Teal, Rose
+const PIE_COLORS = ['#2563EB', '#7C3AED', '#D97706', '#0D9488', '#DC2626']
 const SEGMENTS: Segment[] = ['Power Shoppers', 'Regular Shoppers', 'Occasional Visitors', 'New Customers', 'At-Risk']
 
 /* ------------------------------------------------------------------ */

@@ -8,8 +8,8 @@ import { useData } from '../../data/DataProvider'
 import { KPICard } from '../../components/ui/KPICard'
 import { formatCurrency, formatNumber, formatPercentRaw } from '../../lib/formatters'
 
-// CW brand-aligned palette: Navy, Red, Gold, Blue, Green, then supporting
-const COLORS = ['#003B73', '#E30613', '#F7C600', '#0072CE', '#10B981', '#EC4899', '#F97316', '#8B5CF6', '#06B6D4', '#84CC16', '#003B73', '#E30613', '#7C3AED', '#D97706', '#0284C7']
+// Refined multi-category palette
+const COLORS = ['#2563EB', '#7C3AED', '#D97706', '#0D9488', '#DC2626', '#DB2777', '#EA580C', '#0891B2', '#4F46E5', '#65A30D', '#9333EA', '#0284C7', '#B45309', '#059669', '#E11D48']
 
 export function BasketAnalysisPage() {
   const { state } = useData()
