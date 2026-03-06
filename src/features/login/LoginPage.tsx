@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { useTheme } from '../../theme/ThemeProvider'
-import { Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp, Pill, Heart, Sparkles, Baby, Sun, FlaskConical, Stethoscope } from 'lucide-react'
+import { Eye, EyeOff, ShieldCheck, Users, BarChart3, TrendingUp, Pill, Heart, Sparkles, Baby, Sun, FlaskConical, Stethoscope, ShoppingCart, Globe, Store } from 'lucide-react'
 
 /* ─── animated data-particle columns ─── */
 function DataParticles({ count = 12 }: { count?: number }) {
@@ -90,47 +90,169 @@ function OrbitingIcons() {
   )
 }
 
-/* ─── journey funnel SVG ─── */
-function JourneyFunnel() {
-  const stages = [
-    { y: 60, label: 'Discovery', w: 220 },
-    { y: 130, label: 'Visit', w: 180 },
-    { y: 200, label: 'Purchase', w: 140 },
-    { y: 270, label: 'Repeat', w: 105 },
-    { y: 340, label: 'Loyal', w: 75 },
+/* ─── Shopper Ecosystem — person at heart of CW with competitor web ─── */
+function ShopperEcosystem() {
+  // Competitors positioned around the shopper (angle in degrees, distance from center)
+  const competitors = [
+    { name: 'Priceline', angle: 0, Icon: Pill, color: '#3B82F6' },
+    { name: 'Mecca', angle: 51, Icon: Sparkles, color: '#EC4899' },
+    { name: 'Online', angle: 103, Icon: Globe, color: '#F59E0B' },
+    { name: 'Supermarkets', angle: 154, Icon: ShoppingCart, color: '#10B981' },
+    { name: 'Discount', angle: 206, Icon: Store, color: '#8B5CF6' },
+    { name: 'Terry White', angle: 257, Icon: Heart, color: '#06B6D4' },
+    { name: 'Other Rx', angle: 309, Icon: FlaskConical, color: '#F97316' },
   ]
 
+  const cx = 200
+  const cy = 200
+  const innerR = 52   // CW ring
+  const midR = 110    // web ring 1
+  const outerR = 165   // competitor nodes
+
   return (
-    <svg viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[260px] h-[360px]">
-      {stages.map((s, i) => {
-        if (i === stages.length - 1) return null
-        const next = stages[i + 1]!
-        return (
-          <g key={`line-${i}`}>
-            <line x1={150 - s.w / 2 + 10} y1={s.y + 36} x2={150 - next.w / 2 + 10} y2={next.y + 4}
-              stroke="white" strokeWidth="1" strokeDasharray="4 4" opacity="0.2"
-              style={{ animation: 'dash-flow 1.5s linear infinite' }} />
-            <line x1={150 + s.w / 2 - 10} y1={s.y + 36} x2={150 + next.w / 2 - 10} y2={next.y + 4}
-              stroke="white" strokeWidth="1" strokeDasharray="4 4" opacity="0.2"
-              style={{ animation: 'dash-flow 1.5s linear infinite' }} />
-          </g>
-        )
-      })}
-      {stages.map((s, i) => {
-        const opacity = 0.08 + i * 0.04
-        return (
-          <g key={s.label}>
-            <rect x={150 - s.w / 2} y={s.y} width={s.w} height={36} rx={8}
-              fill="white" fillOpacity={opacity} stroke="white" strokeWidth="0.8" strokeOpacity={0.2 + i * 0.05} />
-            <text x={150} y={s.y + 22} textAnchor="middle" fill="white"
-              fillOpacity={0.5 + i * 0.1} fontSize="12" fontWeight="500" fontFamily="inherit">
-              {s.label}
-            </text>
-          </g>
-        )
-      })}
-      <polygon points="140,390 150,405 160,390" fill="white" fillOpacity="0.3" />
-    </svg>
+    <div className="relative w-[340px] h-[440px] flex flex-col items-center">
+      {/* Persona card — floating above */}
+      <div
+        className="bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl px-4 py-3 mb-3 w-[220px]"
+        style={{ animation: 'hero-fade-in 0.8s 0.8s ease-out both' }}
+      >
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 border border-white/15 flex items-center justify-center shrink-0">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
+            </svg>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold text-white/80 leading-tight">Sarah M.</p>
+            <p className="text-[9px] text-white/40 leading-tight mt-0.5">Young Family · Health-conscious</p>
+            <p className="text-[9px] text-white/30 leading-tight">$142 avg basket · 3.2 visits/mo</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main SVG spider web */}
+      <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[320px] h-[320px]"
+        style={{ animation: 'hero-fade-in 1s 0.3s ease-out both' }}
+      >
+        {/* Web rings (spider web concentric) */}
+        <circle cx={cx} cy={cy} r={midR} stroke="white" strokeWidth="0.5" strokeOpacity="0.08" />
+        <circle cx={cx} cy={cy} r={outerR} stroke="white" strokeWidth="0.5" strokeOpacity="0.06" />
+
+        {/* Web spokes — lines from center to each competitor */}
+        {competitors.map((comp) => {
+          const rad = (comp.angle * Math.PI) / 180
+          const ex = cx + outerR * Math.cos(rad)
+          const ey = cy + outerR * Math.sin(rad)
+          return (
+            <line
+              key={`spoke-${comp.name}`}
+              x1={cx} y1={cy} x2={ex} y2={ey}
+              stroke="white" strokeWidth="0.6" strokeOpacity="0.06"
+            />
+          )
+        })}
+
+        {/* Cross-web connections (inner web pattern) */}
+        {competitors.map((comp, i) => {
+          const next = competitors[(i + 1) % competitors.length]!
+          const rad1 = (comp.angle * Math.PI) / 180
+          const rad2 = (next.angle * Math.PI) / 180
+          const x1 = cx + midR * Math.cos(rad1)
+          const y1 = cy + midR * Math.sin(rad1)
+          const x2 = cx + midR * Math.cos(rad2)
+          const y2 = cy + midR * Math.sin(rad2)
+          return (
+            <line
+              key={`web-${i}`}
+              x1={x1} y1={y1} x2={x2} y2={y2}
+              stroke="white" strokeWidth="0.5" strokeOpacity="0.06"
+            />
+          )
+        })}
+
+        {/* Animated spend-flow dashes — from CW center outward to competitors */}
+        {competitors.map((comp, i) => {
+          const rad = (comp.angle * Math.PI) / 180
+          const sx = cx + innerR * Math.cos(rad)
+          const sy = cy + innerR * Math.sin(rad)
+          const ex = cx + (outerR - 20) * Math.cos(rad)
+          const ey = cy + (outerR - 20) * Math.sin(rad)
+          return (
+            <line
+              key={`flow-${comp.name}`}
+              x1={sx} y1={sy} x2={ex} y2={ey}
+              stroke={comp.color}
+              strokeWidth="1.2"
+              strokeDasharray="3 6"
+              strokeOpacity="0.35"
+              style={{ animation: `dash-flow 2s ${i * 0.3}s linear infinite` }}
+            />
+          )
+        })}
+
+        {/* Inner CW ring — glow */}
+        <circle cx={cx} cy={cy} r={innerR + 8} fill="white" fillOpacity="0.02"
+          style={{ animation: 'pulse-ring 3s ease-in-out infinite' }}
+        />
+        <circle cx={cx} cy={cy} r={innerR} fill="white" fillOpacity="0.06"
+          stroke="white" strokeWidth="1.5" strokeOpacity="0.2"
+        />
+
+        {/* CW logo text at center */}
+        <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fillOpacity="0.9"
+          fontSize="16" fontWeight="800" fontFamily="inherit" letterSpacing="1">
+          CW
+        </text>
+        <text x={cx} y={cy + 8} textAnchor="middle" fill="white" fillOpacity="0.35"
+          fontSize="7" fontWeight="500" fontFamily="inherit" letterSpacing="0.5">
+          SHOPPER
+        </text>
+
+        {/* Shopper silhouette icon at center */}
+        <g transform={`translate(${cx - 6}, ${cy + 14})`} opacity="0.4">
+          <circle cx="6" cy="3" r="3" fill="white" />
+          <path d="M0 13c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="white" strokeWidth="1.2" fill="none" />
+        </g>
+
+        {/* Competitor nodes */}
+        {competitors.map((comp, i) => {
+          const rad = (comp.angle * Math.PI) / 180
+          const nx = cx + outerR * Math.cos(rad)
+          const ny = cy + outerR * Math.sin(rad)
+          // Label offset — push label outward
+          const lx = cx + (outerR + 22) * Math.cos(rad)
+          const ly = cy + (outerR + 22) * Math.sin(rad)
+          const anchor = comp.angle > 90 && comp.angle < 270 ? 'end' : 'start'
+          const adjustedAnchor = Math.abs(comp.angle - 180) < 30 || comp.angle < 30 || comp.angle > 330 ? 'middle' : anchor
+
+          return (
+            <g key={comp.name} style={{ animation: `hero-fade-in 0.5s ${0.6 + i * 0.12}s ease-out both` }}>
+              {/* Node circle */}
+              <circle cx={nx} cy={ny} r={14} fill={comp.color} fillOpacity="0.15"
+                stroke={comp.color} strokeWidth="1" strokeOpacity="0.4" />
+              {/* Lucide icon via foreignObject */}
+              <foreignObject x={nx - 8} y={ny - 8} width={16} height={16}>
+                <comp.Icon style={{ width: 12, height: 12, margin: '2px', color: comp.color, opacity: 0.8 }} />
+              </foreignObject>
+              {/* Label */}
+              <text x={lx} y={ly + 3} textAnchor={adjustedAnchor} fill="white" fillOpacity="0.45"
+                fontSize="8" fontWeight="500" fontFamily="inherit">
+                {comp.name}
+              </text>
+            </g>
+          )
+        })}
+      </svg>
+
+      {/* Bottom label */}
+      <p className="text-[9px] text-white/25 mt-1 tracking-widest uppercase"
+        style={{ animation: 'hero-fade-in 0.6s 1.5s ease-out both' }}
+      >
+        Shopper Ecosystem
+      </p>
+    </div>
   )
 }
 
@@ -277,8 +399,7 @@ export function LoginPage() {
               </div>
             </div>
             <div className="hidden xl:flex flex-col items-center shrink-0" style={{ animation: 'hero-fade-in 1s 0.5s ease-out both' }}>
-              <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-white/30 mb-4">Shopper Journey</p>
-              <JourneyFunnel />
+              <ShopperEcosystem />
             </div>
           </div>
 

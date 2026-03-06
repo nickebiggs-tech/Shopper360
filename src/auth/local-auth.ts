@@ -2,7 +2,7 @@ import type { IAuthProvider, AuthUser } from './types'
 
 const USERS: Record<string, { password: string; user: AuthUser }> = {
   Jim: {
-    password: '1234',
+    password: '3101',
     user: { username: 'Jim', displayName: 'Jim', role: 'pharmacist' },
   },
   Admin: {
