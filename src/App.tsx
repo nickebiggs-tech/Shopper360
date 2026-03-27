@@ -19,7 +19,7 @@ import { ShopperPersonasPage } from './features/personas/ShopperPersonasPage'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Shopper360">
       <ThemeProvider>
         <AuthProvider>
           <Routes>
